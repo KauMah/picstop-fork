@@ -1,18 +1,18 @@
 import {
+  GestureResponderEvent,
   StyleSheet,
   Text,
   TextStyle,
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
+import React, { VoidFunctionComponent } from 'react';
 import {
   lighterBlue,
   lighterGreen,
   mainBlue,
   mainGreen,
 } from '../utils/colors';
-
-import React from 'react';
 
 interface Styles {
   button: ViewStyle;
@@ -42,14 +42,16 @@ const styles = StyleSheet.create<Styles>({
 interface Props {
   text: String;
   type: 'green' | 'blue';
+  onPress: (event: GestureResponderEvent) => void;
 }
 
-const StyledButton = ({ text, type }: Props) => {
+const StyledButton = ({ text, type, onPress }: Props) => {
   switch (type) {
     case 'green':
       return (
         <TouchableOpacity
           activeOpacity={0.5}
+          onPress={onPress}
           style={{
             ...styles.button,
             borderColor: mainGreen,
@@ -62,6 +64,7 @@ const StyledButton = ({ text, type }: Props) => {
       return (
         <TouchableOpacity
           activeOpacity={0.5}
+          onPress={onPress}
           style={{
             ...styles.button,
             borderColor: mainBlue,

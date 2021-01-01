@@ -1,6 +1,7 @@
 import { NativeRouter, Route, Switch } from 'react-router-native';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
+import Login from './screens/login';
 import React from 'react';
 import Welcome from './screens/welcome';
 
@@ -21,7 +22,8 @@ const App = () => {
       <NativeRouter>
         <View style={styles.container}>
           <Switch>
-            <Route route="/" component={Welcome} />
+            <Route exact path="/" component={Welcome} />
+            <Route exact path="/login" component={Login} />
           </Switch>
         </View>
       </NativeRouter>

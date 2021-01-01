@@ -2,6 +2,7 @@ import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import React from 'react';
 import StyledButton from '../components/submitButton';
+import { useHistory } from 'react-router-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const Welcome = () => {
+  const history = useHistory();
   return (
     <SafeAreaView style={styles.container}>
       <Image source={require('../assets/picstop-logo.png')} />
@@ -46,8 +48,16 @@ const Welcome = () => {
       </Text>
       <View style={styles.carousel} />
       <View style={styles.buttons}>
-        <StyledButton text={'Sign in'} type={'green'} />
-        <StyledButton text={'Sign Up'} type={'blue'} />
+        <StyledButton
+          text={'Sign in'}
+          type={'green'}
+          onPress={() => history.push('/login')}
+        />
+        <StyledButton
+          text={'Sign Up'}
+          type={'blue'}
+          onPress={() => history.push('/signup')}
+        />
       </View>
     </SafeAreaView>
   );
