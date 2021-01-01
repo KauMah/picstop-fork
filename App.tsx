@@ -1,10 +1,10 @@
-import {NativeRouter, Route, Switch} from 'react-router-native';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import { NativeRouter, Route, Switch } from 'react-router-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 
 import React from 'react';
 import Welcome from './screens/welcome';
 
-declare const global: {HermesInternal: null | {}};
+declare const global: { HermesInternal: null | {} };
 
 const styles = StyleSheet.create({
   container: {
