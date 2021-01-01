@@ -1,6 +1,7 @@
 import Login from './screens/login';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import SignUp from './screens/signup';
 import { StatusBar } from 'react-native';
 import Welcome from './screens/welcome';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -21,6 +22,7 @@ const Routes = () => {
             }}
           />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Sign Up" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

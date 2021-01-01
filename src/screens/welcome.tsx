@@ -69,7 +69,7 @@ const Welcome = ({ navigation }: Props) => {
           <StyledButton
             text={'Sign Up'}
             type={'blue'}
-            onPress={() => navigation.navigate('Signup')}
+            onPress={() => navigation.navigate('Sign Up')}
           />
         </View>
       </View>

@@ -46,6 +46,7 @@ interface Props {
 }
 
 const IconTextField = (props: Props) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const { placeholder, style, icon } = props;

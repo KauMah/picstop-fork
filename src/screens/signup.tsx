@@ -1,10 +1,10 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 import IconTextField from '../components/IconTextField/container';
 import React from 'react';
 import StyledButton from '../components/StyledButton';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { faUser } from '@fortawesome/free-regular-svg-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,14 +29,15 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 10,
   },
-  forgot: {
+  fine: {
     fontFamily: 'Kumbh Sans',
     fontSize: 16,
     marginTop: 20,
+    marginHorizontal: 20,
   },
 });
 
-const Login = () => {
+const SignUp = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -50,6 +51,11 @@ const Login = () => {
           style={styles.textField}
         />
         <IconTextField
+          icon={faEnvelope}
+          placeholder={'Email'}
+          style={styles.textField}
+        />
+        <IconTextField
           icon={faLock}
           placeholder={'Password'}
           style={styles.textField}
@@ -57,13 +63,16 @@ const Login = () => {
       </View>
       <View style={styles.button}>
         <StyledButton
-          text={'Sign In'}
-          type="green"
-          onPress={() => console.log('hey')}
+          text={'Sign Up'}
+          type="blue"
+          onPress={() => console.log('hiya')}
         />
       </View>
-      <Text style={styles.forgot}>Forgot your password? Reset password</Text>
+      <Text style={styles.fine}>
+        By registering with PicStop, you confirm that you agree to our Terms of
+        Service and Privacy Policy
+      </Text>
     </SafeAreaView>
   );
 };
-export default Login;
+export default SignUp;

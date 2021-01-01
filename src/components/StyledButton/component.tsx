@@ -44,20 +44,24 @@ interface Props {
   text: String;
   type: 'green' | 'blue';
   onPress: (event: GestureResponderEvent) => void;
+  style?: ViewStyle;
 }
 
-const StyledButton = ({ text, type, onPress }: Props) => {
+const StyledButton = ({ text, type, onPress, style }: Props) => {
   switch (type) {
     case 'green':
       return (
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={onPress}
-          style={{
-            ...styles.button,
-            borderColor: mainGreen,
-            backgroundColor: lighterGreen,
-          }}>
+          style={[
+            {
+              ...styles.button,
+              borderColor: mainGreen,
+              backgroundColor: lighterGreen,
+            },
+            style,
+          ]}>
           <Text style={{ ...styles.text, color: mainGreen }}>{text}</Text>
         </TouchableOpacity>
       );
@@ -66,11 +70,14 @@ const StyledButton = ({ text, type, onPress }: Props) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={onPress}
-          style={{
-            ...styles.button,
-            borderColor: mainBlue,
-            backgroundColor: lighterBlue,
-          }}>
+          style={[
+            {
+              ...styles.button,
+              borderColor: mainBlue,
+              backgroundColor: lighterBlue,
+            },
+            style,
+          ]}>
           <Text style={{ ...styles.text, color: mainBlue }}>{text}</Text>
         </TouchableOpacity>
       );
