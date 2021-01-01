@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
-import React, { VoidFunctionComponent } from 'react';
 import {
   lighterBlue,
   lighterGreen,
   mainBlue,
   mainGreen,
-} from '../utils/colors';
+} from '../../utils/colors';
+
+import React from 'react';
 
 interface Styles {
   button: ViewStyle;
@@ -23,11 +24,11 @@ const styles = StyleSheet.create<Styles>({
   button: {
     display: 'flex',
     height: 50,
+    width: '100%',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    marginHorizontal: 5,
   },
   text: {
     fontFamily: 'Kumbh Sans',

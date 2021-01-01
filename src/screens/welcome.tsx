@@ -1,8 +1,9 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import React from 'react';
-import StyledButton from '../components/submitButton';
-import { useHistory } from 'react-router-native';
+import { RootStackParamList } from '../types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import StyledButton from '../components/StyledButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,17 +29,26 @@ const styles = StyleSheet.create({
     height: 380,
   },
   buttons: {
-    flex: 1,
     flexDirection: 'row',
-    marginHorizontal: 40,
+  },
+  button: {
+    marginHorizontal: 5,
   },
 });
 
-const Welcome = () => {
-  const history = useHistory();
+type WelcomeScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Welcome'
+>;
+
+type Props = {
+  navigation: WelcomeScreenNavigationProp;
+};
+
+const Welcome = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={require('../assets/picstop-logo.png')} />
+      <Image source={require('../../assets/img/picstop-logo.png')} />
       <Text style={styles.headerText}>
         Lorem ipsum dolor sit amet consectetur adipiscing elit
       </Text>
@@ -48,16 +58,20 @@ const Welcome = () => {
       </Text>
       <View style={styles.carousel} />
       <View style={styles.buttons}>
-        <StyledButton
-          text={'Sign in'}
-          type={'green'}
-          onPress={() => history.push('/login')}
-        />
-        <StyledButton
-          text={'Sign Up'}
-          type={'blue'}
-          onPress={() => history.push('/signup')}
-        />
+        <View style={styles.button}>
+          <StyledButton
+            text={'Sign in'}
+            type={'green'}
+            onPress={() => navigation.navigate('Login')}
+          />
+        </View>
+        <View style={styles.button}>
+          <StyledButton
+            text={'Sign Up'}
+            type={'blue'}
+            onPress={() => navigation.navigate('Signup')}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
