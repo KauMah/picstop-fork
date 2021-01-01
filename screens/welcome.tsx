@@ -1,7 +1,7 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import React from 'react';
-import SubmitButton from '../components/submitButton';
+import StyledButton from '../components/submitButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
   carousel: {
     height: 380,
   },
+  buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    marginHorizontal: 40,
+  },
 });
 
 const Welcome = () => {
@@ -40,7 +45,10 @@ const Welcome = () => {
         words.
       </Text>
       <View style={styles.carousel} />
-      <SubmitButton />
+      <View style={styles.buttons}>
+        <StyledButton text={'Sign in'} type={'green'} />
+        <StyledButton text={'Sign Up'} type={'blue'} />
+      </View>
     </SafeAreaView>
   );
 };
