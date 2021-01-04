@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { faCoffee, faHome } from '@fortawesome/free-solid-svg-icons';
+import { StatusBar, StyleSheet } from 'react-native';
+import {
+  faCoffee,
+  faCog,
+  faHome,
+  faMapMarkerAlt,
+  faPlusCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { mainBlue, mainGray, tabBarGray } from './utils/colors';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,14 +16,20 @@ import Login from './screens/login';
 import MapView from './screens/map';
 import { NavigationContainer } from '@react-navigation/native';
 import SignUp from './screens/signup';
-import { StatusBar } from 'react-native';
 import Welcome from './screens/welcome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 const AuthContext = React.createContext('');
+
+const styles = StyleSheet.create({
+  tab: {
+    marginTop: 10,
+  },
+});
 
 const Routes = () => {
   const [signedIn, setSignedIn] = useState(false);
@@ -24,7 +37,7 @@ const Routes = () => {
   const [token, setToken] = useState('');
 
   const LoadedRoutes = () => {
-    return signedIn ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />;
+    return !signedIn ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />;
   };
   useEffect(() => {
     const checkAuth = async () => {
@@ -73,12 +86,25 @@ const AuthenticatedRoutes = () => {
               case 'Home':
                 icon = faHome;
                 break;
+              case 'Map':
+                icon = faMapMarkerAlt;
+                break;
+              case 'Post':
+                icon = faPlusCircle;
+                break;
+              case 'Profile':
+                icon = faUserCircle;
+                break;
+              case 'Settings':
+                icon = faCog;
+                break;
               default:
                 icon = faCoffee;
             }
 
             return (
               <FontAwesomeIcon
+                style={styles.tab}
                 icon={icon}
                 size={30}
                 color={focused ? mainBlue : mainGray}
@@ -86,8 +112,11 @@ const AuthenticatedRoutes = () => {
             );
           },
         })}>
-        <Tabs.Screen name="Home" component={MapView} />
-        <Tabs.Screen name="Other" component={Loading} />
+        <Tabs.Screen name="Home" component={Loading} />
+        <Tabs.Screen name="Map" component={MapView} />
+        <Tabs.Screen name="Post" component={Loading} />
+        <Tabs.Screen name="Profile" component={Loading} />
+        <Tabs.Screen name="Settings" component={Loading} />
       </Tabs.Navigator>
     </NavigationContainer>
   );
