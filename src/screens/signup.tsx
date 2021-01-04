@@ -67,10 +67,25 @@ const SignUp = () => {
         initialValues={{ username: '', email: '', password: '' }}
         onSubmit={(values) => console.log(values)}
         validationSchema={SignUpSchema}
+        initialErrors={{ username: 'err', email: 'err', password: 'err' }}
         validateOnBlur>
-        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+          isValid,
+        }) => (
           <View style={styles.inputs}>
-            {errors && <Text>{errors.username}</Text>}
+            {errors && (
+              <Text>
+                {touched.username && errors.username}{' '}
+                {touched.email && errors.email}{' '}
+                {touched.password && errors.password}
+              </Text>
+            )}
             <IconTextField
               icon={faUser}
               onChangeText={handleChange('username')}
@@ -79,6 +94,9 @@ const SignUp = () => {
               style={styles.textField}
               value={values.username}
               autoCapitalize={'none'}
+              invalid={
+                touched.username ? (errors.username ? true : false) : false
+              }
             />
             <IconTextField
               icon={faEnvelope}
@@ -88,6 +106,7 @@ const SignUp = () => {
               value={values.email}
               style={styles.textField}
               autoCapitalize={'none'}
+              invalid={touched.email ? (errors.email ? true : false) : false}
             />
             <IconTextField
               icon={faLock}
@@ -97,12 +116,16 @@ const SignUp = () => {
               value={values.password}
               secureTextEntry
               style={styles.textField}
+              invalid={
+                touched.password ? (errors.password ? true : false) : false
+              }
             />
             <View style={styles.button}>
               <StyledButton
                 text={'Sign Up'}
                 type="blue"
                 onPress={handleSubmit}
+                disabled={!touched || !isValid}
               />
             </View>
           </View>

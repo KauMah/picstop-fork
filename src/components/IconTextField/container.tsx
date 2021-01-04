@@ -9,6 +9,7 @@ import {
 import React, { useState } from 'react';
 import {
   black,
+  errorRed,
   lighterGray,
   mainBlue,
   mainGray,
@@ -17,7 +18,6 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
-import { onChange } from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   view: {
@@ -51,14 +51,24 @@ type Props = React.ComponentProps<typeof TextInput> & {
   placeholder?: string;
   style?: ViewStyle;
   icon: IconDefinition;
+  invalid: boolean;
 };
 
 const IconTextField = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const { placeholder, style, icon } = props;
-  const focus = isFocused
+  const { placeholder, style, icon, invalid } = props;
+  const changedStyle = invalid
+    ? {
+        iconContainer: {
+          borderRightColor: errorRed,
+        },
+        view: {
+          borderColor: errorRed,
+        },
+      }
+    : isFocused
     ? {
         iconContainer: {
           borderRightColor: mainBlue,
@@ -69,12 +79,12 @@ const IconTextField = (props: Props) => {
       }
     : {};
   return (
-    <View style={[styles.view, style, focus.view]}>
-      <View style={[styles.iconContainer, focus.iconContainer]}>
+    <View style={[styles.view, style, changedStyle.view]}>
+      <View style={[styles.iconContainer, changedStyle.iconContainer]}>
         <FontAwesomeIcon
           icon={icon}
           size={30}
-          color={isFocused ? mainBlue : mainGray}
+          color={invalid ? errorRed : isFocused ? mainBlue : mainGray}
           style={styles.icon}
         />
       </View>

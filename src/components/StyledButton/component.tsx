@@ -45,15 +45,17 @@ interface Props {
   type: 'green' | 'blue';
   onPress: (event: GestureResponderEvent) => void;
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
-const StyledButton = ({ text, type, onPress, style }: Props) => {
+const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
+  const disabledButton = disabled ? { opacity: 0.5 } : {};
   switch (type) {
     case 'green':
       return (
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={onPress}
+          onPress={disabled ? () => {} : onPress}
           style={[
             {
               ...styles.button,
@@ -61,6 +63,7 @@ const StyledButton = ({ text, type, onPress, style }: Props) => {
               backgroundColor: lighterGreen,
             },
             style,
+            // disabledButton,
           ]}>
           <Text style={{ ...styles.text, color: mainGreen }}>{text}</Text>
         </TouchableOpacity>
@@ -69,7 +72,8 @@ const StyledButton = ({ text, type, onPress, style }: Props) => {
       return (
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={onPress}
+          onPress={disabled ? () => {} : onPress}
+          disabled={disabled}
           style={[
             {
               ...styles.button,
@@ -77,6 +81,7 @@ const StyledButton = ({ text, type, onPress, style }: Props) => {
               backgroundColor: lighterBlue,
             },
             style,
+            // disabledButton,
           ]}>
           <Text style={{ ...styles.text, color: mainBlue }}>{text}</Text>
         </TouchableOpacity>
