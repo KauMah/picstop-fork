@@ -20,7 +20,9 @@ const styles = StyleSheet.create({
   textField: {
     marginVertical: 5,
   },
-  image: {
+  logo: {
+    width: 200,
+    height: 164,
     marginTop: 139,
     marginBottom: 25,
   },
@@ -37,11 +39,15 @@ const styles = StyleSheet.create({
 });
 
 const Login = () => {
+  const logIn = () => {
+    console.log('hey');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image
         source={require('../../assets/img/picstop-logo.png')}
-        style={styles.image}
+        style={styles.logo}
       />
       <View style={styles.inputs}>
         <IconTextField
@@ -53,17 +59,15 @@ const Login = () => {
           icon={faLock}
           placeholder={'Password'}
           style={styles.textField}
+          secureTextEntry
         />
       </View>
       <View style={styles.button}>
-        <StyledButton
-          text={'Sign In'}
-          type="green"
-          onPress={() => console.log('hey')}
-        />
+        <StyledButton text={'Sign In'} type="green" onPress={logIn} />
       </View>
       <Text style={styles.forgot}>Forgot your password? Reset password</Text>
     </SafeAreaView>
   );
 };
+
 export default Login;

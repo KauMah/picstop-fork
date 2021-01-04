@@ -1,5 +1,12 @@
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInput,
+  TextInputFocusEventData,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, ViewStyle } from 'react-native';
 import {
   black,
   lighterGray,
@@ -10,6 +17,7 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
+import { onChange } from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   view: {
@@ -39,11 +47,11 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Props {
+type Props = React.ComponentProps<typeof TextInput> & {
   placeholder?: string;
   style?: ViewStyle;
   icon: IconDefinition;
-}
+};
 
 const IconTextField = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -75,7 +83,17 @@ const IconTextField = (props: Props) => {
         placeholder={placeholder}
         placeholderTextColor={mainGray}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+          setIsFocused(false);
+          if (props.onBlur) {
+            props.onBlur(e);
+          }
+        }}
+        value={props.value}
+        secureTextEntry={props.secureTextEntry}
+        onChange={props.onChange}
+        onChangeText={props.onChangeText}
+        autoCapitalize={props.autoCapitalize}
       />
     </View>
   );

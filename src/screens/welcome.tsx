@@ -10,6 +10,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
   },
+  logo: {
+    height: 164,
+    width: 200,
+    marginTop: 20,
+  },
   headerText: {
     fontSize: 28,
     lineHeight: 34,
@@ -48,7 +53,10 @@ type Props = {
 const Welcome = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={require('../../assets/img/picstop-logo.png')} />
+      <Image
+        source={require('../../assets/img/picstop-logo.png')}
+        style={styles.logo}
+      />
       <Text style={styles.headerText}>
         Lorem ipsum dolor sit amet consectetur adipiscing elit
       </Text>
