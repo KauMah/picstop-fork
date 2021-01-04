@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    top: -20,
-    height: '100%',
+    height: '113%',
     width: '100%',
   },
 });
