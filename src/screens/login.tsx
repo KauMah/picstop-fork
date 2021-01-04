@@ -1,5 +1,8 @@
+import * as Yup from 'yup';
+
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
+import { Formik } from 'formik';
 import IconTextField from '../components/IconTextField/container';
 import React from 'react';
 import StyledButton from '../components/StyledButton';
@@ -27,7 +30,6 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   button: {
-    paddingHorizontal: 20,
     width: '100%',
     marginTop: 10,
   },
@@ -38,33 +40,69 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = () => {
-  const logIn = () => {
-    console.log('hey');
-  };
+const LogInSchema = Yup.object().shape({
+  username: Yup.string().required('Required'),
+  password: Yup.string().required('Password is required'),
+});
 
+const Login = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Image
         source={require('../../assets/img/picstop-logo.png')}
         style={styles.logo}
       />
-      <View style={styles.inputs}>
-        <IconTextField
-          icon={faUser}
-          placeholder={'Username'}
-          style={styles.textField}
-        />
-        <IconTextField
-          icon={faLock}
-          placeholder={'Password'}
-          style={styles.textField}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.button}>
-        <StyledButton text={'Sign In'} type="green" onPress={logIn} />
-      </View>
+      <Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={(values) => console.log(values)}
+        initialErrors={{ username: 'err', password: 'err' }}
+        validationSchema={LogInSchema}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+          isValid,
+        }) => (
+          <View style={styles.inputs}>
+            <IconTextField
+              icon={faUser}
+              placeholder={'Username'}
+              value={values.username}
+              onBlur={handleBlur('username')}
+              onChangeText={handleChange('username')}
+              style={styles.textField}
+              autoCapitalize={'none'}
+              invalid={
+                touched.username ? (errors.username ? true : false) : false
+              }
+            />
+            <IconTextField
+              icon={faLock}
+              placeholder={'Password'}
+              value={values.password}
+              onBlur={handleBlur('password')}
+              onChangeText={handleChange('password')}
+              style={styles.textField}
+              invalid={
+                touched.password ? (errors.password ? true : false) : false
+              }
+              secureTextEntry
+            />
+            <View style={styles.button}>
+              <StyledButton
+                text={'Sign In'}
+                type="green"
+                onPress={handleSubmit}
+                disabled={!touched || !isValid}
+              />
+            </View>
+          </View>
+        )}
+      </Formik>
+
       <Text style={styles.forgot}>Forgot your password? Reset password</Text>
     </SafeAreaView>
   );

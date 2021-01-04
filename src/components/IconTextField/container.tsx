@@ -51,14 +51,14 @@ type Props = React.ComponentProps<typeof TextInput> & {
   placeholder?: string;
   style?: ViewStyle;
   icon: IconDefinition;
-  invalid: boolean;
+  invalid?: boolean;
 };
 
 const IconTextField = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const { placeholder, style, icon, invalid } = props;
+  const { placeholder, style, icon, invalid = false } = props;
   const changedStyle = invalid
     ? {
         iconContainer: {

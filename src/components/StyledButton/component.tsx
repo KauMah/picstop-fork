@@ -56,6 +56,7 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={disabled ? () => {} : onPress}
+          disabled={disabled}
           style={[
             {
               ...styles.button,
@@ -63,7 +64,7 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
               backgroundColor: lighterGreen,
             },
             style,
-            // disabledButton,
+            disabledButton,
           ]}>
           <Text style={{ ...styles.text, color: mainGreen }}>{text}</Text>
         </TouchableOpacity>
@@ -81,7 +82,7 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
               backgroundColor: lighterBlue,
             },
             style,
-            // disabledButton,
+            disabledButton,
           ]}>
           <Text style={{ ...styles.text, color: mainBlue }}>{text}</Text>
         </TouchableOpacity>
