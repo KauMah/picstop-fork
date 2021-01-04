@@ -24,7 +24,7 @@ const Routes = () => {
   const [token, setToken] = useState('');
 
   const LoadedRoutes = () => {
-    return !signedIn ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />;
+    return signedIn ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />;
   };
   useEffect(() => {
     const checkAuth = async () => {
