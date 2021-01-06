@@ -10,6 +10,7 @@ import {
 import { mainBlue, mainGray, tabBarGray } from './utils/colors';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Feed from './screens/feed';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import Loading from './screens/loading';
 import Login from './screens/login';
@@ -112,7 +113,7 @@ const AuthenticatedRoutes = () => {
             );
           },
         })}>
-        <Tabs.Screen name="Home" component={Loading} />
+        <Tabs.Screen name="Home" component={Feed} />
         <Tabs.Screen name="Map" component={MapView} />
         <Tabs.Screen name="Post" component={Loading} />
         <Tabs.Screen name="Profile" component={Loading} />
