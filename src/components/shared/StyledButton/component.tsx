@@ -11,7 +11,7 @@ import {
   lighterGreen,
   mainBlue,
   mainGreen,
-} from '../../utils/colors';
+} from '../../../utils/colors';
 
 import React from 'react';
 

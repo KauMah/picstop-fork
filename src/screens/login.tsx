@@ -7,7 +7,7 @@ import { API_URL } from '@env';
 import { Formik } from 'formik';
 import IconTextField from '../components/IconTextField/container';
 import React from 'react';
-import StyledButton from '../components/StyledButton';
+import StyledButton from '../components/shared/StyledButton';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { login } from '../redux/actions';

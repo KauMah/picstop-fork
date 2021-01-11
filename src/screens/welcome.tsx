@@ -3,7 +3,7 @@ import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import StyledButton from '../components/StyledButton';
+import StyledButton from '../components/shared/StyledButton';
 
 const styles = StyleSheet.create({
   container: {

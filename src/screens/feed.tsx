@@ -1,13 +1,6 @@
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
-import FeedHeader from '../components/Feed/FeedHeader';
+import CustomHeader from '../components/shared/CustomHeader';
 import FeedItem from '../components/Feed/FeedItem/component';
 import React from 'react';
 import { reduxState } from '../redux/actionTypes';
@@ -25,7 +18,7 @@ const Feed = () => {
   console.log('once loaded', tok);
   return (
     <SafeAreaView style={styles.container}>
-      <FeedHeader />
+      <CustomHeader title={'Home'} />
       <ScrollView>
         <FeedItem
           username={'Koosh'}

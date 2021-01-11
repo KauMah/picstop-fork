@@ -1,10 +1,10 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { mainGray, tabBarGray } from '../../../utils/colors';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { mainGray } from '../../../utils/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,14 +35,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const FeedHeader = () => {
+interface Props {
+  title: string;
+}
+
+const CustomHeader = (props: Props) => {
+  const { title } = props;
   return (
     <View style={styles.header}>
       <Image
         style={styles.logo}
         source={require('../../../../assets/img/picstop-no-text.png')}
       />
-      <Text style={styles.title}>Home</Text>
+      <Text style={styles.title}>{title}</Text>
       <View style={styles.iconView}>
         <View style={styles.icon} onTouchStart={() => console.log('TO DO')}>
           <FontAwesomeIcon icon={faSearch} size={25} color={mainGray} />
@@ -55,4 +60,4 @@ const FeedHeader = () => {
   );
 };
 
-export default FeedHeader;
+export default CustomHeader;

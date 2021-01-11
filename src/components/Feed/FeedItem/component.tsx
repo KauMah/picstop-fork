@@ -75,6 +75,7 @@ const FeedItem = (props: Props) => {
       <View style={styles.infoContainer}>
         <Image
           style={styles.proPic}
+          resizeMode={'contain'}
           source={require('../../../../assets/img/picstop-no-text.png')}
           // source={require(props.profileUrl)}
         />
