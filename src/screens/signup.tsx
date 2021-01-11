@@ -9,6 +9,8 @@ import IconTextField from '../components/IconTextField/container';
 import React from 'react';
 import StyledButton from '../components/StyledButton';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { login } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
@@ -65,6 +67,7 @@ interface FormValues {
 }
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const postSignUp = (vals: FormValues) => {
     const { email, username, password, password2 } = vals;
     fetch(`${API_URL}/user/signup`, {
@@ -76,10 +79,32 @@ const SignUp = () => {
       body: JSON.stringify({ email, username, password, password2 }),
     })
       .then((response) => {
-        console.log(response);
+        if (response.status === 201) {
+          postSignIn(vals);
+        }
       })
       .catch((err) => {
         console.log('Signup Failed', err);
+      });
+  };
+  const postSignIn = (vals: FormValues) => {
+    const { username, password } = vals;
+    fetch(`${API_URL}/user/login`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log('ok');
+          dispatch(login('placeholder'));
+        }
+      })
+      .catch((err) => {
+        console.log('Login Failed', err);
       });
   };
 
