@@ -5,7 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "pods": "cd ios; pod install; cd ..",
+    "pods": "cd ios; npx pod-install; cd ..",
     "start": "react-native start",
     "reboot": "rm -rf node_modules; yarn install; yarn pods; react-native link",
     "restart": "yarn reboot; yarn ios",

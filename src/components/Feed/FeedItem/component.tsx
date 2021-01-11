@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { darkerGray, mainGray } from '../../../utils/colors';
 import { faCommentAlt, faHeart } from '@fortawesome/free-regular-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { Image } from 'react-native';
 import React from 'react';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { mainGray } from '../../../utils/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,13 +25,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
   },
+  locationName: {
+    fontSize: 14,
+    lineHeight: 18,
+    fontFamily: 'Kumbh Sans',
+    fontWeight: 'bold',
+    color: darkerGray,
+  },
   proPic: {
     height: 45,
     width: 45,
     marginRight: 10,
   },
   imgContainer: {
-    height: 300,
+    height: 250,
     width: '100%',
   },
   image: {
@@ -66,7 +73,8 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  profileUrl: string;
+  iconUrl: string;
+  locationName: string;
   username: string;
   imageUrl: string;
   likes: number;
@@ -80,12 +88,12 @@ const FeedItem = (props: Props) => {
       <View style={styles.infoContainer}>
         <Image
           style={styles.proPic}
-          resizeMode={'contain'}
-          source={require('../../../../assets/img/picstop-no-text.png')}
-          // source={require(props.profileUrl)}
+          resizeMode={'cover'}
+          source={{ uri: props.iconUrl }}
         />
         <View style={styles.infoText}>
           <Text style={styles.username}>{props.username}</Text>
+          <Text style={styles.locationName}>{props.locationName}</Text>
         </View>
         <View style={styles.agoContainer}>
           <Text style={styles.timeAgo}>{props.createdAt}</Text>
@@ -93,7 +101,9 @@ const FeedItem = (props: Props) => {
       </View>
       <View style={styles.imgContainer}>
         <Image
-          source={require('../../../../assets/img/picstop-logo.png')}
+          source={{
+            uri: props.imageUrl,
+          }}
           style={styles.image}
         />
       </View>

@@ -55,7 +55,11 @@ const MapView = () => {
         rotateEnabled={false}
         animated>
         <MapboxGL.MarkerView id={'test'} coordinate={[-74.090656, 40.8490999]}>
-          <MapThumbnail />
+          <MapThumbnail
+            iconUrl={
+              'https://www.kenblakemoreartdesign.com/wp-content/uploads/2017/07/fullsizeoutput_696.jpeg'
+            }
+          />
         </MapboxGL.MarkerView>
         <MapboxGL.UserLocation visible animated ref={_loc} />
         <MapboxGL.Camera ref={_camera} />

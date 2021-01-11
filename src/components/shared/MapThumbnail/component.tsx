@@ -8,22 +8,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: white,
     borderRadius: 5,
-    height: 50,
-    width: 50,
+    height: 60,
+    width: 60,
   },
   image: {
-    height: 50,
-    width: 50,
+    height: 60,
+    width: 60,
   },
 });
 
-const MapThumbnail = () => {
+interface Props {
+  iconUrl: string;
+}
+
+const MapThumbnail = (props: Props) => {
   return (
     <View style={styles.container}>
       <Image
-        style={styles.image}
-        source={require('../../../../assets/img/picstop-logo.png')}
-        resizeMode={'contain'}
+        style={styles.container}
+        source={{ uri: props.iconUrl }}
+        resizeMode={'cover'}
       />
     </View>
   );
