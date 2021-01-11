@@ -31,13 +31,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   carousel: {
-    height: 380,
+    minHeight: '40%',
   },
   buttons: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    flex: 1,
+    width: '50%',
   },
   button: {
-    marginHorizontal: 5,
+    paddingHorizontal: 5,
   },
 });
 
@@ -52,33 +55,32 @@ type Props = {
 
 const Welcome = ({ navigation }: Props) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Image
-        source={require('../../assets/img/picstop-logo.png')}
-        style={styles.logo}
-      />
-      <Text style={styles.headerText}>
-        Lorem ipsum dolor sit amet consectetur adipiscing elit
-      </Text>
-      <Text style={styles.subText}>
-        Title and subtitle can be whatever you think explains the app in a few
-        words.
-      </Text>
-      <View style={styles.carousel} />
-      <View style={styles.buttons}>
-        <View style={styles.button}>
-          <StyledButton
-            text={'Sign in'}
-            type={'green'}
-            onPress={() => navigation.navigate('Login')}
-          />
-        </View>
-        <View style={styles.button}>
-          <StyledButton
-            text={'Sign Up'}
-            type={'blue'}
-            onPress={() => navigation.navigate('Sign Up')}
-          />
+    <SafeAreaView>
+      <View style={styles.container}>
+        <Image
+          source={require('../../assets/img/picstop-logo.png')}
+          style={styles.logo}
+        />
+        <Text style={styles.headerText}>Your journey starts here</Text>
+        <Text style={styles.subText}>
+          Start adding locations today! Lets just add some more text though
+        </Text>
+        <View style={styles.carousel} />
+        <View style={styles.buttons}>
+          <View style={styles.button}>
+            <StyledButton
+              text={'Sign in'}
+              type={'green'}
+              onPress={() => navigation.navigate('Login')}
+            />
+          </View>
+          <View style={styles.button}>
+            <StyledButton
+              text={'Sign Up'}
+              type={'blue'}
+              onPress={() => navigation.navigate('Sign Up')}
+            />
+          </View>
         </View>
       </View>
     </SafeAreaView>

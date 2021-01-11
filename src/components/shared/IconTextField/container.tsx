@@ -14,7 +14,7 @@ import {
   mainBlue,
   mainGray,
   white,
-} from '../../utils/colors';
+} from '../../../utils/colors';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { IconDefinition } from '@fortawesome/free-regular-svg-icons';

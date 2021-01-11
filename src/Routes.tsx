@@ -73,52 +73,55 @@ const Routes = (props: RouteProps) => {
 
 const AuthenticatedRoutes = () => {
   return (
-    <NavigationContainer>
-      <Tabs.Navigator
-        tabBarOptions={{
-          showLabel: false,
-          style: { backgroundColor: tabBarGray },
-        }}
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => {
-            let icon;
-            switch (route.name) {
-              case 'Home':
-                icon = faHome;
-                break;
-              case 'Map':
-                icon = faMapMarkerAlt;
-                break;
-              case 'Post':
-                icon = faPlusCircle;
-                break;
-              case 'Profile':
-                icon = faUserCircle;
-                break;
-              case 'Settings':
-                icon = faCog;
-                break;
-              default:
-                icon = faCoffee;
-            }
+    <>
+      <StatusBar barStyle="dark-content" />
+      <NavigationContainer>
+        <Tabs.Navigator
+          tabBarOptions={{
+            showLabel: false,
+            style: { backgroundColor: tabBarGray },
+          }}
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused }) => {
+              let icon;
+              switch (route.name) {
+                case 'Home':
+                  icon = faHome;
+                  break;
+                case 'Map':
+                  icon = faMapMarkerAlt;
+                  break;
+                case 'Post':
+                  icon = faPlusCircle;
+                  break;
+                case 'Profile':
+                  icon = faUserCircle;
+                  break;
+                case 'Settings':
+                  icon = faCog;
+                  break;
+                default:
+                  icon = faCoffee;
+              }
 
-            return (
-              <FontAwesomeIcon
-                style={styles.tab}
-                icon={icon}
-                size={30}
-                color={focused ? mainBlue : mainGray}
-              />
-            );
-          },
-        })}>
-        <Tabs.Screen name="Home" component={Feed} />
-        <Tabs.Screen name="Map" component={MapView} />
-        <Tabs.Screen name="Post" component={Loading} />
-        <Tabs.Screen name="Profile" component={Loading} />
-        <Tabs.Screen name="Settings" component={Settings} />
-      </Tabs.Navigator>
-    </NavigationContainer>
+              return (
+                <FontAwesomeIcon
+                  style={styles.tab}
+                  icon={icon}
+                  size={30}
+                  color={focused ? mainBlue : mainGray}
+                />
+              );
+            },
+          })}>
+          <Tabs.Screen name="Home" component={Feed} />
+          <Tabs.Screen name="Map" component={MapView} />
+          <Tabs.Screen name="Post" component={Loading} />
+          <Tabs.Screen name="Profile" component={Loading} />
+          <Tabs.Screen name="Settings" component={Settings} />
+        </Tabs.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
 

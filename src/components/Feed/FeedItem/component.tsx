@@ -30,10 +30,15 @@ const styles = StyleSheet.create({
     width: 45,
     marginRight: 10,
   },
+  imgContainer: {
+    height: 300,
+    width: '100%',
+  },
   image: {
-    height: 250,
-    width: 375,
-    marginVertical: 10,
+    flex: 1,
+    width: undefined,
+    height: undefined,
+    resizeMode: 'contain',
   },
   agoContainer: {
     flex: 1,
@@ -86,10 +91,12 @@ const FeedItem = (props: Props) => {
           <Text style={styles.timeAgo}>{props.createdAt}</Text>
         </View>
       </View>
-      <Image
-        source={require('../../../../assets/img/picstop-logo.png')}
-        style={styles.image}
-      />
+      <View style={styles.imgContainer}>
+        <Image
+          source={require('../../../../assets/img/picstop-logo.png')}
+          style={styles.image}
+        />
+      </View>
       <View style={styles.infoContainer}>
         <FontAwesomeIcon style={styles.icon} icon={faHeart} color={mainGray} />
         <Text style={styles.amount}>{props.likes}</Text>

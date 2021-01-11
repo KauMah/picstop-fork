@@ -7,11 +7,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { mainGray } from '../../../utils/colors';
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
   header: {
     paddingHorizontal: 20,
+    paddingBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },

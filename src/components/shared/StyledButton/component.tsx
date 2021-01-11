@@ -34,7 +34,7 @@ const styles = StyleSheet.create<Styles>({
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
     fontSize: 20,
-    paddingHorizontal: 60,
+    paddingHorizontal: 50,
     paddingTop: 17,
     paddingBottom: 19,
   },
