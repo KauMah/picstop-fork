@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
+// @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
 import { Formik } from 'formik';
 import IconTextField from '../components/IconTextField/container';
