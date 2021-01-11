@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
+import { API_URL } from '@env';
 import { Formik } from 'formik';
 import IconTextField from '../components/IconTextField/container';
 import React from 'react';
@@ -56,7 +57,32 @@ const SignUpSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
+interface FormValues {
+  email: string;
+  username: string;
+  password: string;
+  password2: string;
+}
+
 const SignUp = () => {
+  const postSignUp = (vals: FormValues) => {
+    const { email, username, password, password2 } = vals;
+    fetch(`${API_URL}/user/signup`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, username, password, password2 }),
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log('Signup Failed', err);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -64,10 +90,15 @@ const SignUp = () => {
         style={styles.logo}
       />
       <Formik
-        initialValues={{ username: '', email: '', password: '' }}
-        onSubmit={(values) => console.log(values)}
+        initialValues={{ username: '', email: '', password: '', password2: '' }}
+        onSubmit={postSignUp}
         validationSchema={SignUpSchema}
-        initialErrors={{ username: 'err', email: 'err', password: 'err' }}
+        initialErrors={{
+          username: 'err',
+          email: 'err',
+          password: 'err',
+          password2: 'err',
+        }}
         validateOnBlur>
         {({
           handleChange,
@@ -120,6 +151,18 @@ const SignUp = () => {
                 touched.password ? (errors.password ? true : false) : false
               }
             />
+            <IconTextField
+              icon={faLock}
+              onChangeText={handleChange('password2')}
+              onBlur={handleBlur('password2')}
+              placeholder={'Reenter Password'}
+              value={values.password2}
+              secureTextEntry
+              style={styles.textField}
+              invalid={
+                touched.password2 ? (errors.password2 ? true : false) : false
+              }
+            />
             <View style={styles.button}>
               <StyledButton
                 text={'Sign Up'}
@@ -139,4 +182,5 @@ const SignUp = () => {
     </SafeAreaView>
   );
 };
+
 export default SignUp;

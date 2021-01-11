@@ -18,13 +18,14 @@ import MapView from './screens/map';
 import { NavigationContainer } from '@react-navigation/native';
 import SignUp from './screens/signup';
 import Welcome from './screens/welcome';
+import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+import { reduxState } from './redux/actionTypes';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
-const AuthContext = React.createContext('');
 
 const styles = StyleSheet.create({
   tab: {
@@ -32,13 +33,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const Routes = () => {
-  const [signedIn, setSignedIn] = useState(false);
+interface RouteProps {
+  token: string;
+}
+
+const Routes = (props: RouteProps) => {
   const [loaded, setLoaded] = useState(false);
-  const [token, setToken] = useState('');
 
   const LoadedRoutes = () => {
-    return !signedIn ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />;
+    return props.token !== '' ? (
+      <AuthenticatedRoutes />
+    ) : (
+      <UnauthenticatedRoutes />
+    );
   };
   useEffect(() => {
     const checkAuth = async () => {
@@ -53,23 +60,14 @@ const Routes = () => {
     };
 
     if (!loaded) {
-      checkAuth().then((result) => {
-        if (result) {
-          setToken(result);
-          setSignedIn(true);
-        } else {
-          setSignedIn(false);
-        }
+      console.log('running');
+      checkAuth().then(() => {
         setLoaded(true);
       });
     }
   }, [loaded]);
 
-  return (
-    <AuthContext.Provider value={token}>
-      {loaded ? <LoadedRoutes /> : <Loading />}
-    </AuthContext.Provider>
-  );
+  return loaded ? <LoadedRoutes /> : <Loading />;
 };
 
 const AuthenticatedRoutes = () => {
@@ -125,7 +123,7 @@ const AuthenticatedRoutes = () => {
 
 const UnauthenticatedRoutes = () => {
   return (
-    <AuthContext.Provider value="">
+    <>
       <StatusBar barStyle="dark-content" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName={'Welcome'} headerMode="float">
@@ -140,8 +138,13 @@ const UnauthenticatedRoutes = () => {
           <Stack.Screen name="Sign Up" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
-    </AuthContext.Provider>
+    </>
   );
 };
 
-export default Routes;
+const mapStateToProps = (state: reduxState) => {
+  const { token } = state;
+  return { token };
+};
+
+export default connect(mapStateToProps)(Routes);

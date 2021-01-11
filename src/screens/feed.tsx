@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 
 import React from 'react';
+import { reduxState } from '../redux/actionTypes';
+import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +35,8 @@ const styles = StyleSheet.create({
 });
 
 const Feed = () => {
+  const tok: string = useSelector((state: reduxState) => state.token);
+  console.log('once loaded', tok);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -40,7 +44,7 @@ const Feed = () => {
           style={styles.logo}
           source={require('../../assets/img/picstop-no-text.png')}
         />
-        <Text style={styles.title}>To be filled out</Text>
+        <Text style={styles.title}>Home</Text>
       </View>
       <ScrollView>
         <Text>Gnar</Text>

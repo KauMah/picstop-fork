@@ -2,12 +2,15 @@ import * as Yup from 'yup';
 
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
+import { API_URL } from '@env';
 import { Formik } from 'formik';
 import IconTextField from '../components/IconTextField/container';
 import React from 'react';
 import StyledButton from '../components/StyledButton';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { login } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,7 +48,34 @@ const LogInSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
+interface FormValues {
+  username: string;
+  password: string;
+}
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const postSignIn = (vals: FormValues) => {
+    const { username, password } = vals;
+    fetch(`${API_URL}/user/login`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log('ok');
+          dispatch(login('placeholder'));
+        }
+      })
+      .catch((err) => {
+        console.log('Login Failed', err);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -54,7 +84,7 @@ const Login = () => {
       />
       <Formik
         initialValues={{ username: '', password: '' }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={postSignIn}
         initialErrors={{ username: 'err', password: 'err' }}
         validationSchema={LogInSchema}>
         {({
