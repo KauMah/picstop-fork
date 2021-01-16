@@ -1,4 +1,3 @@
-import { Image, StyleSheet } from 'react-native';
 import React, { useRef } from 'react';
 
 import CustomHeader from '../components/shared/CustomHeader';
@@ -7,6 +6,7 @@ import { MAPBOX_TOKEN } from '@env';
 import MapThumbnail from '../components/shared/MapThumbnail';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
 
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 
@@ -45,11 +45,11 @@ const MapView = () => {
         ref={_map}
         style={styles.map}
         onLongPress={() => {
-          _camera.current?.zoomTo(2);
           const state: LocState = JSON.parse(
             JSON.stringify(_loc.current?.state),
           );
           _camera.current?.flyTo(state.coordinates);
+          _camera.current?.zoomTo(4);
         }}
         styleURL={'mapbox://styles/kaumah/ckjeur5kx7uud19mc0zr67xkm'}
         rotateEnabled={false}

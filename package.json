@@ -5,7 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "pods": "cd ios; npx pod-install; cd ..",
+    "pods": "cd ios; pod install; cd ..",
     "start": "react-native start",
     "reboot": "rm -rf node_modules; yarn install; yarn pods; react-native link",
     "restart": "yarn reboot; yarn ios",
@@ -33,6 +33,7 @@
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "2.16.1",
     "react-native-svg": "12.1.0",
+    "react-native-webp-format": "1.1.2",
     "react-redux": "7.2.2",
     "redux": "4.0.5",
     "yup": "0.32.8"

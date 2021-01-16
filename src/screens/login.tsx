@@ -66,11 +66,14 @@ const Login = () => {
       },
       body: JSON.stringify({ username, password }),
     })
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('ok');
-          dispatch(login('placeholder'));
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
         }
+      })
+      .then((responseBody) => {
+        console.log(responseBody);
+        dispatch(login(responseBody.message));
       })
       .catch((err) => {
         console.log('Login Failed', err);

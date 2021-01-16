@@ -16,6 +16,7 @@ import Loading from './screens/loading';
 import Login from './screens/login';
 import MapView from './screens/map';
 import { NavigationContainer } from '@react-navigation/native';
+import Profile from './screens/profile';
 import Settings from './screens/settings';
 import SignUp from './screens/signup';
 import Welcome from './screens/welcome';
@@ -117,7 +118,7 @@ const AuthenticatedRoutes = () => {
           <Tabs.Screen name="Home" component={Feed} />
           <Tabs.Screen name="Map" component={MapView} />
           <Tabs.Screen name="Post" component={Loading} />
-          <Tabs.Screen name="Profile" component={Loading} />
+          <Tabs.Screen name="Profile" component={Profile} />
           <Tabs.Screen name="Settings" component={Settings} />
         </Tabs.Navigator>
       </NavigationContainer>
