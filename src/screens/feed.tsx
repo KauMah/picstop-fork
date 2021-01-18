@@ -33,32 +33,6 @@ const Feed = () => {
             'https://www.kenblakemoreartdesign.com/wp-content/uploads/2017/07/fullsizeoutput_696.jpeg'
           }
         />
-        <FeedItem
-          username={'Koosh'}
-          locationName={'Paris'}
-          comments={1}
-          likes={0}
-          createdAt={'2h ago'}
-          imageUrl={
-            'https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg'
-          }
-          iconUrl={
-            'https://www.kenblakemoreartdesign.com/wp-content/uploads/2017/07/fullsizeoutput_696.jpeg'
-          }
-        />
-        <FeedItem
-          username={'Koosh'}
-          locationName={'Paris'}
-          comments={0}
-          likes={1}
-          createdAt={'3h ago'}
-          imageUrl={
-            'https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg'
-          }
-          iconUrl={
-            'https://www.kenblakemoreartdesign.com/wp-content/uploads/2017/07/fullsizeoutput_696.jpeg'
-          }
-        />
       </ScrollView>
     </SafeAreaView>
   );

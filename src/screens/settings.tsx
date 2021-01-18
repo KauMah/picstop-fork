@@ -2,6 +2,7 @@ import { Image, SafeAreaView, StyleSheet, View } from 'react-native';
 
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomHeader from '../components/shared/CustomHeader';
 import React from 'react';
 import StyledButton from '../components/shared/StyledButton';
@@ -40,11 +41,12 @@ const Settings = () => {
       },
     })
       .then((response) => {
-        if (response && response.status === 200) {
-          dispatch(logout());
-        }
+        dispatch(logout());
+        AsyncStorage.removeItem('token');
       })
       .catch((err) => {
+        dispatch(logout());
+        AsyncStorage.removeItem('token');
         console.log(err);
       });
   };

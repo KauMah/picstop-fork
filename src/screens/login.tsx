@@ -4,6 +4,7 @@ import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField/container';
 import React from 'react';
@@ -11,6 +12,7 @@ import StyledButton from '../components/shared/StyledButton';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { login } from '../redux/actions';
+import { setToken } from '../utils/api';
 import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -72,7 +74,8 @@ const Login = () => {
         }
       })
       .then((responseBody) => {
-        console.log(responseBody);
+        AsyncStorage.setItem('token', responseBody.message);
+        setToken(responseBody.message);
         dispatch(login(responseBody.message));
       })
       .catch((err) => {

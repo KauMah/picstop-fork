@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
+import { connect, useDispatch } from 'react-redux';
 import {
   faCoffee,
   faCog,
@@ -20,11 +21,12 @@ import Profile from './screens/profile';
 import Settings from './screens/settings';
 import SignUp from './screens/signup';
 import Welcome from './screens/welcome';
-import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+import { login } from './redux/actions';
 import { reduxState } from './redux/actionTypes';
+import { setToken } from './utils/api';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -41,6 +43,7 @@ interface RouteProps {
 
 const Routes = (props: RouteProps) => {
   const [loaded, setLoaded] = useState(false);
+  const dispatch = useDispatch();
 
   const LoadedRoutes = () => {
     return props.token !== '' ? (
@@ -54,7 +57,8 @@ const Routes = (props: RouteProps) => {
       try {
         const storedToken = await AsyncStorage.getItem('token');
         if (storedToken) {
-          return storedToken;
+          setToken(storedToken);
+          dispatch(login(storedToken));
         }
       } catch (e) {
         return false;
@@ -67,7 +71,7 @@ const Routes = (props: RouteProps) => {
         setLoaded(true);
       });
     }
-  }, [loaded]);
+  }, [loaded, dispatch]);
 
   return loaded ? <LoadedRoutes /> : <Loading />;
 };

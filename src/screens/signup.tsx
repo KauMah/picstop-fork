@@ -5,12 +5,14 @@ import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField/container';
 import React from 'react';
 import StyledButton from '../components/shared/StyledButton';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { login } from '../redux/actions';
+import { setToken } from '../utils/api';
 import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -100,8 +102,14 @@ const SignUp = () => {
     })
       .then((res) => {
         if (res.status === 200) {
-          console.log('ok');
-          dispatch(login('placeholder'));
+          return res.json();
+        }
+      })
+      .then((resBody) => {
+        if (resBody && resBody.message) {
+          AsyncStorage.setItem('token', resBody.message);
+          setToken(resBody.message);
+          dispatch(login(resBody.message));
         }
       })
       .catch((err) => {

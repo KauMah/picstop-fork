@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   imgContainer: {
     height: 250,
     width: '100%',
+    marginVertical: 10,
   },
   image: {
     flex: 1,
@@ -108,15 +109,25 @@ const FeedItem = (props: Props) => {
         />
       </View>
       <View style={styles.infoContainer}>
-        <FontAwesomeIcon style={styles.icon} icon={faHeart} color={mainGray} />
+        <View onTouchStart={() => console.log('likes')}>
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faHeart}
+            color={mainGray}
+          />
+        </View>
         <Text style={styles.amount}>{props.likes}</Text>
-        <FontAwesomeIcon
-          style={styles.icon}
-          icon={faCommentAlt}
-          color={mainGray}
-        />
+        <View onTouchStart={() => console.log('comments')}>
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faCommentAlt}
+            color={mainGray}
+          />
+        </View>
         <Text style={styles.amount}>{props.comments}</Text>
-        <View style={styles.agoContainer}>
+        <View
+          style={styles.agoContainer}
+          onTouchStart={() => console.log('report and more')}>
           <FontAwesomeIcon
             style={styles.icon}
             icon={faEllipsisH}
