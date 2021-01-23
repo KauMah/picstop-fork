@@ -1,4 +1,10 @@
 import {
+  $lighterBlue,
+  $lighterGreen,
+  $mainBlue,
+  $mainGreen,
+} from '../../../utils/colors';
+import {
   GestureResponderEvent,
   StyleSheet,
   Text,
@@ -6,12 +12,6 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
-import {
-  lighterBlue,
-  lighterGreen,
-  mainBlue,
-  mainGreen,
-} from '../../../utils/colors';
 
 import React from 'react';
 
@@ -60,13 +60,13 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
           style={[
             {
               ...styles.button,
-              borderColor: mainGreen,
-              backgroundColor: lighterGreen,
+              borderColor: $mainGreen,
+              backgroundColor: $lighterGreen,
             },
             style,
             disabledButton,
           ]}>
-          <Text style={{ ...styles.text, color: mainGreen }}>{text}</Text>
+          <Text style={{ ...styles.text, color: $mainGreen }}>{text}</Text>
         </TouchableOpacity>
       );
     case 'blue':
@@ -78,13 +78,13 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
           style={[
             {
               ...styles.button,
-              borderColor: mainBlue,
-              backgroundColor: lighterBlue,
+              borderColor: $mainBlue,
+              backgroundColor: $lighterBlue,
             },
             style,
             disabledButton,
           ]}>
-          <Text style={{ ...styles.text, color: mainBlue }}>{text}</Text>
+          <Text style={{ ...styles.text, color: $mainBlue }}>{text}</Text>
         </TouchableOpacity>
       );
   }

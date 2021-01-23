@@ -9,3 +9,33 @@ export const exo = axios.create({
 export const setToken = (token: string) => {
   exo.defaults.headers.common.Authorization = token;
 };
+
+const uploadImage = async (
+  method: string,
+  url: string,
+  file: { uri: string; type: string },
+) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.setRequestHeader('Content-Type', file.type);
+    xhr.onload = () => {
+      if (xhr.status !== 200) {
+        reject(
+          new Error(
+            `Request failed: Status: ${xhr.status}. Context: ${xhr.responseText}`,
+          ),
+        );
+      }
+      resolve(xhr.responseText);
+    };
+    xhr.send(file);
+  });
+};
+
+export const uploadImageToS3 = async (image: string, signedUrl: string) => {
+  await uploadImage('PUT', signedUrl, {
+    uri: image,
+    type: 'image/jpeg',
+  });
+};

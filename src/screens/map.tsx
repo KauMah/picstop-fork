@@ -1,12 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
+import CreateLocation from './createLocation';
 import CustomHeader from '../components/shared/CustomHeader';
+import { Location } from '../types';
 // @ts-ignore: Weirdness with react-native-dotenv
 import { MAPBOX_TOKEN } from '@env';
 import MapThumbnail from '../components/shared/MapThumbnail';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
+import _ from 'lodash';
+import { createStackNavigator } from '@react-navigation/stack';
+import { exo } from '../utils/api';
+import { useNavigation } from '@react-navigation/native';
 
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 
@@ -26,45 +32,96 @@ const styles = StyleSheet.create({
   },
 });
 
-interface LocState {
-  coordinates: Array<number>;
-  heading: number;
-  shouldShowUserLocation: boolean;
-}
+const LocationStack = createStackNavigator();
+
+const LocationCreateRoutes = () => {
+  return (
+    <LocationStack.Navigator>
+      <LocationStack.Screen
+        name="Map"
+        component={MapView}
+        options={{ headerShown: false }}
+      />
+      <LocationStack.Screen
+        name="NewLocation"
+        component={CreateLocation}
+        options={{ headerTitle: 'Save New Location' }}
+      />
+    </LocationStack.Navigator>
+  );
+};
 
 const MapView = () => {
+  const navigation = useNavigation();
   const _map = useRef<MapboxGL.MapView>(null);
   const _camera = useRef<MapboxGL.Camera>(null);
   const _loc = useRef<MapboxGL.UserLocation>(null);
-  console.log(JSON.stringify(_map.current?.state));
-  _camera.current?.zoomTo(6);
+  const [locations, setLocations] = useState<Array<Location>>([]);
+  const [newLocCoords, setNewLocCoords] = useState<Array<number>>([0, 0]);
+
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title={'Map'} />
       <MapboxGL.MapView
         ref={_map}
         style={styles.map}
-        onLongPress={() => {
-          const state: LocState = JSON.parse(
-            JSON.stringify(_loc.current?.state),
-          );
-          _camera.current?.flyTo(state.coordinates);
-          _camera.current?.zoomTo(4);
+        onLongPress={(feature) => {
+          setNewLocCoords(_.get(feature, 'geometry.coordinates', [0, 0]));
+          // const coords = _.get(
+          //   await _map.current?.state,
+          //   'region.geometry.coordinates',
+          //   [0, 0],
+          // );
+        }}
+        onDidFinishRenderingMapFully={async () => {
+          const coords = _.get(_loc.current?.state, 'coordinates', [0, 0]);
+          console.log(coords);
+          exo
+            .post('/locations/near', {
+              long: coords[0],
+              lat: coords[1],
+              maxDistance: 1000,
+            })
+            .then((response) => {
+              setLocations(_.get(response.data, 'message', []));
+            })
+            .catch((err) => console.log(err));
+          _camera.current?.zoomTo(10, 1);
+          setTimeout(() => {
+            _camera.current?.flyTo(coords);
+          }, 50);
         }}
         styleURL={'mapbox://styles/kaumah/ckjeur5kx7uud19mc0zr67xkm'}
         rotateEnabled={false}
         animated>
-        <MapboxGL.MarkerView id={'test'} coordinate={[-74.090656, 40.8490999]}>
+        {console.log(locations)}
+        {locations.map((loc) => {
+          return (
+            <MapThumbnail
+              key={loc._id}
+              id={loc._id}
+              coordinate={loc.geoLocation.coordinates}
+              numPhotos={0}
+            />
+          );
+        })}
+        {newLocCoords !== [0, 0] && (
           <MapThumbnail
-            iconUrl={
-              'https://www.kenblakemoreartdesign.com/wp-content/uploads/2017/07/fullsizeoutput_696.jpeg'
+            key={'new'}
+            id={'new'}
+            coordinate={newLocCoords}
+            onPress={() =>
+              navigation.navigate('NewLocation', { coords: newLocCoords })
             }
+            numPhotos={0}
+            new={true}
           />
-        </MapboxGL.MarkerView>
+        )}
+
         <MapboxGL.UserLocation visible animated ref={_loc} />
-        <MapboxGL.Camera ref={_camera} />
+        <MapboxGL.Camera ref={_camera} zoomLevel={15} />
       </MapboxGL.MapView>
     </SafeAreaView>
   );
 };
-export default MapView;
+export default LocationCreateRoutes;

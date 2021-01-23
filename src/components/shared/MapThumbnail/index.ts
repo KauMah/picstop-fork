@@ -1,3 +1,3 @@
-import MapThumbnail from './component';
+import MapThumbnail from './container';
 
 export default MapThumbnail;

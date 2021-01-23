@@ -1,4 +1,12 @@
 import {
+  $black,
+  $errorRed,
+  $lighterGray,
+  $mainBlue,
+  $mainGray,
+  $white,
+} from '../../../utils/colors';
+import {
   NativeSyntheticEvent,
   StyleSheet,
   TextInput,
@@ -7,14 +15,6 @@ import {
   ViewStyle,
 } from 'react-native';
 import React, { useState } from 'react';
-import {
-  black,
-  errorRed,
-  lighterGray,
-  mainBlue,
-  mainGray,
-  white,
-} from '../../../utils/colors';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     borderWidth: 1,
-    borderColor: lighterGray,
+    borderColor: $lighterGray,
     borderRadius: 12,
-    backgroundColor: white,
+    backgroundColor: $white,
   },
   text: {
-    color: black,
+    color: $black,
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
     width: '100%',
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     borderRightWidth: 1,
-    borderRightColor: lighterGray,
+    borderRightColor: $lighterGray,
   },
   icon: {
     marginTop: 13,
@@ -62,19 +62,19 @@ const IconTextField = (props: Props) => {
   const changedStyle = invalid
     ? {
         iconContainer: {
-          borderRightColor: errorRed,
+          borderRightColor: $errorRed,
         },
         view: {
-          borderColor: errorRed,
+          borderColor: $errorRed,
         },
       }
     : isFocused
     ? {
         iconContainer: {
-          borderRightColor: mainBlue,
+          borderRightColor: $mainBlue,
         },
         view: {
-          borderColor: mainBlue,
+          borderColor: $mainBlue,
         },
       }
     : {};
@@ -84,14 +84,14 @@ const IconTextField = (props: Props) => {
         <FontAwesomeIcon
           icon={icon}
           size={30}
-          color={invalid ? errorRed : isFocused ? mainBlue : mainGray}
+          color={invalid ? $errorRed : isFocused ? $mainBlue : $mainGray}
           style={styles.icon}
         />
       </View>
       <TextInput
         style={styles.text}
         placeholder={placeholder}
-        placeholderTextColor={mainGray}
+        placeholderTextColor={$mainGray}
         onFocus={() => setIsFocused(true)}
         onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
           setIsFocused(false);

@@ -1,7 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
+import { $lighterBlue, $lighterGray, $mainBlue } from '../../utils/colors';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { lighterBlue, lighterGray, mainBlue } from '../../utils/colors';
+import { exo, uploadImageToS3 } from '../../utils/api';
 
+import ImagePicker from 'react-native-image-crop-picker';
 import React from 'react';
+import _ from 'lodash';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,14 +44,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: mainBlue,
-    backgroundColor: lighterBlue,
+    borderColor: $mainBlue,
+    backgroundColor: $lighterBlue,
   },
   buttonText: {
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
     fontSize: 16,
-    color: mainBlue,
+    color: $mainBlue,
   },
   bigNumber: {
     fontFamily: 'Kumbh Sans',
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
   greyBar: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: lighterGray,
+    borderColor: $lighterGray,
   },
   cell: {
     paddingHorizontal: 10,
@@ -74,9 +78,11 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
+  _id: string;
   username: string;
   location: string;
   followers: number;
+  profileUrl: string;
   following: number;
   savedLocation: number;
 }
@@ -84,10 +90,29 @@ interface Props {
 const StatsHeader = (props: Props) => {
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.proPic}
-        source={require('../../../assets/img/picstop-no-text.png')}
-      />
+      <View
+        onTouchEnd={() => {
+          ImagePicker.openPicker({
+            width: 200,
+            height: 200,
+            cropping: true,
+            forceJpg: true,
+            includeBase64: true,
+          }).then(async (image) => {
+            console.log(image);
+            exo.post('/user/profilePicture', { id: props._id }).then((res) => {
+              console.log(res.data);
+              uploadImageToS3(
+                `file://${_.get(image, 'path', '')}`,
+                _.get(res.data, 'uploadUrl', ''),
+              )
+                .then(() => console.log('uploaded'))
+                .catch(() => console.log('failed upload'));
+            });
+          });
+        }}>
+        <Image style={styles.proPic} source={{ uri: props.profileUrl }} />
+      </View>
       <View style={styles.stacked}>
         <View style={styles.topHalf}>
           <View style={styles.nameInfo}>

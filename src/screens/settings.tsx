@@ -11,10 +11,10 @@ import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
     backgroundColor: '#FFF',
+    height: '100%',
   },
   imageWrapper: {
     marginTop: 20,

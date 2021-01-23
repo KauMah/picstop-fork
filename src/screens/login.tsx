@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
+import { $white } from '../utils/colors';
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     textAlign: 'center',
-    backgroundColor: '#FFF',
+    backgroundColor: $white,
     height: '100%',
   },
   inputs: {

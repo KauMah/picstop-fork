@@ -1,11 +1,19 @@
+import { $darkerGray, $errorRed, $mainGray } from '../../../utils/colors';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { darkerGray, mainGray } from '../../../utils/colors';
 import { faCommentAlt, faHeart } from '@fortawesome/free-regular-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { Image } from 'react-native';
-import React from 'react';
+import { Post } from '../../../types';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+import { exo } from '../../../utils/api';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
+import { useNavigation } from '@react-navigation/native';
+
+TimeAgo.addLocale(en);
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +38,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
-    color: darkerGray,
+    color: $darkerGray,
   },
   proPic: {
     height: 45,
@@ -57,14 +65,14 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
-    color: mainGray,
+    color: $mainGray,
   },
   amount: {
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
     fontSize: 14,
     lineHeight: 18,
-    color: mainGray,
+    color: $mainGray,
     paddingHorizontal: 5,
   },
   icon: {
@@ -74,66 +82,109 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  iconUrl: string;
-  locationName: string;
-  username: string;
-  imageUrl: string;
-  likes: number;
-  comments: number;
-  createdAt: string;
+  post: Post;
+  userId: string;
 }
 
 const FeedItem = (props: Props) => {
+  const navigation = useNavigation();
+  const [liked, setLiked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const initial = {
+    username: '',
+    followers: [],
+    following: [],
+    private: false,
+    profilePic: '',
+    savedLocations: [],
+    email: '',
+    _id: '',
+    blocked: [],
+  };
+  const [user, setUser] = useState(initial);
+
+  console.log(props.post.images[0]);
+  useEffect(() => {
+    exo.get(`user/getById/${props.post.authorId}`).then((response) => {
+      setUser(response.data.message.user);
+    });
+  }, [props.post.authorId]);
+
+  useEffect(() => {
+    if (loading) {
+      props.post.likes.includes(props.userId)
+        ? setLiked(true)
+        : setLiked(false);
+      setLoading(false);
+    }
+  }, [loading, props]);
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <Image
           style={styles.proPic}
           resizeMode={'cover'}
-          source={{ uri: props.iconUrl }}
+          source={{
+            uri: user.profilePic,
+          }}
         />
         <View style={styles.infoText}>
-          <Text style={styles.username}>{props.username}</Text>
-          <Text style={styles.locationName}>{props.locationName}</Text>
+          <Text style={styles.username}>{user.username}</Text>
+          <Text style={styles.locationName}>{'Boston MA'}</Text>
         </View>
         <View style={styles.agoContainer}>
-          <Text style={styles.timeAgo}>{props.createdAt}</Text>
+          <Text style={styles.timeAgo}>{props.post.createdAt}</Text>
         </View>
       </View>
       <View style={styles.imgContainer}>
         <Image
           source={{
-            uri: props.imageUrl,
+            uri: props.post.images[0],
           }}
           style={styles.image}
         />
       </View>
       <View style={styles.infoContainer}>
-        <View onTouchStart={() => console.log('likes')}>
+        <View
+          onTouchStart={() =>
+            liked
+              ? exo.post(`/posts/unlike/${props.post._id}`).then((res) => {
+                  console.log(res.data);
+                  setLiked(false);
+                })
+              : exo.post(`/posts/like/${props.post._id}`).then((res) => {
+                  console.log(res.data);
+                  setLiked(true);
+                })
+          }>
           <FontAwesomeIcon
             style={styles.icon}
-            icon={faHeart}
-            color={mainGray}
+            icon={liked ? faSolidHeart : faHeart}
+            color={liked ? $errorRed : $mainGray}
           />
         </View>
-        <Text style={styles.amount}>{props.likes}</Text>
-        <View onTouchStart={() => console.log('comments')}>
+        <Text
+          onPress={() => navigation.navigate('Likes')}
+          style={styles.amount}>
+          {liked ? props.post.likes.length + 1 : props.post.likes.length}
+        </Text>
+        <View onTouchStart={() => navigation.navigate('Comments')}>
           <FontAwesomeIcon
             style={styles.icon}
             icon={faCommentAlt}
-            color={mainGray}
+            color={$mainGray}
           />
         </View>
-        <Text style={styles.amount}>{props.comments}</Text>
-        <View
-          style={styles.agoContainer}
-          onTouchStart={() => console.log('report and more')}>
-          <FontAwesomeIcon
-            style={styles.icon}
-            icon={faEllipsisH}
-            color={mainGray}
-          />
-        </View>
+        <Text style={styles.amount}>{props.post.comments.length}</Text>
+      </View>
+      <View
+        style={styles.agoContainer}
+        onTouchStart={() => navigation.navigate('Report')}>
+        <FontAwesomeIcon
+          style={styles.icon}
+          icon={faEllipsisH}
+          color={$mainGray}
+        />
       </View>
     </View>
   );

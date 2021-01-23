@@ -1,3 +1,4 @@
+import { $mainBlue, $mainGray, $tabBarGray } from './utils/colors';
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
@@ -8,9 +9,9 @@ import {
   faMapMarkerAlt,
   faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { mainBlue, mainGray, tabBarGray } from './utils/colors';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CreatePost from './screens/createPost';
 import Feed from './screens/feed';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import Loading from './screens/loading';
@@ -66,7 +67,6 @@ const Routes = (props: RouteProps) => {
     };
 
     if (!loaded) {
-      console.log('running');
       checkAuth().then(() => {
         setLoaded(true);
       });
@@ -84,7 +84,7 @@ const AuthenticatedRoutes = () => {
         <Tabs.Navigator
           tabBarOptions={{
             showLabel: false,
-            style: { backgroundColor: tabBarGray },
+            style: { backgroundColor: $tabBarGray },
           }}
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
@@ -114,14 +114,18 @@ const AuthenticatedRoutes = () => {
                   style={styles.tab}
                   icon={icon}
                   size={30}
-                  color={focused ? mainBlue : mainGray}
+                  color={focused ? $mainBlue : $mainGray}
                 />
               );
             },
           })}>
           <Tabs.Screen name="Home" component={Feed} />
           <Tabs.Screen name="Map" component={MapView} />
-          <Tabs.Screen name="Post" component={Loading} />
+          <Tabs.Screen
+            name="Post"
+            component={CreatePost}
+            options={{ tabBarVisible: false }}
+          />
           <Tabs.Screen name="Profile" component={Profile} />
           <Tabs.Screen name="Settings" component={Settings} />
         </Tabs.Navigator>
