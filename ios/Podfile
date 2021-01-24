@@ -8,6 +8,11 @@ target 'picstop' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  permissions_path = '../node_modules/react-native-permissions/ios'
+
+  pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+
   target 'picstopTests' do
     inherit! :complete
     # Pods for testing
