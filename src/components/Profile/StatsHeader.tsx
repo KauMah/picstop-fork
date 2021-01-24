@@ -1,10 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import { $lighterBlue, $lighterGray, $mainBlue } from '../../utils/colors';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { exo, uploadImageToS3 } from '../../utils/api';
 
 import ImagePicker from 'react-native-image-crop-picker';
-import React from 'react';
 import _ from 'lodash';
 
 const styles = StyleSheet.create({
@@ -85,9 +85,11 @@ interface Props {
   profileUrl: string;
   following: number;
   savedLocation: number;
+  onPfpUpdated: () => void;
 }
 
 const StatsHeader = (props: Props) => {
+  const [pfpUpdated, setPfpUpdated] = useState(false);
   return (
     <View style={styles.container}>
       <View
@@ -106,12 +108,20 @@ const StatsHeader = (props: Props) => {
                 `file://${_.get(image, 'path', '')}`,
                 _.get(res.data, 'uploadUrl', ''),
               )
-                .then(() => console.log('uploaded'))
+                .then(() => {
+                  console.log('uploaded');
+                  setPfpUpdated(!pfpUpdated);
+                  props.onPfpUpdated();
+                })
                 .catch(() => console.log('failed upload'));
             });
           });
         }}>
-        <Image style={styles.proPic} source={{ uri: props.profileUrl }} />
+        <Image
+          style={styles.proPic}
+          source={{ uri: props.profileUrl }}
+          key={props.profileUrl}
+        />
       </View>
       <View style={styles.stacked}>
         <View style={styles.topHalf}>

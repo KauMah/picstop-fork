@@ -85,11 +85,20 @@ const Profile = () => {
         followers={user.followers.length}
         following={user.following.length}
         savedLocation={user.savedLocations.length}
+        onPfpUpdated={() => {
+          setLoading(true);
+        }}
       />
       <ScrollView style={styles.scroll}>
         {posts.length < 1 && <EmptyPostState />}
-        {posts.map((post) => {
-          return <FeedItem post={post} userId={user._id} />;
+        {posts.reverse().map((post) => {
+          return (
+            <FeedItem
+              post={post}
+              userId={user._id}
+              key={`${user.profilePic}${post._id}`}
+            />
+          );
         })}
       </ScrollView>
     </SafeAreaView>

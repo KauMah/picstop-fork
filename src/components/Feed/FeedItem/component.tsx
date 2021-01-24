@@ -129,6 +129,7 @@ const FeedItem = (props: Props) => {
           source={{
             uri: user.profilePic,
           }}
+          key={user.profilePic}
         />
         <View style={styles.infoText}>
           <Text style={styles.username}>{user.username}</Text>
