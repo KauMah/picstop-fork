@@ -7,9 +7,11 @@ import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField';
 import React from 'react';
 import StyledButton from '../components/shared/StyledButton';
+import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import { exo } from '../utils/api';
 import { faMonument } from '@fortawesome/free-solid-svg-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +38,7 @@ interface FormValues {
 }
 
 const CreateLocation = (props: Props) => {
+  const navigation = useNavigation();
   const postCreateLocation = async (values: FormValues) => {
     const coords = _.get(props.route, 'params.coords', [0, 0]);
 
@@ -46,9 +49,22 @@ const CreateLocation = (props: Props) => {
         name: values.name,
       })
       .then((result) => {
+        Toast.show({
+          type: 'success',
+          text1: 'Successfully added location',
+          position: 'top',
+        });
         console.log(result.data);
+        navigation.goBack();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        Toast.show({
+          type: 'error',
+          text1: 'Error: try again',
+          text2: err,
+          position: 'top',
+        });
+      });
   };
   return (
     <View style={styles.container}>

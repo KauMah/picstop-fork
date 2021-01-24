@@ -41,6 +41,9 @@ const Settings = () => {
       },
     })
       .then((response) => {
+        if (response.status === 200) {
+          console.log('Route Worked');
+        }
         dispatch(logout());
         AsyncStorage.removeItem('token');
       })

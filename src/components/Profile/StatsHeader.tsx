@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import { $lighterBlue, $lighterGray, $mainBlue } from '../../utils/colors';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { exo, uploadImageToS3 } from '../../utils/api';
 
 import ImagePicker from 'react-native-image-crop-picker';
