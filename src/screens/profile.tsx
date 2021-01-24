@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
 import CustomHeader from '../components/shared/CustomHeader/';
 import EmptyPostState from '../components/Profile/emptyState';
