@@ -2,13 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
-	<dict>
-		<key>MapLocations</key>
-		<string>Used to precisely find the locations nearest to you</string>
-	</dict>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -29,6 +22,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -46,8 +41,13 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera may be used to upload and share images within the application</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>MapLocations</key>
+		<string>Used to precisely find the locations nearest to you</string>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>A user&apos;s location is used to quickly find locations near them.</string>
+	<string>A user's location is used to quickly find locations near them.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo library access is used to upload and share photos with others within the application</string>
 	<key>UIAppFonts</key>

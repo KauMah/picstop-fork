@@ -6,6 +6,8 @@ import { Image } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Post } from '../../../types';
 import TimeAgo from 'javascript-time-ago';
+import Toast from 'react-native-toast-message';
+import _ from 'lodash';
 import en from 'javascript-time-ago/locale/en';
 import { exo } from '../../../utils/api';
 import { useNavigation } from '@react-navigation/native';
@@ -89,7 +91,8 @@ const FeedItem = (props: Props) => {
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(true);
-  const initial = {
+  const [location, setLocation] = useState('');
+  const initialUser = {
     username: '',
     followers: [],
     following: [],
@@ -100,7 +103,7 @@ const FeedItem = (props: Props) => {
     _id: '',
     blocked: [],
   };
-  const [user, setUser] = useState(initial);
+  const [user, setUser] = useState(initialUser);
 
   console.log(props.post.images[0]);
   useEffect(() => {
@@ -114,6 +117,20 @@ const FeedItem = (props: Props) => {
       props.post.likes.includes(props.userId)
         ? setLiked(true)
         : setLiked(false);
+      exo
+        .get(`/location${props.post.location}`)
+        .then((res) => {
+          setLocation(_.get(res.data, 'message.location.name', 'Location'));
+        })
+        .catch((err) => {
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error fetching location',
+            text2: err,
+          });
+          setLocation('Location');
+        });
       setLoading(false);
     }
   }, [loading, props]);
@@ -130,7 +147,7 @@ const FeedItem = (props: Props) => {
         />
         <View style={styles.infoText}>
           <Text style={styles.username}>{user.username}</Text>
-          <Text style={styles.locationName}>{'Boston MA'}</Text>
+          <Text style={styles.locationName}>{location}</Text>
         </View>
         <View style={styles.agoContainer}>
           <Text style={styles.timeAgo}>
@@ -174,15 +191,15 @@ const FeedItem = (props: Props) => {
           <Ionicon size={20} name={'ios-chatbox-outline'} color={$mainGray} />
         </View>
         <Text style={styles.amount}>{props.post.comments.length}</Text>
-      </View>
-      <View
-        style={styles.agoContainer}
-        onTouchStart={() => navigation.navigate('Report')}>
-        <Ionicon
-          size={25}
-          name={'ellipsis-horizontal-circle'}
-          color={$mainGray}
-        />
+        <View
+          style={styles.agoContainer}
+          onTouchStart={() => navigation.navigate('Report')}>
+          <Ionicon
+            size={25}
+            name={'ellipsis-horizontal-circle'}
+            color={$mainGray}
+          />
+        </View>
       </View>
     </View>
   );
