@@ -45,7 +45,6 @@ const Feed = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('heyo');
     check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((result) => {
       switch (result) {
         case RESULTS.DENIED:
