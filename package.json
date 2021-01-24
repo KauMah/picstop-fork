@@ -20,6 +20,7 @@
   },
   "lint-staged": {
     "*.(ts,tsx)": [
+      "echo \"hello friend\"",
       "yarn lint:fix",
       "git add"
     ]
