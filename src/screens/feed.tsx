@@ -1,3 +1,10 @@
+import {
+  PERMISSIONS,
+  RESULTS,
+  check,
+  request,
+  requestLocationAccuracy,
+} from 'react-native-permissions';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
@@ -36,6 +43,25 @@ const Feed = () => {
   const [posts, setPosts] = useState('');
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    console.log('heyo');
+    check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((result) => {
+      switch (result) {
+        case RESULTS.DENIED:
+          request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then(() => {
+            requestLocationAccuracy({
+              purposeKey: 'MapLocations',
+            }).then(() => {
+              console.info('Location Services granted');
+            });
+          });
+          break;
+        default:
+          break;
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (userId !== '') {

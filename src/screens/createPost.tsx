@@ -163,7 +163,7 @@ const CreatePost = () => {
                 setLocations(_.get(response.data, 'message', []));
               })
               .catch((err) => console.log(err));
-            _camera.current?.flyTo(coords, 50);
+            _camera.current?.moveTo(coords);
             setTimeout(() => {
               _camera.current?.zoomTo(10);
             }, 500);
