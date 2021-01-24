@@ -1,9 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { $mainGray } from '../../utils/colors';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import Feather from 'react-native-vector-icons/Feather';
 import React from 'react';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
 const EmptyPostState = () => {
   return (
     <View style={styles.container}>
-      <FontAwesomeIcon icon={faCamera} size={100} color={$mainGray} />
+      <Feather name={'camera'} size={50} color={$mainGray} />
       <Text style={styles.text}>No posts yet!</Text>
     </View>
   );

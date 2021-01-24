@@ -52,6 +52,9 @@
 	<string>Photo library access is used to upload and share photos with others within the application</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Ionicons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>EvilIcons.ttf</string>
 		<string>KumbhSans-Bold.ttf</string>
 		<string>KumbhSans-Light.ttf</string>
 		<string>KumbhSans-Regular.ttf</string>

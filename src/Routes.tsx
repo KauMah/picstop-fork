@@ -2,18 +2,13 @@ import { $mainBlue, $mainGray, $tabBarGray } from './utils/colors';
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
-import {
-  faCoffee,
-  faCog,
-  faHome,
-  faMapMarkerAlt,
-  faPlusCircle,
-} from '@fortawesome/free-solid-svg-icons';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CreatePost from './screens/createPost';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
+import Feather from 'react-native-vector-icons/Feather';
 import Feed from './screens/feed';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import Loading from './screens/loading';
 import Login from './screens/login';
 import MapView from './screens/map';
@@ -24,7 +19,6 @@ import SignUp from './screens/signup';
 import Welcome from './screens/welcome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { login } from './redux/actions';
 import { reduxState } from './redux/actionTypes';
 import { setToken } from './utils/api';
@@ -88,35 +82,53 @@ const AuthenticatedRoutes = () => {
           }}
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
-              let icon;
               switch (route.name) {
                 case 'Home':
-                  icon = faHome;
-                  break;
+                  return (
+                    <Ionicon
+                      style={styles.tab}
+                      name={'home-outline'}
+                      size={30}
+                      color={focused ? $mainBlue : $mainGray}
+                    />
+                  );
                 case 'Map':
-                  icon = faMapMarkerAlt;
-                  break;
+                  return (
+                    <Feather
+                      style={styles.tab}
+                      name={'map-pin'}
+                      size={30}
+                      color={focused ? $mainBlue : $mainGray}
+                    />
+                  );
                 case 'Post':
-                  icon = faPlusCircle;
-                  break;
+                  return (
+                    <Feather
+                      style={styles.tab}
+                      name={'plus-circle'}
+                      size={30}
+                      color={focused ? $mainBlue : $mainGray}
+                    />
+                  );
                 case 'Profile':
-                  icon = faUserCircle;
-                  break;
+                  return (
+                    <Ionicon
+                      style={styles.tab}
+                      name={'md-person-circle-outline'}
+                      size={35}
+                      color={focused ? $mainBlue : $mainGray}
+                    />
+                  );
                 case 'Settings':
-                  icon = faCog;
-                  break;
-                default:
-                  icon = faCoffee;
+                  return (
+                    <EvilIcon
+                      style={styles.tab}
+                      name={'gear'}
+                      size={40}
+                      color={focused ? $mainBlue : $mainGray}
+                    />
+                  );
               }
-
-              return (
-                <FontAwesomeIcon
-                  style={styles.tab}
-                  icon={icon}
-                  size={30}
-                  color={focused ? $mainBlue : $mainGray}
-                />
-              );
             },
           })}>
           <Tabs.Screen name="Home" component={Feed} />

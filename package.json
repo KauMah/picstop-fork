@@ -7,14 +7,14 @@
     "ios": "react-native run-ios",
     "pods": "cd ios; pod install; cd ..",
     "start": "react-native start",
-    "reboot": "rm -rf node_modules; yarn install; yarn pods; react-native link",
-    "restart": "yarn reboot; yarn ios",
+    "clean": "rm -rf node_modules; yarn install",
+    "restart": "yarn clean; yarn ios",
     "test": "jest",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "yarn eslint . --fix src --ext .js,.jsx,.ts,.tsx"
   },
   "husky": {
-    "hoook": {
+    "hooks": {
       "pre-commit": "lint-staged"
     }
   },
@@ -53,6 +53,7 @@
     "react-native-screens": "2.16.1",
     "react-native-svg": "12.1.0",
     "react-native-toast-message": "1.4.3",
+    "react-native-vector-icons": "8.0.0",
     "react-native-webp-format": "1.1.2",
     "react-redux": "7.2.2",
     "redux": "4.0.5",
@@ -66,6 +67,7 @@
     "@types/jest": "^25.2.3",
     "@types/react-native": "^0.63.2",
     "@types/react-native-dotenv": "0.2.0",
+    "@types/react-native-vector-icons": "^6.4.6",
     "@types/react-redux": "7.1.15",
     "@types/react-test-renderer": "^16.9.2",
     "@types/yup": "0.29.11",

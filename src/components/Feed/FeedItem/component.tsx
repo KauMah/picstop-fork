@@ -1,16 +1,13 @@
 import { $darkerGray, $errorRed, $mainGray } from '../../../utils/colors';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { faCommentAlt, faHeart } from '@fortawesome/free-regular-svg-icons';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { Image } from 'react-native';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Post } from '../../../types';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import { exo } from '../../../utils/api';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
 
 TimeAgo.addLocale(en);
@@ -162,9 +159,9 @@ const FeedItem = (props: Props) => {
                   setLiked(true);
                 })
           }>
-          <FontAwesomeIcon
-            style={styles.icon}
-            icon={liked ? faSolidHeart : faHeart}
+          <Ionicon
+            size={20}
+            name={liked ? 'heart-sharp' : 'heart-outline'}
             color={liked ? $errorRed : $mainGray}
           />
         </View>
@@ -174,20 +171,16 @@ const FeedItem = (props: Props) => {
           {liked ? props.post.likes.length + 1 : props.post.likes.length}
         </Text>
         <View onTouchStart={() => navigation.navigate('Comments')}>
-          <FontAwesomeIcon
-            style={styles.icon}
-            icon={faCommentAlt}
-            color={$mainGray}
-          />
+          <Ionicon size={20} name={'ios-chatbox-outline'} color={$mainGray} />
         </View>
         <Text style={styles.amount}>{props.post.comments.length}</Text>
       </View>
       <View
         style={styles.agoContainer}
         onTouchStart={() => navigation.navigate('Report')}>
-        <FontAwesomeIcon
-          style={styles.icon}
-          icon={faEllipsisH}
+        <Ionicon
+          size={25}
+          name={'ellipsis-horizontal-circle'}
           color={$mainGray}
         />
       </View>

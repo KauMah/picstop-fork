@@ -89,24 +89,7 @@ const Feed = () => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title={'Home'} />
-      <ScrollView>
-        {/* <FeedItem
-          username={'Koosh'}
-          userId={'blarg'}
-          locationName={'Paris'}
-          comments={['this is cool', 'this is uncool']}
-          likes={['blah', 'blarg']}
-          id={'blooper'}
-          createdAt={'1h ago'}
-          imageUrl={
-            'https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg'
-          }
-          iconUrl={
-            'https://www.kenblakemoreartdesign.com/wp-content/uploads/2017/07/fullsizeoutput_696.jpeg'
-          }
-        /> */}
-        {posts.length < 1 && <EmptyPostState />}
-      </ScrollView>
+      <ScrollView>{posts.length < 1 && <EmptyPostState />}</ScrollView>
     </SafeAreaView>
   );
 };
