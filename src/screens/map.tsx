@@ -9,6 +9,7 @@ import MapThumbnail from '../components/shared/MapThumbnail';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
@@ -71,26 +72,34 @@ const MapView = () => {
         }}
         onDidFinishRenderingMapFully={async () => {
           const coords = _.get(_loc.current?.state, 'coordinates', [0, 0]);
-          console.log(coords);
+          const long = coords ? coords[0] : 0;
+          const lat = coords ? coords[1] : 0;
           exo
             .post('/locations/near', {
-              long: coords[0],
-              lat: coords[1],
+              long: long,
+              lat: lat,
               maxDistance: 1000,
             })
             .then((response) => {
               setLocations(_.get(response.data, 'message', []));
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              console.error(err);
+              Toast.show({
+                type: 'error',
+                position: 'top',
+                text1:
+                  'Something went wrong, please close the app and try again',
+              });
+            });
           _camera.current?.zoomTo(10, 1);
           setTimeout(() => {
-            _camera.current?.flyTo(coords);
+            _camera.current?.moveTo(coords);
           }, 50);
         }}
         styleURL={'mapbox://styles/kaumah/ckjeur5kx7uud19mc0zr67xkm'}
         rotateEnabled={false}
         animated>
-        {console.log(locations)}
         {locations.map((loc) => {
           return (
             <MapThumbnail
