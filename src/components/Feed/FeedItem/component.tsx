@@ -15,6 +15,8 @@ import { useNavigation } from '@react-navigation/native';
 
 TimeAgo.addLocale(en);
 
+const timeAgo = new TimeAgo('en-US');
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
@@ -133,7 +135,9 @@ const FeedItem = (props: Props) => {
           <Text style={styles.locationName}>{'Boston MA'}</Text>
         </View>
         <View style={styles.agoContainer}>
-          <Text style={styles.timeAgo}>{props.post.createdAt}</Text>
+          <Text style={styles.timeAgo}>
+            {timeAgo.format(new Date(props.post.createdAt))}
+          </Text>
         </View>
       </View>
       <View style={styles.imgContainer}>

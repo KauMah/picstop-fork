@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
-import CustomHeader from '../components/shared/CustomHeader/component';
+import CustomHeader from '../components/shared/CustomHeader/';
 import EmptyPostState from '../components/Profile/emptyState';
-import FeedItem from '../components/Feed/FeedItem/component';
+import FeedItem from '../components/Feed/FeedItem/';
 import Loading from './loading';
 import { Post } from '../types';
 import StatsHeader from '../components/Profile/StatsHeader';
