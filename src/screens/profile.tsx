@@ -41,6 +41,7 @@ const Profile = () => {
     username: '',
     followers: [],
     following: [],
+
     private: false,
     profilePic: '',
     savedLocations: [],
