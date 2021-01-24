@@ -57,7 +57,6 @@ const MapView = () => {
   const _camera = useRef<MapboxGL.Camera>(null);
   const _loc = useRef<MapboxGL.UserLocation>(null);
   const [locations, setLocations] = useState<Array<Location>>([]);
-  const [newLocCoords, setNewLocCoords] = useState<Array<number>>([0, 0]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,12 +65,9 @@ const MapView = () => {
         ref={_map}
         style={styles.map}
         onLongPress={(feature) => {
-          setNewLocCoords(_.get(feature, 'geometry.coordinates', [0, 0]));
-          // const coords = _.get(
-          //   await _map.current?.state,
-          //   'region.geometry.coordinates',
-          //   [0, 0],
-          // );
+          navigation.navigate('NewLocation', {
+            coords: _.get(feature, 'geometry.coordinates', [0, 0]),
+          });
         }}
         onDidFinishRenderingMapFully={async () => {
           const coords = _.get(_loc.current?.state, 'coordinates', [0, 0]);
@@ -105,18 +101,6 @@ const MapView = () => {
             />
           );
         })}
-        {newLocCoords !== [0, 0] && (
-          <MapThumbnail
-            key={'new'}
-            id={'new'}
-            coordinate={newLocCoords}
-            onPress={() =>
-              navigation.navigate('NewLocation', { coords: newLocCoords })
-            }
-            numPhotos={0}
-            new={true}
-          />
-        )}
 
         <MapboxGL.UserLocation visible animated ref={_loc} />
         <MapboxGL.Camera ref={_camera} zoomLevel={15} />
