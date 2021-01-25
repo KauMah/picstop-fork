@@ -104,7 +104,9 @@ const Feed = () => {
         }>
         {posts.length < 1 && <EmptyPostState />}
         {posts.length > 0 &&
-          posts.map((post) => <FeedItem post={post} userId={userId} />)}
+          posts.map((post) => (
+            <FeedItem post={post} userId={userId} key={`${post._id}`} />
+          ))}
       </ScrollView>
     </SafeAreaView>
   );
