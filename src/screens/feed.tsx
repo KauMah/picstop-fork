@@ -16,6 +16,7 @@ import {
 import CustomHeader from '../components/shared/CustomHeader';
 import EmptyPostState from '../components/Profile/emptyState';
 import FeedItem from '../components/Feed/FeedItem';
+import Likes from './likes';
 import Loading from './loading';
 import { Post } from '../types';
 import _ from 'lodash';
@@ -40,8 +41,8 @@ const FeedRoutes = () => {
         options={{ headerShown: false }}
       />
       <PostStack.Screen name="Post" component={Loading} />
-      <PostStack.Screen name="Post/Likes" component={Loading} />
-      <PostStack.Screen name="Post/Comments" component={Loading} />
+      <PostStack.Screen name="Likes" component={Likes} />
+      <PostStack.Screen name="Comments" component={Loading} />
     </PostStack.Navigator>
   );
 };
