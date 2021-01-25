@@ -1,10 +1,10 @@
 import { $darkerGray, $errorRed, $mainGray } from '../../../utils/colors';
+import { Post, User } from '../../../types';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Image } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { Post } from '../../../types';
 import TimeAgo from 'javascript-time-ago';
 import Toast from 'react-native-toast-message';
 import _ from 'lodash';
@@ -106,7 +106,7 @@ const FeedItem = (props: Props) => {
     _id: '',
     blocked: [],
   };
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState<User>(initialUser);
 
   useEffect(() => {
     exo.get(`user/getById/${props.post.authorId}`).then((response) => {
@@ -195,7 +195,9 @@ const FeedItem = (props: Props) => {
           />
         </View>
         <Text
-          onPress={() => navigation.navigate('Likes')}
+          onPress={() =>
+            navigation.navigate('Likes', { postId: props.post._id })
+          }
           style={styles.amount}>
           {props.post.likes.length}
         </Text>

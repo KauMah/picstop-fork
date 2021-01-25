@@ -9,6 +9,7 @@ import {
 import CustomHeader from '../components/shared/CustomHeader/';
 import EmptyPostState from '../components/Profile/emptyState';
 import FeedItem from '../components/Feed/FeedItem/';
+import Likes from './likes';
 import Loading from './loading';
 import { Post } from '../types';
 import StatsHeader from '../components/Profile/StatsHeader';
@@ -26,7 +27,7 @@ const ProfileRoutes = () => {
         component={Profile}
         options={{ headerShown: false }}
       />
-      <ProfileStack.Screen name={'Likes'} component={Loading} />
+      <ProfileStack.Screen name={'Likes'} component={Likes} />
       <ProfileStack.Screen name={'Comments'} component={Loading} />
       <ProfileStack.Screen name={'Report'} component={Loading} />
     </ProfileStack.Navigator>

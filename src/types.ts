@@ -15,6 +15,7 @@ export type CreateLocationScreenRouteProp = RouteProp<
   LocationStackParamList,
   'NewLocation'
 >;
+
 export type Location = {
   __v: number;
   _id: string;
@@ -39,4 +40,16 @@ export type Post = {
   likes: Array<string>;
   comments: Array<Object>;
   location: string;
+};
+
+export type User = {
+  username: string;
+  followers: Array<string>;
+  following: Array<string>;
+  private: boolean;
+  profilePic: string;
+  savedLocations: Array<string>;
+  email: string;
+  _id: string;
+  blocked: Array<string>;
 };
