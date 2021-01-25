@@ -108,7 +108,6 @@ const FeedItem = (props: Props) => {
   };
   const [user, setUser] = useState(initialUser);
 
-  console.log(props.post.images[0]);
   useEffect(() => {
     exo.get(`user/getById/${props.post.authorId}`).then((response) => {
       setUser(response.data.message.user);
@@ -117,11 +116,13 @@ const FeedItem = (props: Props) => {
 
   useEffect(() => {
     if (loading) {
+      console.log(props.post.likes, 'id: ', props.userId);
+      console.log(props.post.likes.includes(props.userId));
       props.post.likes.includes(props.userId)
         ? setLiked(true)
         : setLiked(false);
       exo
-        .get(`/location${props.post.location}`)
+        .get(`/locations/${props.post.location}`)
         .then((res) => {
           setLocation(_.get(res.data, 'message.location.name', 'Location'));
         })
@@ -130,7 +131,7 @@ const FeedItem = (props: Props) => {
             type: 'error',
             position: 'top',
             text1: 'Error fetching location',
-            text2: err,
+            text2: JSON.stringify(err),
           });
           setLocation('Location');
         });
@@ -170,12 +171,14 @@ const FeedItem = (props: Props) => {
         <View
           onTouchStart={() =>
             liked
-              ? exo.post(`/posts/unlike/${props.post._id}`).then((res) => {
-                  console.log(res.data);
+              ? exo.post(`/posts/unlike/${props.post._id}`).then(() => {
+                  props.post.likes = props.post.likes.filter((value) => {
+                    value !== props.userId;
+                  });
                   setLiked(false);
                 })
-              : exo.post(`/posts/like/${props.post._id}`).then((res) => {
-                  console.log(res.data);
+              : exo.post(`/posts/like/${props.post._id}`).then(() => {
+                  props.post.likes.push(props.userId);
                   setLiked(true);
                 })
           }>
@@ -188,7 +191,7 @@ const FeedItem = (props: Props) => {
         <Text
           onPress={() => navigation.navigate('Likes')}
           style={styles.amount}>
-          {liked ? props.post.likes.length + 1 : props.post.likes.length}
+          {props.post.likes.length}
         </Text>
         <View onTouchStart={() => navigation.navigate('Comments')}>
           <Ionicon size={20} name={'ios-chatbox-outline'} color={$mainGray} />

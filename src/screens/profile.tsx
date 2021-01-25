@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 
 import CustomHeader from '../components/shared/CustomHeader/';
 import EmptyPostState from '../components/Profile/emptyState';
@@ -50,6 +55,13 @@ const Profile = () => {
   };
   const [user, setUser] = useState(initial);
 
+  const onRefresh = React.useCallback(() => {
+    setLoading(true);
+    console.log('refreshed');
+
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
   useEffect(() => {
     if (loading) {
       exo
@@ -89,7 +101,11 @@ const Profile = () => {
           setLoading(true);
         }}
       />
-      <ScrollView style={styles.scroll}>
+      <ScrollView
+        style={styles.scroll}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+        }>
         {posts.length < 1 && <EmptyPostState />}
         {posts.reverse().map((post) => {
           return (
