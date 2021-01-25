@@ -80,6 +80,9 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
   },
+  touchable: {
+    width: 30,
+  },
 });
 
 interface Props {
@@ -191,14 +194,16 @@ const FeedItem = (props: Props) => {
           <Ionicon size={20} name={'ios-chatbox-outline'} color={$mainGray} />
         </View>
         <Text style={styles.amount}>{props.post.comments.length}</Text>
-        <View
-          style={styles.agoContainer}
-          onTouchStart={() => navigation.navigate('Report')}>
-          <Ionicon
-            size={25}
-            name={'ellipsis-horizontal-circle'}
-            color={$mainGray}
-          />
+        <View style={styles.agoContainer}>
+          <View
+            style={styles.touchable}
+            onTouchStart={() => navigation.navigate('Report')}>
+            <Ionicon
+              size={25}
+              name={'ellipsis-horizontal-circle'}
+              color={$mainGray}
+            />
+          </View>
         </View>
       </View>
     </View>
