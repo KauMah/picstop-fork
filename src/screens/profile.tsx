@@ -57,7 +57,6 @@ const Profile = () => {
 
   const onRefresh = React.useCallback(() => {
     setLoading(true);
-    console.log('refreshed');
 
     setTimeout(() => setLoading(false), 1000);
   }, []);
@@ -75,8 +74,8 @@ const Profile = () => {
                 userId: result.data.message.user._id,
               })
               .then((resp) => {
-                console.log(resp.data.message.posts);
-                setPosts(resp.data.message.posts);
+                const thePosts = resp.data.message.posts;
+                setPosts(thePosts.reverse());
               })
               .catch((err) => console.log(err));
           });
@@ -107,15 +106,13 @@ const Profile = () => {
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }>
         {posts.length < 1 && <EmptyPostState />}
-        {posts.reverse().map((post) => {
-          return (
-            <FeedItem
-              post={post}
-              userId={user._id}
-              key={`${user.profilePic}${post._id}`}
-            />
-          );
-        })}
+        {posts.map((post) => (
+          <FeedItem
+            post={post}
+            userId={user._id}
+            key={`${user.profilePic}${post._id}`}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );

@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { exo, uploadImageToS3 } from '../../utils/api';
 
 import ImagePicker from 'react-native-image-crop-picker';
+import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 
 const styles = StyleSheet.create({
@@ -101,27 +102,39 @@ const StatsHeader = (props: Props) => {
             forceJpg: true,
             includeBase64: true,
           }).then(async (image) => {
-            console.log(image);
             exo.post('/user/profilePicture', { id: props._id }).then((res) => {
-              console.log(res.data);
               uploadImageToS3(
                 `file://${_.get(image, 'path', '')}`,
                 _.get(res.data, 'uploadUrl', ''),
               )
                 .then(() => {
-                  console.log('uploaded');
+                  Toast.show({
+                    type: 'success',
+                    position: 'top',
+                    text1: 'Profile successfully updated!!',
+                  });
                   setPfpUpdated(!pfpUpdated);
                   props.onPfpUpdated();
                 })
-                .catch(() => console.log('failed upload'));
+                .catch(() =>
+                  Toast.show({
+                    type: 'error',
+                    position: 'top',
+                    text1: 'Upload Failed!',
+                  }),
+                );
             });
           });
         }}>
-        <Image
-          style={styles.proPic}
-          source={{ uri: props.profileUrl }}
-          key={props.profileUrl}
-        />
+        {props.profileUrl ? (
+          <Image
+            style={styles.proPic}
+            source={{ uri: props.profileUrl }}
+            key={props.profileUrl}
+          />
+        ) : (
+          <View style={styles.proPic} />
+        )}
       </View>
       <View style={styles.stacked}>
         <View style={styles.topHalf}>

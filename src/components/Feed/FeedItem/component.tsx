@@ -116,8 +116,6 @@ const FeedItem = (props: Props) => {
 
   useEffect(() => {
     if (loading) {
-      console.log(props.post.likes, 'id: ', props.userId);
-      console.log(props.post.likes.includes(props.userId));
       props.post.likes.includes(props.userId)
         ? setLiked(true)
         : setLiked(false);
@@ -141,14 +139,18 @@ const FeedItem = (props: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Image
-          style={styles.proPic}
-          resizeMode={'cover'}
-          source={{
-            uri: user.profilePic,
-          }}
-          key={user.profilePic}
-        />
+        {user.profilePic ? (
+          <Image
+            style={styles.proPic}
+            resizeMode={'cover'}
+            source={{
+              uri: user.profilePic,
+            }}
+            key={user.profilePic}
+          />
+        ) : (
+          <View style={styles.proPic} />
+        )}
         <View style={styles.infoText}>
           <Text style={styles.username}>{user.username}</Text>
           <Text style={styles.locationName}>{location}</Text>
@@ -160,12 +162,16 @@ const FeedItem = (props: Props) => {
         </View>
       </View>
       <View style={styles.imgContainer}>
-        <Image
-          source={{
-            uri: props.post.images[0],
-          }}
-          style={styles.image}
-        />
+        {props.post.images[0] ? (
+          <Image
+            source={{
+              uri: props.post.images[0],
+            }}
+            style={styles.image}
+          />
+        ) : (
+          <View style={styles.image} />
+        )}
       </View>
       <View style={styles.infoContainer}>
         <View

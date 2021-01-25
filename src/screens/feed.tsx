@@ -15,6 +15,7 @@ import {
 
 import CustomHeader from '../components/shared/CustomHeader';
 import EmptyPostState from '../components/Profile/emptyState';
+import FeedItem from '../components/Feed/FeedItem';
 import Loading from './loading';
 import { Post } from '../types';
 import _ from 'lodash';
@@ -48,6 +49,7 @@ const FeedRoutes = () => {
 const Feed = () => {
   const [posts, setPosts] = useState<Array<Post>>([]);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState('');
 
   const onRefresh = React.useCallback(() => {
     setLoading(true);
@@ -78,13 +80,15 @@ const Feed = () => {
         .get('/user/')
         .then((response) => {
           const id = _.get(response, 'data.message._id', '');
+          setUserId(id);
           exo
             .post('/posts/feed/', { userId: id })
             .then((res) => {
-              console.log(_.get(res.data, 'message', []));
-              setPosts(_.concat(_.get(res.data, 'message.posts', []), posts));
+              const newPosts = _.get(res.data, 'message', []);
+              newPosts.reverse();
+              setPosts(_.concat(newPosts, posts));
             })
-            .catch((e) => console.log('big error', e));
+            .catch((e) => console.log(e));
         })
         .catch((e) => console.log(e));
       setLoading(false);
@@ -98,6 +102,8 @@ const Feed = () => {
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }>
         {posts.length < 1 && <EmptyPostState />}
+        {posts.length > 0 &&
+          posts.map((post) => <FeedItem post={post} userId={userId} />)}
       </ScrollView>
     </SafeAreaView>
   );
