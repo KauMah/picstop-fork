@@ -6,11 +6,17 @@ import {
   requestLocationAccuracy,
 } from 'react-native-permissions';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 
 import CustomHeader from '../components/shared/CustomHeader';
 import EmptyPostState from '../components/Profile/emptyState';
 import Loading from './loading';
+import { Post } from '../types';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
@@ -40,9 +46,13 @@ const FeedRoutes = () => {
 };
 
 const Feed = () => {
-  const [posts, setPosts] = useState('');
-  const [userId, setUserId] = useState('');
+  const [posts, setPosts] = useState<Array<Post>>([]);
   const [loading, setLoading] = useState(true);
+
+  const onRefresh = React.useCallback(() => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
 
   useEffect(() => {
     check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((result) => {
@@ -63,24 +73,18 @@ const Feed = () => {
   }, []);
 
   useEffect(() => {
-    if (userId !== '') {
-      exo
-        .post('/posts/feed/', { userId: userId })
-        .then((res) => {
-          console.log(_.get(res.data, 'message', []));
-          setPosts(_.get(res.data, 'message.posts', []));
-        })
-        .catch((e) => console.log('big error', e));
-    }
-  }, [userId]);
-
-  useEffect(() => {
     if (loading) {
       exo
         .get('/user/')
         .then((response) => {
           const id = _.get(response, 'data.message._id', '');
-          setUserId(id);
+          exo
+            .post('/posts/feed/', { userId: id })
+            .then((res) => {
+              console.log(_.get(res.data, 'message', []));
+              setPosts(_.concat(_.get(res.data, 'message.posts', []), posts));
+            })
+            .catch((e) => console.log('big error', e));
         })
         .catch((e) => console.log(e));
       setLoading(false);
@@ -89,7 +93,12 @@ const Feed = () => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title={'Home'} />
-      <ScrollView>{posts.length < 1 && <EmptyPostState />}</ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+        }>
+        {posts.length < 1 && <EmptyPostState />}
+      </ScrollView>
     </SafeAreaView>
   );
 };

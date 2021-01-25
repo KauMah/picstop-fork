@@ -116,6 +116,8 @@ const FeedItem = (props: Props) => {
 
   useEffect(() => {
     if (loading) {
+      console.log(props.post.likes, 'id: ', props.userId);
+      console.log(props.post.likes.includes(props.userId));
       props.post.likes.includes(props.userId)
         ? setLiked(true)
         : setLiked(false);
@@ -170,9 +172,13 @@ const FeedItem = (props: Props) => {
           onTouchStart={() =>
             liked
               ? exo.post(`/posts/unlike/${props.post._id}`).then(() => {
+                  props.post.likes = props.post.likes.filter((value) => {
+                    value !== props.userId;
+                  });
                   setLiked(false);
                 })
               : exo.post(`/posts/like/${props.post._id}`).then(() => {
+                  props.post.likes.push(props.userId);
                   setLiked(true);
                 })
           }>
@@ -185,7 +191,7 @@ const FeedItem = (props: Props) => {
         <Text
           onPress={() => navigation.navigate('Likes')}
           style={styles.amount}>
-          {liked ? props.post.likes.length + 1 : props.post.likes.length}
+          {props.post.likes.length}
         </Text>
         <View onTouchStart={() => navigation.navigate('Comments')}>
           <Ionicon size={20} name={'ios-chatbox-outline'} color={$mainGray} />
