@@ -5,6 +5,9 @@ import React from 'react';
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
+  },
+  imgContainer: {
     height: 60,
     width: 60,
   },
@@ -22,7 +25,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     borderColor: $white,
-    marginTop: 7,
   },
   text: {
     fontFamily: 'Kumbh Sans',
@@ -42,8 +44,8 @@ interface Props {
 const MapThumbnail = (props: Props) => {
   console.log(props.iconUrl);
   return (
-    <View onTouchEndCapture={props.onTouchEndCapture}>
-      <View style={styles.container}>
+    <View style={styles.container} onTouchEndCapture={props.onTouchEndCapture}>
+      <View style={styles.imgContainer}>
         {props.iconUrl ? (
           <Image
             style={styles.image}
@@ -52,7 +54,7 @@ const MapThumbnail = (props: Props) => {
           />
         ) : (
           <Image
-            style={styles.container}
+            style={styles.imgContainer}
             source={require('../../../../assets/img/picstop-no-text.png')}
             resizeMode={'cover'}
           />
