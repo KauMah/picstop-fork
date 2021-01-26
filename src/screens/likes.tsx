@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 
-import LikeTile from '../components/shared/LikeTile';
 import Toast from 'react-native-toast-message';
+import UserTile from '../components/shared/LikeTile';
 import _ from 'lodash';
 import { exo } from '../utils/api';
 import { useRoute } from '@react-navigation/native';
@@ -45,7 +45,8 @@ const Likes = () => {
   return (
     <ScrollView style={styles.container}>
       {likes.length < 1 && <Text>No one likes this</Text>}
-      {likes.length > 0 && <LikeTile userId={likes[0]} key={likes[0]} />}
+      {likes.length > 0 &&
+        likes.map((like) => <UserTile userId={like} key={like} />)}
     </ScrollView>
   );
 };

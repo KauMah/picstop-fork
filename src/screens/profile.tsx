@@ -9,10 +9,10 @@ import {
 import CustomHeader from '../components/shared/CustomHeader/';
 import EmptyPostState from '../components/Profile/emptyState';
 import FeedItem from '../components/Feed/FeedItem/';
-import Likes from './likes';
 import Loading from './loading';
 import { Post } from '../types';
 import StatsHeader from '../components/Profile/StatsHeader';
+import UserList from './followList';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
@@ -27,9 +27,11 @@ const ProfileRoutes = () => {
         component={Profile}
         options={{ headerShown: false }}
       />
-      <ProfileStack.Screen name={'Likes'} component={Likes} />
+      <ProfileStack.Screen name={'Likes'} component={UserList} />
       <ProfileStack.Screen name={'Comments'} component={Loading} />
       <ProfileStack.Screen name={'Report'} component={Loading} />
+      <ProfileStack.Screen name={'Followers'} component={UserList} />
+      <ProfileStack.Screen name={'Following'} component={UserList} />
     </ProfileStack.Navigator>
   );
 };

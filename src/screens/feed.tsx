@@ -16,9 +16,9 @@ import {
 import CustomHeader from '../components/shared/CustomHeader';
 import EmptyPostState from '../components/Profile/emptyState';
 import FeedItem from '../components/Feed/FeedItem';
-import Likes from './likes';
 import Loading from './loading';
 import { Post } from '../types';
+import UserList from './likes';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
@@ -41,7 +41,7 @@ const FeedRoutes = () => {
         options={{ headerShown: false }}
       />
       <PostStack.Screen name="Post" component={Loading} />
-      <PostStack.Screen name="Likes" component={Likes} />
+      <PostStack.Screen name="Likes" component={UserList} />
       <PostStack.Screen name="Comments" component={Loading} />
     </PostStack.Navigator>
   );

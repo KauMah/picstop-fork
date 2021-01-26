@@ -32,7 +32,7 @@ interface Props {
   userId: string;
 }
 
-const LikeTile = (props: Props) => {
+const UserTile = (props: Props) => {
   const [loading, setLoading] = useState(true);
   const initialUser = {
     username: '',
@@ -78,4 +78,4 @@ const LikeTile = (props: Props) => {
   );
 };
 
-export default LikeTile;
+export default UserTile;
