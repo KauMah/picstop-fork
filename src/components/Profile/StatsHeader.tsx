@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   proPicContainer: {
-    flex: 1
+    flex: 1,
   },
   proPic: {
     flex: 1,
-    alignSelf: "stretch"
+    alignSelf: 'stretch',
   },
   topHalf: {
     flexDirection: 'row',

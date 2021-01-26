@@ -1,6 +1,14 @@
 import * as Yup from 'yup';
 
-import { Image, SafeAreaView, StyleSheet, Text, View, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 
 import { $white } from '../utils/colors';
 // @ts-ignore: Weirdness with react-native-dotenv
@@ -85,7 +93,8 @@ const Login = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "position" : undefined} >
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'position' : undefined}>
       <SafeAreaView style={styles.container}>
         <Image
           source={require('../../assets/img/picstop-logo.png')}

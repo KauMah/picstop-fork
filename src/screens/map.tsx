@@ -65,6 +65,32 @@ const MapView = () => {
       <MapboxGL.MapView
         ref={_map}
         style={styles.map}
+        onRegionDidChange={_.throttle(async (feature) => {
+          const coords = feature.geometry.coordinates;
+          exo
+            .post('/locations/near', {
+              long: coords[0],
+              lat: coords[1],
+              maxDistance: 1000,
+            })
+            .then((response) => {
+              const allLocations = _.concat(
+                locations,
+                _.get(response.data, 'message', []),
+              );
+              setLocations(_.uniqBy(allLocations, (loc) => loc._id));
+            })
+            .catch((err) => {
+              console.error(err);
+              Toast.show({
+                type: 'error',
+                position: 'top',
+                text1:
+                  'Something went wrong, please close the app and try again',
+              });
+            });
+          _camera;
+        }, 1000)}
         onLongPress={(feature) => {
           navigation.navigate('NewLocation', {
             coords: _.get(feature, 'geometry.coordinates', [0, 0]),
@@ -81,7 +107,6 @@ const MapView = () => {
               maxDistance: 1000,
             })
             .then((response) => {
-              console.log(_.get(response.data, 'message', [])[0]);
               setLocations(_.get(response.data, 'message', []));
             })
             .catch((err) => {

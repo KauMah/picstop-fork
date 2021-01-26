@@ -1,6 +1,14 @@
 import * as Yup from 'yup';
 
-import { Image, SafeAreaView, StyleSheet, Text, View, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 // @ts-ignore: Weirdness with react-native-dotenv
@@ -118,14 +126,20 @@ const SignUp = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "position" : undefined}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'position' : undefined}>
       <SafeAreaView style={styles.container}>
         <Image
           source={require('../../assets/img/picstop-logo.png')}
           style={styles.logo}
         />
         <Formik
-          initialValues={{ username: '', email: '', password: '', password2: '' }}
+          initialValues={{
+            username: '',
+            email: '',
+            password: '',
+            password2: '',
+          }}
           onSubmit={postSignUp}
           validationSchema={SignUpSchema}
           initialErrors={{
@@ -211,8 +225,8 @@ const SignUp = () => {
         </Formik>
 
         <Text style={styles.fine}>
-          By registering with PicStop, you confirm that you agree to our Terms of
-          Service and Privacy Policy
+          By registering with PicStop, you confirm that you agree to our Terms
+          of Service and Privacy Policy
         </Text>
       </SafeAreaView>
     </KeyboardAvoidingView>

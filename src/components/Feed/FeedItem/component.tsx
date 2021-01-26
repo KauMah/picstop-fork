@@ -180,7 +180,10 @@ const FeedItem = (props: Props) => {
             setModalVisible(false);
           }}>
           <View style={styles.modalContainer}>
-            <TouchableWithoutFeedback onPress={() => {}}>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                console.log('hello there');
+              }}>
               <View style={styles.modal}>
                 <StyledButton
                   style={styles.modalButton}

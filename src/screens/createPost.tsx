@@ -8,6 +8,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { Location } from '../types';
 import MapThumbnail from '../components/shared/MapThumbnail';
 import MapboxGL from '@react-native-mapbox-gl/maps';
+import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -151,6 +152,32 @@ const CreatePost = () => {
           style={styles.map}
           styleURL={'mapbox://styles/kaumah/ckjeur5kx7uud19mc0zr67xkm'}
           rotateEnabled={false}
+          onRegionDidChange={_.throttle(async (feature) => {
+            const coords = feature.geometry.coordinates;
+            exo
+              .post('/locations/near', {
+                long: coords[0],
+                lat: coords[1],
+                maxDistance: 1000,
+              })
+              .then((response) => {
+                const allLocations = _.concat(
+                  locations,
+                  _.get(response.data, 'message', []),
+                );
+                setLocations(_.uniqBy(allLocations, (loc) => loc._id));
+              })
+              .catch((err) => {
+                console.error(err);
+                Toast.show({
+                  type: 'error',
+                  position: 'top',
+                  text1:
+                    'Something went wrong, please close the app and try again',
+                });
+              });
+            _camera;
+          }, 1000)}
           onDidFinishRenderingMapFully={async () => {
             const coords = _.get(_loc.current?.state, 'coordinates', [0, 0]);
             exo
