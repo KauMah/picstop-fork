@@ -5,15 +5,15 @@ import React from 'react';
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: $white,
-    borderRadius: 5,
     height: 60,
     width: 60,
   },
   image: {
     height: 60,
     width: 60,
+    borderWidth: 1,
+    borderColor: $white,
+    borderRadius: 5,
   },
   bubble: {
     paddingHorizontal: 8,
@@ -46,7 +46,7 @@ const MapThumbnail = (props: Props) => {
       <View style={styles.container}>
         {props.iconUrl ? (
           <Image
-            style={styles.container}
+            style={styles.image}
             source={{ uri: props.iconUrl }}
             resizeMode={'cover'}
           />
