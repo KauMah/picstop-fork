@@ -17,7 +17,7 @@ const MapThumbnail1 = (props: Props) => {
       <RoundedSquareIcon
         onTouchEndCapture={props.onPress}
         iconUrl={props.location.images}
-        numPhotos={3}
+        name={props.location.name}
         new={props.new}
       />
     </MapboxGL.MarkerView>
