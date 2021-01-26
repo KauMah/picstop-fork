@@ -87,7 +87,12 @@ const Feed = () => {
             .then((res) => {
               const newPosts = _.get(res.data, 'message', []);
               newPosts.reverse();
-              setPosts(_.concat(newPosts, posts));
+              const formattedPosts = _.concat(newPosts, posts);
+              setPosts(
+                _.uniqBy(formattedPosts, (post) => {
+                  post._id;
+                }),
+              );
             })
             .catch((e) => console.log(e));
         })

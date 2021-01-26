@@ -173,10 +173,8 @@ const CreatePost = () => {
           <MapboxGL.UserLocation visible animated ref={_loc} />
           {locations.map((loc: Location) => (
             <MapThumbnail
-              id={loc._id}
               key={loc._id}
-              coordinate={loc.geoLocation.coordinates}
-              numPhotos={3}
+              location={loc}
               onPress={() => {
                 setUsrLoc(loc);
               }}

@@ -25,6 +25,7 @@ export type Location = {
     type: string;
   };
   name: string;
+  images: string;
   isOfficial: boolean;
   updatedAt: string;
 };

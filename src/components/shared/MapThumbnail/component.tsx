@@ -5,15 +5,15 @@ import React from 'react';
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: $white,
-    borderRadius: 5,
     height: 60,
     width: 60,
   },
   image: {
     height: 60,
     width: 60,
+    borderWidth: 1,
+    borderColor: $white,
+    borderRadius: 5,
   },
   bubble: {
     paddingHorizontal: 8,
@@ -40,18 +40,23 @@ interface Props {
 }
 
 const MapThumbnail = (props: Props) => {
+  console.log(props.iconUrl);
   return (
     <View onTouchEndCapture={props.onTouchEndCapture}>
       <View style={styles.container}>
-        <Image
-          style={styles.container}
-          source={
-            props.new
-              ? require('../../../../assets/img/picstop-no-text.png')
-              : { uri: props.iconUrl }
-          }
-          resizeMode={'cover'}
-        />
+        {props.iconUrl ? (
+          <Image
+            style={styles.image}
+            source={{ uri: props.iconUrl }}
+            resizeMode={'cover'}
+          />
+        ) : (
+          <Image
+            style={styles.container}
+            source={require('../../../../assets/img/picstop-no-text.png')}
+            resizeMode={'cover'}
+          />
+        )}
       </View>
       {props.numPhotos > 0 && (
         <View style={styles.bubble}>
