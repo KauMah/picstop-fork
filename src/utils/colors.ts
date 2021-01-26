@@ -10,6 +10,7 @@ export const $darkerGray = '#4A5E69';
 export const $tabBarGray = '#ededed';
 
 export const $errorRed = '#e20000';
+export const $lighterRed = 'rgba(226, 0, 0, .05)';
 
 export const $white = '#FFF';
 export const $lightBlack = '#081B25';

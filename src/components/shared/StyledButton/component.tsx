@@ -1,6 +1,8 @@
 import {
+  $errorRed,
   $lighterBlue,
   $lighterGreen,
+  $lighterRed,
   $mainBlue,
   $mainGreen,
 } from '../../../utils/colors';
@@ -42,7 +44,7 @@ const styles = StyleSheet.create<Styles>({
 
 interface Props {
   text: String;
-  type: 'green' | 'blue';
+  type: 'green' | 'blue' | 'red';
   onPress: (event: GestureResponderEvent) => void;
   style?: ViewStyle;
   disabled?: boolean;
@@ -85,6 +87,24 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
             disabledButton,
           ]}>
           <Text style={{ ...styles.text, color: $mainBlue }}>{text}</Text>
+        </TouchableOpacity>
+      );
+    case 'red':
+      return (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={disabled ? () => {} : onPress}
+          disabled={disabled}
+          style={[
+            {
+              ...styles.button,
+              borderColor: $errorRed,
+              backgroundColor: $lighterRed,
+            },
+            style,
+            disabledButton,
+          ]}>
+          <Text style={{ ...styles.text, color: $errorRed }}>{text}</Text>
         </TouchableOpacity>
       );
   }

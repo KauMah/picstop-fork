@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 
 interface Props {
   iconUrl: string;
-  numPhotos: number;
+  name: string;
   new?: boolean;
   onTouchEndCapture?: () => void;
 }
@@ -60,15 +60,9 @@ const MapThumbnail = (props: Props) => {
           />
         )}
       </View>
-      {props.numPhotos > 0 && (
-        <View style={styles.bubble}>
-          <Text style={styles.text}>
-            {props.numPhotos > 1
-              ? `${props.numPhotos} Photos`
-              : `${props.numPhotos} Photo`}
-          </Text>
-        </View>
-      )}
+      <View style={styles.bubble}>
+        <Text style={styles.text}>{props.name}</Text>
+      </View>
     </View>
   );
 };
