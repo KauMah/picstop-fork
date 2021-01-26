@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Image, SafeAreaView, StyleSheet, Text, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 // @ts-ignore: Weirdness with react-native-dotenv
@@ -118,102 +118,104 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Image
-        source={require('../../assets/img/picstop-logo.png')}
-        style={styles.logo}
-      />
-      <Formik
-        initialValues={{ username: '', email: '', password: '', password2: '' }}
-        onSubmit={postSignUp}
-        validationSchema={SignUpSchema}
-        initialErrors={{
-          username: 'err',
-          email: 'err',
-          password: 'err',
-          password2: 'err',
-        }}
-        validateOnBlur>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          isValid,
-        }) => (
-          <View style={styles.inputs}>
-            {errors && (
-              <Text>
-                {touched.username && errors.username}{' '}
-                {touched.email && errors.email}{' '}
-                {touched.password && errors.password}
-              </Text>
-            )}
-            <IconTextField
-              icon={faUser}
-              onChangeText={handleChange('username')}
-              onBlur={handleBlur('username')}
-              placeholder={'Username'}
-              style={styles.textField}
-              value={values.username}
-              autoCapitalize={'none'}
-              invalid={
-                touched.username ? (errors.username ? true : false) : false
-              }
-            />
-            <IconTextField
-              icon={faEnvelope}
-              placeholder={'Email'}
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              value={values.email}
-              style={styles.textField}
-              autoCapitalize={'none'}
-              invalid={touched.email ? (errors.email ? true : false) : false}
-            />
-            <IconTextField
-              icon={faLock}
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              placeholder={'Password'}
-              value={values.password}
-              secureTextEntry
-              style={styles.textField}
-              invalid={
-                touched.password ? (errors.password ? true : false) : false
-              }
-            />
-            <IconTextField
-              icon={faLock}
-              onChangeText={handleChange('password2')}
-              onBlur={handleBlur('password2')}
-              placeholder={'Reenter Password'}
-              value={values.password2}
-              secureTextEntry
-              style={styles.textField}
-              invalid={
-                touched.password2 ? (errors.password2 ? true : false) : false
-              }
-            />
-            <View style={styles.button}>
-              <StyledButton
-                text={'Sign Up'}
-                type="blue"
-                onPress={handleSubmit}
-                disabled={!touched || !isValid}
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "position" : undefined}>
+      <SafeAreaView style={styles.container}>
+        <Image
+          source={require('../../assets/img/picstop-logo.png')}
+          style={styles.logo}
+        />
+        <Formik
+          initialValues={{ username: '', email: '', password: '', password2: '' }}
+          onSubmit={postSignUp}
+          validationSchema={SignUpSchema}
+          initialErrors={{
+            username: 'err',
+            email: 'err',
+            password: 'err',
+            password2: 'err',
+          }}
+          validateOnBlur>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            isValid,
+          }) => (
+            <View style={styles.inputs}>
+              {errors && (
+                <Text>
+                  {touched.username && errors.username}{' '}
+                  {touched.email && errors.email}{' '}
+                  {touched.password && errors.password}
+                </Text>
+              )}
+              <IconTextField
+                icon={faUser}
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                placeholder={'Username'}
+                style={styles.textField}
+                value={values.username}
+                autoCapitalize={'none'}
+                invalid={
+                  touched.username ? (errors.username ? true : false) : false
+                }
               />
+              <IconTextField
+                icon={faEnvelope}
+                placeholder={'Email'}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                value={values.email}
+                style={styles.textField}
+                autoCapitalize={'none'}
+                invalid={touched.email ? (errors.email ? true : false) : false}
+              />
+              <IconTextField
+                icon={faLock}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                placeholder={'Password'}
+                value={values.password}
+                secureTextEntry
+                style={styles.textField}
+                invalid={
+                  touched.password ? (errors.password ? true : false) : false
+                }
+              />
+              <IconTextField
+                icon={faLock}
+                onChangeText={handleChange('password2')}
+                onBlur={handleBlur('password2')}
+                placeholder={'Reenter Password'}
+                value={values.password2}
+                secureTextEntry
+                style={styles.textField}
+                invalid={
+                  touched.password2 ? (errors.password2 ? true : false) : false
+                }
+              />
+              <View style={styles.button}>
+                <StyledButton
+                  text={'Sign Up'}
+                  type="blue"
+                  onPress={handleSubmit}
+                  disabled={!touched || !isValid}
+                />
+              </View>
             </View>
-          </View>
-        )}
-      </Formik>
+          )}
+        </Formik>
 
-      <Text style={styles.fine}>
-        By registering with PicStop, you confirm that you agree to our Terms of
-        Service and Privacy Policy
-      </Text>
-    </SafeAreaView>
+        <Text style={styles.fine}>
+          By registering with PicStop, you confirm that you agree to our Terms of
+          Service and Privacy Policy
+        </Text>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
