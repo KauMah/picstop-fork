@@ -1,2 +1,2 @@
-import LikeTile from './component';
-export default LikeTile;
+import UserTile from './component';
+export default UserTile;

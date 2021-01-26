@@ -7,6 +7,7 @@ import { exo, uploadImageToS3 } from '../../utils/api';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import _ from 'lodash';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -90,6 +91,7 @@ interface Props {
 }
 
 const StatsHeader = (props: Props) => {
+  const navigation = useNavigation();
   const [pfpUpdated, setPfpUpdated] = useState(false);
   return (
     <View style={styles.container}>
@@ -147,11 +149,25 @@ const StatsHeader = (props: Props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.statsRow}>
-          <View style={{ ...styles.cell, paddingLeft: 0 }}>
+          <View
+            style={{ ...styles.cell, paddingLeft: 0 }}
+            onTouchEnd={() =>
+              navigation.navigate('Followers', {
+                userId: props._id,
+                which: 'followers',
+              })
+            }>
             <Text style={styles.bigNumber}>{props.followers}</Text>
             <Text style={styles.numberLabel}>Followers</Text>
           </View>
-          <View style={{ ...styles.greyBar, ...styles.cell }}>
+          <View
+            style={{ ...styles.greyBar, ...styles.cell }}
+            onTouchEnd={() =>
+              navigation.navigate('Following', {
+                userId: props._id,
+                which: 'following',
+              })
+            }>
             <Text style={styles.bigNumber}>{props.following}</Text>
             <Text style={styles.numberLabel}>Following</Text>
           </View>
