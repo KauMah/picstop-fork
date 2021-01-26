@@ -81,6 +81,7 @@ const MapView = () => {
               maxDistance: 1000,
             })
             .then((response) => {
+              console.log(_.get(response.data, 'message', [])[0]);
               setLocations(_.get(response.data, 'message', []));
             })
             .catch((err) => {
@@ -104,9 +105,8 @@ const MapView = () => {
           return (
             <MapThumbnail
               key={loc._id}
-              id={loc._id}
-              coordinate={loc.geoLocation.coordinates}
-              numPhotos={0}
+              location={loc}
+              onPress={() => console.log('tile pressed')}
             />
           );
         })}

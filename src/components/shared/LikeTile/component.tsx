@@ -52,7 +52,6 @@ const UserTile = (props: Props) => {
       exo
         .get(`/user/getById/${props.userId}`)
         .then((res) => {
-          console.log(res.data.message.user);
           setUser(res.data.message.user);
         })
         .catch((err) => {

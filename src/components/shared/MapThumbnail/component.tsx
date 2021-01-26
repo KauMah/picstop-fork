@@ -40,18 +40,23 @@ interface Props {
 }
 
 const MapThumbnail = (props: Props) => {
+  console.log(props.iconUrl);
   return (
     <View onTouchEndCapture={props.onTouchEndCapture}>
       <View style={styles.container}>
-        <Image
-          style={styles.container}
-          source={
-            props.new
-              ? require('../../../../assets/img/picstop-no-text.png')
-              : { uri: props.iconUrl }
-          }
-          resizeMode={'cover'}
-        />
+        {props.iconUrl ? (
+          <Image
+            style={styles.container}
+            source={{ uri: props.iconUrl }}
+            resizeMode={'cover'}
+          />
+        ) : (
+          <Image
+            style={styles.container}
+            source={require('../../../../assets/img/picstop-no-text.png')}
+            resizeMode={'cover'}
+          />
+        )}
       </View>
       {props.numPhotos > 0 && (
         <View style={styles.bubble}>
