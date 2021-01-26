@@ -13,10 +13,14 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  proPicContainer: {
+    flex: 1
   },
   proPic: {
-    height: 100,
-    width: 100,
+    flex: 1,
+    alignSelf: "stretch"
   },
   topHalf: {
     flexDirection: 'row',
@@ -31,17 +35,18 @@ const styles = StyleSheet.create({
   username: {
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 17,
   },
   location: {
     fontFamily: 'Kumbh Sans',
     fontWeight: '400',
-    fontSize: 16,
+    fontSize: 15,
   },
   button: {
     display: 'flex',
-    height: 30,
+    height: 28,
     paddingHorizontal: 5,
+    paddingTop: 3,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -52,18 +57,18 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 15,
     color: $mainBlue,
   },
   bigNumber: {
     fontFamily: 'Kumbh Sans',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 19,
   },
   numberLabel: {
     fontFamily: 'Kumbh Sans',
     fontWeight: '400',
-    fontSize: 16,
+    fontSize: 15,
   },
   statsRow: {
     flexDirection: 'row',
@@ -96,6 +101,7 @@ const StatsHeader = (props: Props) => {
   return (
     <View style={styles.container}>
       <View
+        style={styles.proPicContainer}
         onTouchEnd={() => {
           ImagePicker.openPicker({
             width: 200,
@@ -132,6 +138,7 @@ const StatsHeader = (props: Props) => {
           <Image
             style={styles.proPic}
             source={{ uri: props.profileUrl }}
+            resizeMode="contain"
             key={props.profileUrl}
           />
         ) : (
