@@ -1,5 +1,5 @@
 import { $mainBlue, $white } from '../../../utils/colors';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 import React from 'react';
 
@@ -59,9 +59,6 @@ const MapThumbnail = (props: Props) => {
             resizeMode={'cover'}
           />
         )}
-      </View>
-      <View style={styles.bubble}>
-        <Text style={styles.text}>{props.name}</Text>
       </View>
     </View>
   );
