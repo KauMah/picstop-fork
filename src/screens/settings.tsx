@@ -16,6 +16,7 @@ import {
   faTimesCircle,
   faComments,
 } from '@fortawesome/free-regular-svg-icons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +37,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     width: '100%',
     marginVertical: 10,
+  },
+  scroll: {
+    width: '100%',
   },
 });
 
@@ -66,52 +70,60 @@ const Settings = () => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title={'Settings'} />
-      <View style={styles.imageWrapper}>
-        <Image
-          source={require('../../assets/img/picstop-logo.png')}
-          style={styles.image}
-        />
-      </View>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
+          <View style={styles.imageWrapper}>
+            <Image
+              source={require('../../assets/img/picstop-logo.png')}
+              style={styles.image}
+            />
+          </View>
 
-      <View style={styles.button}>
-        <IconButton
-          icon={faUserCircle}
-          text="Profile"
-          onPress={() => console.log('Profile icon button clicked')}
-          arrow={true}
-          displayValue="Username"
-        />
-      </View>
-      <View style={styles.button}>
-        <IconButton
-          icon={faEye}
-          text="Account Privacy"
-          onPress={() => console.log('Privacy icon button clicked')}
-          arrow={true}
-          displayValue="Public"
-        />
-      </View>
-      <View style={styles.button}>
-        <IconButton
-          icon={faTimesCircle}
-          text="Blocked"
-          onPress={() => console.log('Blocked icon button clicked')}
-          arrow={true}
-          displayValue="5 Accounts"
-          disabled={true}
-        />
-      </View>
-      <View style={styles.button}>
-        <IconButton
-          icon={faComments}
-          text="Language"
-          onPress={() => console.log('Language icon button clicked')}
-          displayValue="English"
-        />
-      </View>
-      <View style={styles.button}>
-        <StyledButton text={'Sign Out'} type={'blue'} onPress={postLogout} />
-      </View>
+          <View style={styles.button}>
+            <IconButton
+              icon={faUserCircle}
+              text="Profile"
+              onPress={() => console.log('Profile icon button clicked')}
+              arrow={true}
+              displayValue="Username"
+            />
+          </View>
+          <View style={styles.button}>
+            <IconButton
+              icon={faEye}
+              text="Account Privacy"
+              onPress={() => console.log('Privacy icon button clicked')}
+              arrow={true}
+              displayValue="Public"
+            />
+          </View>
+          <View style={styles.button}>
+            <IconButton
+              icon={faTimesCircle}
+              text="Blocked"
+              onPress={() => console.log('Blocked icon button clicked')}
+              arrow={true}
+              displayValue="5 Accounts"
+              disabled={true}
+            />
+          </View>
+          <View style={styles.button}>
+            <IconButton
+              icon={faComments}
+              text="Language"
+              onPress={() => console.log('Language icon button clicked')}
+              displayValue="English"
+            />
+          </View>
+          <View style={styles.button}>
+            <StyledButton
+              text={'Sign Out'}
+              type={'blue'}
+              onPress={postLogout}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
