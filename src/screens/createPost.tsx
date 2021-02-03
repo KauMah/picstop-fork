@@ -23,8 +23,11 @@ import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
     flexDirection: 'column',
     padding: 20,
+    height: '95%',
+    justifyContent: 'space-between',
   },
   header: {
     flexDirection: 'row',
@@ -63,17 +66,18 @@ const styles = StyleSheet.create({
     color: $lightBlack,
   },
   preview: {
-    height: 280,
+    height: 200,
     width: '100%',
     marginVertical: 10,
   },
   map: {
     width: '100%',
-    height: 300,
+    height: 250,
     top: 0,
   },
   caption: {
     marginTop: 10,
+    alignSelf: 'flex-end',
   },
 });
 
@@ -156,6 +160,7 @@ const CreatePost = () => {
               style={styles.preview}
               defaultSource={require('../../assets/img/picstop-no-text.png')}
               source={{ uri: `data:image/jpeg;base64,${picRes}` }}
+              resizeMode="contain"
             />
           </View>
           <MapboxGL.MapView
