@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Kumbh Sans',
     fontSize: 16,
     marginTop: 20,
+    marginBottom: 30,
   },
 });
 
