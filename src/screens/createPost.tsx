@@ -141,7 +141,7 @@ const CreatePost = () => {
       <ScrollView style={styles.scroll}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'position' : undefined}
-          keyboardVerticalOffset={100}>
+          keyboardVerticalOffset={125}>
           <View style={styles.container}>
             <View
               onTouchStart={() => {
