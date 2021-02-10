@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   header: {
@@ -39,6 +40,8 @@ interface Props {
 
 const CustomHeader = (props: Props) => {
   const { title } = props;
+
+  const navigation = useNavigation();
   return (
     <View style={styles.header}>
       <Image
@@ -50,7 +53,9 @@ const CustomHeader = (props: Props) => {
         <View style={styles.icon} onTouchStart={() => console.log('TO DO')}>
           <FontAwesomeIcon icon={faSearch} size={25} color={$mainGray} />
         </View>
-        <View style={styles.icon} onTouchStart={() => console.log('TO DO')}>
+        <View
+          style={styles.icon}
+          onTouchStart={() => navigation.navigate('Notifications')}>
           <FontAwesomeIcon icon={faBell} size={25} color={$mainGray} />
         </View>
       </View>
