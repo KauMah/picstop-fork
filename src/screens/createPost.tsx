@@ -126,6 +126,11 @@ const CreatePost = () => {
                   );
                   console.log(urls[0]);
                   uploadImageToS3(`file://${picUri}`, urls[0]).then(() => {
+                    setCaption('');
+                    setUsrLoc(undefined);
+                    setPicked(false);
+                    setPicUri('');
+                    setPicRes('');
                     navigation.goBack();
                   });
                 })
