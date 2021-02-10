@@ -1,16 +1,5 @@
-import {
-  $darkerGray,
-  $errorRed,
-  $mainGray,
-  $white,
-} from '../../../utils/colors';
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { $darkerGray, $errorRed, $mainGray } from '../../../utils/colors';
+import { StyleSheet, Text, View } from 'react-native';
 import { Post, User } from '../../../types';
 import React, { useEffect, useState } from 'react';
 
@@ -23,6 +12,7 @@ import _ from 'lodash';
 import en from 'javascript-time-ago/locale/en';
 import { exo } from '../../../utils/api';
 import { useNavigation } from '@react-navigation/native';
+import CustomModal from '../../shared/CustomModal';
 
 TimeAgo.addLocale(en);
 
@@ -96,22 +86,9 @@ const styles = StyleSheet.create({
   touchable: {
     width: 30,
   },
-  modalContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modal: {
-    width: '80%',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: $white,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   modalButton: {
     marginVertical: 10,
+    zIndex: 200,
   },
 });
 
@@ -169,63 +146,47 @@ const FeedItem = (props: Props) => {
   }, [loading, props]);
   return (
     <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          console.log('hello');
+      <CustomModal
+        modalVisible={modalVisible}
+        onPressOverlay={() => {
+          setModalVisible(false);
         }}>
-        <TouchableWithoutFeedback
+        <StyledButton
+          style={styles.modalButton}
+          type={'blue'}
+          text={'Report'}
           onPress={() => {
             setModalVisible(false);
-          }}>
-          <View style={styles.modalContainer}>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                console.log('hello there');
-              }}>
-              <View style={styles.modal}>
-                <StyledButton
-                  style={styles.modalButton}
-                  type={'blue'}
-                  text={'Report'}
-                  onPress={() => {
-                    setModalVisible(false);
-                    navigation.navigate('Report', { postId: props.post._id });
-                  }}
-                />
-                {props.post.authorId === props.userId && (
-                  <StyledButton
-                    style={styles.modalButton}
-                    type={'red'}
-                    text={'Delete'}
-                    onPress={() => {
-                      setModalVisible(false);
-                      exo
-                        .delete(`/posts/delete/${props.post._id}`)
-                        .then(() => {
-                          Toast.show({
-                            type: 'success',
-                            text1: 'Success',
-                            text2: 'Deleted post',
-                          });
-                        })
-                        .catch(() =>
-                          Toast.show({
-                            type: 'error',
-                            text1: 'Network Error',
-                            text2: 'Could not delete post'!,
-                          }),
-                        );
-                    }}
-                  />
-                )}
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+            navigation.navigate('Report', { postId: props.post._id });
+          }}
+        />
+        {props.post.authorId === props.userId && (
+          <StyledButton
+            style={styles.modalButton}
+            type={'red'}
+            text={'Delete'}
+            onPress={() => {
+              setModalVisible(false);
+              exo
+                .delete(`/posts/delete/${props.post._id}`)
+                .then(() => {
+                  Toast.show({
+                    type: 'success',
+                    text1: 'Success',
+                    text2: 'Deleted post',
+                  });
+                })
+                .catch(() =>
+                  Toast.show({
+                    type: 'error',
+                    text1: 'Network Error',
+                    text2: 'Could not delete post'!,
+                  }),
+                );
+            }}
+          />
+        )}
+      </CustomModal>
       <View style={styles.infoContainer}>
         {user.profilePic ? (
           <Image
