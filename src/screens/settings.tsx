@@ -1,22 +1,24 @@
 import { Image, SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+  faComments,
+  faEye,
+  faTimesCircle,
+  faUserCircle,
+} from '@fortawesome/free-regular-svg-icons';
 
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomHeader from '../components/shared/CustomHeader';
+import IconButton from '../components/shared/IconButton';
+import ProfileSettings from './profileSettings';
 import React from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
 import StyledButton from '../components/shared/StyledButton';
+import { createStackNavigator } from '@react-navigation/stack';
 import { logout } from '../redux/actions';
 import { useDispatch } from 'react-redux';
-import IconButton from '../components/shared/IconButton';
-
-import {
-  faUserCircle,
-  faEye,
-  faTimesCircle,
-  faComments,
-} from '@fortawesome/free-regular-svg-icons';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +45,36 @@ const styles = StyleSheet.create({
   },
 });
 
+const SettingsStack = createStackNavigator();
+
+const SettingsRoutes = () => {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen
+        name={'Settings'}
+        component={Settings}
+        options={{ headerShown: false }}
+      />
+      <SettingsStack.Screen
+        name={'Edit Profile'}
+        component={ProfileSettings}
+        options={{
+          headerBackTitle: 'Back',
+          headerTitleStyle: {
+            fontSize: 20,
+            fontFamily: 'Kumbh Sans',
+            fontWeight: 'bold',
+            paddingTop: 5,
+            paddingHorizontal: 10,
+          },
+        }}
+      />
+    </SettingsStack.Navigator>
+  );
+};
+
 const Settings = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const postLogout = () => {
     fetch(`${API_URL}/user/logout`, {
@@ -83,7 +114,7 @@ const Settings = () => {
             <IconButton
               icon={faUserCircle}
               text="Profile"
-              onPress={() => console.log('Profile icon button clicked')}
+              onPress={() => navigation.navigate('Edit Profile')}
               arrow={true}
               displayValue="Username"
             />
@@ -127,4 +158,5 @@ const Settings = () => {
     </SafeAreaView>
   );
 };
-export default Settings;
+
+export default SettingsRoutes;
