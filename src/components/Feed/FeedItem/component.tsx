@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     padding: 20,
+    marginBottom: 15,
   },
   infoContainer: {
     flexDirection: 'row',

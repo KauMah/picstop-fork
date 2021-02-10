@@ -9,7 +9,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },

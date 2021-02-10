@@ -20,11 +20,18 @@ import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
     flexDirection: 'column',
     padding: 20,
+    height: '95%',
+    justifyContent: 'space-between',
+  },
+  scroll: {
+    height: '100%',
   },
   header: {
     flexDirection: 'row',
@@ -63,17 +70,18 @@ const styles = StyleSheet.create({
     color: $lightBlack,
   },
   preview: {
-    height: 280,
+    height: 200,
     width: '100%',
     marginVertical: 10,
   },
   map: {
     width: '100%',
-    height: 300,
+    height: 250,
     top: 0,
   },
   caption: {
     marginTop: 10,
+    alignSelf: 'flex-end',
   },
 });
 
@@ -118,6 +126,11 @@ const CreatePost = () => {
                   );
                   console.log(urls[0]);
                   uploadImageToS3(`file://${picUri}`, urls[0]).then(() => {
+                    setCaption('');
+                    setUsrLoc(undefined);
+                    setPicked(false);
+                    setPicUri('');
+                    setPicRes('');
                     navigation.goBack();
                   });
                 })
@@ -130,104 +143,111 @@ const CreatePost = () => {
           Post
         </Text>
       </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'position' : undefined}>
-        <View style={styles.container}>
-          <View
-            onTouchStart={() => {
-              ImagePicker.openPicker({
-                width: 375,
-                height: 280,
-                cropping: true,
-                forceJpg: true,
-                includeBase64: true,
-              })
-                .then((image) => {
-                  setPicked(true);
-                  setPicUri(_.get(image, 'path', ''));
-                  setPicRes(_.get(image, 'data', ''));
+      <ScrollView style={styles.scroll}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'position' : undefined}
+          keyboardVerticalOffset={125}>
+          <View style={styles.container}>
+            <View
+              onTouchStart={() => {
+                ImagePicker.openPicker({
+                  width: 375,
+                  height: 280,
+                  cropping: true,
+                  forceJpg: true,
+                  includeBase64: true,
                 })
-                .catch((err) => {
-                  console.log(err);
-                  setPicked(false);
-                });
-            }}>
-            <Image
-              style={styles.preview}
-              defaultSource={require('../../assets/img/picstop-no-text.png')}
-              source={{ uri: `data:image/jpeg;base64,${picRes}` }}
+                  .then((image) => {
+                    setPicked(true);
+                    setPicUri(_.get(image, 'path', ''));
+                    setPicRes(_.get(image, 'data', ''));
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    setPicked(false);
+                  });
+              }}>
+              <Image
+                style={styles.preview}
+                defaultSource={require('../../assets/img/picstop-no-text.png')}
+                source={{ uri: `data:image/jpeg;base64,${picRes}` }}
+                resizeMode="contain"
+              />
+            </View>
+            <MapboxGL.MapView
+              ref={_map}
+              style={styles.map}
+              styleURL={'mapbox://styles/kaumah/ckjeur5kx7uud19mc0zr67xkm'}
+              rotateEnabled={false}
+              onRegionDidChange={_.throttle(async (feature) => {
+                const coords = feature.geometry.coordinates;
+                exo
+                  .post('/locations/near', {
+                    long: coords[0],
+                    lat: coords[1],
+                    maxDistance: 1000,
+                  })
+                  .then((response) => {
+                    const allLocations = _.concat(
+                      locations,
+                      _.get(response.data, 'message', []),
+                    );
+                    setLocations(_.uniqBy(allLocations, (loc) => loc._id));
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                    Toast.show({
+                      type: 'error',
+                      position: 'top',
+                      text1:
+                        'Something went wrong, please close the app and try again',
+                    });
+                  });
+                _camera;
+              }, 1000)}
+              onDidFinishRenderingMapFully={async () => {
+                const coords = _.get(_loc.current?.state, 'coordinates', [
+                  0,
+                  0,
+                ]);
+                exo
+                  .post('/locations/near', {
+                    long: coords[0],
+                    lat: coords[1],
+                    maxDistance: 1000,
+                  })
+                  .then((response) => {
+                    setLocations(_.get(response.data, 'message', []));
+                  })
+                  .catch((err) => console.log(err));
+                _camera.current?.moveTo(coords);
+                setTimeout(() => {
+                  _camera.current?.zoomTo(10);
+                }, 500);
+              }}
+              animated>
+              <MapboxGL.Camera ref={_camera} zoomLevel={10} />
+              <MapboxGL.UserLocation visible animated ref={_loc} />
+              {locations.map((loc: Location) => (
+                <MapThumbnail
+                  key={loc._id}
+                  location={loc}
+                  onPress={() => {
+                    setUsrLoc(loc);
+                  }}
+                />
+              ))}
+            </MapboxGL.MapView>
+            <IconTextField
+              style={styles.caption}
+              icon={faComment}
+              value={caption}
+              onChangeText={(text) => setCaption(text)}
+              placeholder={'Enter a caption'}
             />
           </View>
-          <MapboxGL.MapView
-            ref={_map}
-            style={styles.map}
-            styleURL={'mapbox://styles/kaumah/ckjeur5kx7uud19mc0zr67xkm'}
-            rotateEnabled={false}
-            onRegionDidChange={_.throttle(async (feature) => {
-              const coords = feature.geometry.coordinates;
-              exo
-                .post('/locations/near', {
-                  long: coords[0],
-                  lat: coords[1],
-                  maxDistance: 1000,
-                })
-                .then((response) => {
-                  const allLocations = _.concat(
-                    locations,
-                    _.get(response.data, 'message', []),
-                  );
-                  setLocations(_.uniqBy(allLocations, (loc) => loc._id));
-                })
-                .catch((err) => {
-                  console.error(err);
-                  Toast.show({
-                    type: 'error',
-                    position: 'top',
-                    text1:
-                      'Something went wrong, please close the app and try again',
-                  });
-                });
-              _camera;
-            }, 1000)}
-            onDidFinishRenderingMapFully={async () => {
-              const coords = _.get(_loc.current?.state, 'coordinates', [0, 0]);
-              exo
-                .post('/locations/near', {
-                  long: coords[0],
-                  lat: coords[1],
-                  maxDistance: 1000,
-                })
-                .then((response) => {
-                  setLocations(_.get(response.data, 'message', []));
-                })
-                .catch((err) => console.log(err));
-              _camera.current?.moveTo(coords);
-              setTimeout(() => {
-                _camera.current?.zoomTo(10);
-              }, 500);
-            }}
-            animated>
-            <MapboxGL.Camera ref={_camera} zoomLevel={10} />
-            <MapboxGL.UserLocation visible animated ref={_loc} />
-            {locations.map((loc: Location) => (
-              <MapThumbnail
-                key={loc._id}
-                location={loc}
-                onPress={() => {
-                  setUsrLoc(loc);
-                }}
-              />
-            ))}
-          </MapboxGL.MapView>
-          <IconTextField
-            style={styles.caption}
-            icon={faComment}
-            value={caption}
-            onChangeText={(text) => setCaption(text)}
-            placeholder={'Enter a caption'}
-          />
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 };

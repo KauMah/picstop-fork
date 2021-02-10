@@ -1,6 +1,6 @@
 import { $mainBlue, $mainGray, $tabBarGray } from './utils/colors';
 import React, { useEffect, useState } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,12 +25,6 @@ import { setToken } from './utils/api';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
-
-const styles = StyleSheet.create({
-  tab: {
-    marginTop: 10,
-  },
-});
 
 interface RouteProps {
   token: string;
@@ -86,7 +80,6 @@ const AuthenticatedRoutes = () => {
                 case 'Home':
                   return (
                     <Ionicon
-                      style={styles.tab}
                       name={'home-outline'}
                       size={30}
                       color={focused ? $mainBlue : $mainGray}
@@ -95,7 +88,6 @@ const AuthenticatedRoutes = () => {
                 case 'Map':
                   return (
                     <Feather
-                      style={styles.tab}
                       name={'map-pin'}
                       size={30}
                       color={focused ? $mainBlue : $mainGray}
@@ -104,7 +96,6 @@ const AuthenticatedRoutes = () => {
                 case 'Post':
                   return (
                     <Feather
-                      style={styles.tab}
                       name={'plus-circle'}
                       size={30}
                       color={focused ? $mainBlue : $mainGray}
@@ -113,7 +104,6 @@ const AuthenticatedRoutes = () => {
                 case 'Profile':
                   return (
                     <Ionicon
-                      style={styles.tab}
                       name={'md-person-circle-outline'}
                       size={35}
                       color={focused ? $mainBlue : $mainGray}
@@ -122,7 +112,6 @@ const AuthenticatedRoutes = () => {
                 case 'Settings':
                   return (
                     <EvilIcon
-                      style={styles.tab}
                       name={'gear'}
                       size={40}
                       color={focused ? $mainBlue : $mainGray}
