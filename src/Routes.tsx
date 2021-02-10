@@ -22,6 +22,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { login } from './redux/actions';
 import { reduxState } from './redux/actionTypes';
 import { setToken } from './utils/api';
+import Notifications from './screens/notifications';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -129,6 +130,11 @@ const AuthenticatedRoutes = () => {
           />
           <Tabs.Screen name="Profile" component={Profile} />
           <Tabs.Screen name="Settings" component={Settings} />
+          <Tabs.Screen
+            name="Notifications"
+            component={Notifications}
+            options={{ tabBarButton: () => null }}
+          />
         </Tabs.Navigator>
       </NavigationContainer>
     </>
