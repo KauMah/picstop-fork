@@ -26,14 +26,18 @@ import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
     backgroundColor: $white,
     height: '100%',
   },
   inputs: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
     width: '100%',
+    backgroundColor: $white,
   },
   textField: {
     marginVertical: 5,
@@ -41,17 +45,20 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 164,
-    marginTop: 139,
+    marginTop: 55,
     marginBottom: 25,
   },
   button: {
-    width: '100%',
     marginTop: 10,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   forgot: {
     fontFamily: 'Kumbh Sans',
     fontSize: 16,
     marginTop: 20,
+    marginBottom: 30,
   },
 });
 
@@ -93,27 +100,28 @@ const Login = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : undefined}>
-      <SafeAreaView style={styles.container}>
-        <Image
-          source={require('../../assets/img/picstop-logo.png')}
-          style={styles.logo}
-        />
-        <Formik
-          initialValues={{ username: '', password: '' }}
-          onSubmit={postSignIn}
-          initialErrors={{ username: 'err', password: 'err' }}
-          validationSchema={LogInSchema}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-            isValid,
-          }) => (
+    <SafeAreaView style={styles.container}>
+      <Image
+        source={require('../../assets/img/picstop-logo.png')}
+        style={styles.logo}
+      />
+      <Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={postSignIn}
+        initialErrors={{ username: 'err', password: 'err' }}
+        validationSchema={LogInSchema}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+          isValid,
+        }) => (
+          <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'position' : undefined}>
             <View style={styles.inputs}>
               <IconTextField
                 icon={faUser}
@@ -148,11 +156,11 @@ const Login = () => {
                 />
               </View>
             </View>
-          )}
-        </Formik>
-        <Text style={styles.forgot}>Forgot your password? Reset password</Text>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        )}
+      </Formik>
+      <Text style={styles.forgot}>Forgot your password? Reset password</Text>
+    </SafeAreaView>
   );
 };
 

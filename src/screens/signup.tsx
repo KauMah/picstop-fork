@@ -22,17 +22,23 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { login } from '../redux/actions';
 import { setToken } from '../utils/api';
 import { useDispatch } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
+import { $white } from '../utils/colors';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
     backgroundColor: '#FFF',
     height: '100%',
   },
   inputs: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
     width: '100%',
+    backgroundColor: $white,
   },
   textField: {
     marginVertical: 5,
@@ -40,12 +46,15 @@ const styles = StyleSheet.create({
   logo: {
     height: 164,
     width: 200,
-    marginTop: 139,
+    marginTop: 55,
     marginBottom: 25,
+    alignSelf: 'center',
   },
   button: {
-    width: '100%',
     marginTop: 20,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   fine: {
     fontFamily: 'Kumbh Sans',
@@ -53,6 +62,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
     lineHeight: 20,
+    marginBottom: 30,
   },
 });
 
@@ -126,8 +136,7 @@ const SignUp = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : undefined}>
+    <ScrollView>
       <SafeAreaView style={styles.container}>
         <Image
           source={require('../../assets/img/picstop-logo.png')}
@@ -158,78 +167,88 @@ const SignUp = () => {
             touched,
             isValid,
           }) => (
-            <View style={styles.inputs}>
-              {errors && (
-                <Text>
-                  {touched.username && errors.username}{' '}
-                  {touched.email && errors.email}{' '}
-                  {touched.password && errors.password}
-                </Text>
-              )}
-              <IconTextField
-                icon={faUser}
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
-                placeholder={'Username'}
-                style={styles.textField}
-                value={values.username}
-                autoCapitalize={'none'}
-                invalid={
-                  touched.username ? (errors.username ? true : false) : false
-                }
-              />
-              <IconTextField
-                icon={faEnvelope}
-                placeholder={'Email'}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
-                style={styles.textField}
-                autoCapitalize={'none'}
-                invalid={touched.email ? (errors.email ? true : false) : false}
-              />
-              <IconTextField
-                icon={faLock}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                placeholder={'Password'}
-                value={values.password}
-                secureTextEntry
-                style={styles.textField}
-                invalid={
-                  touched.password ? (errors.password ? true : false) : false
-                }
-              />
-              <IconTextField
-                icon={faLock}
-                onChangeText={handleChange('password2')}
-                onBlur={handleBlur('password2')}
-                placeholder={'Reenter Password'}
-                value={values.password2}
-                secureTextEntry
-                style={styles.textField}
-                invalid={
-                  touched.password2 ? (errors.password2 ? true : false) : false
-                }
-              />
-              <View style={styles.button}>
-                <StyledButton
-                  text={'Sign Up'}
-                  type="blue"
-                  onPress={handleSubmit}
-                  disabled={!touched || !isValid}
+            <KeyboardAvoidingView
+              style={styles.container}
+              behavior={Platform.OS === 'ios' ? 'position' : undefined}>
+              <View style={styles.inputs}>
+                {errors && (
+                  <Text>
+                    {touched.username && errors.username}{' '}
+                    {touched.email && errors.email}{' '}
+                    {touched.password && errors.password}
+                  </Text>
+                )}
+                <IconTextField
+                  icon={faUser}
+                  onChangeText={handleChange('username')}
+                  onBlur={handleBlur('username')}
+                  placeholder={'Username'}
+                  style={styles.textField}
+                  value={values.username}
+                  autoCapitalize={'none'}
+                  invalid={
+                    touched.username ? (errors.username ? true : false) : false
+                  }
                 />
+                <IconTextField
+                  icon={faEnvelope}
+                  placeholder={'Email'}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                  style={styles.textField}
+                  autoCapitalize={'none'}
+                  invalid={
+                    touched.email ? (errors.email ? true : false) : false
+                  }
+                />
+                <IconTextField
+                  icon={faLock}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  placeholder={'Password'}
+                  value={values.password}
+                  secureTextEntry
+                  style={styles.textField}
+                  invalid={
+                    touched.password ? (errors.password ? true : false) : false
+                  }
+                />
+                <IconTextField
+                  icon={faLock}
+                  onChangeText={handleChange('password2')}
+                  onBlur={handleBlur('password2')}
+                  placeholder={'Reenter Password'}
+                  value={values.password2}
+                  secureTextEntry
+                  style={styles.textField}
+                  invalid={
+                    touched.password2
+                      ? errors.password2
+                        ? true
+                        : false
+                      : false
+                  }
+                />
+                <View style={styles.button}>
+                  <StyledButton
+                    text={'Sign Up'}
+                    type="blue"
+                    onPress={handleSubmit}
+                    disabled={!touched || !isValid}
+                    style={styles.button}
+                  />
+                </View>
               </View>
-            </View>
+            </KeyboardAvoidingView>
           )}
         </Formik>
-
         <Text style={styles.fine}>
           By registering with PicStop, you confirm that you agree to our Terms
           of Service and Privacy Policy
         </Text>
       </SafeAreaView>
-    </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
