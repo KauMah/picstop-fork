@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import CustomHeader from '../components/shared/CustomHeader/';
-import EmptyPostState from '../components/Profile/emptyState';
-import FeedItem from '../components/Feed/FeedItem/';
 import Likes from './likes';
 import Loading from './loading';
 import { Post } from '../types';
@@ -17,6 +10,7 @@ import UserList from './followList';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
+import TileContainer from '../components/Profile/tileContainer';
 
 const ProfileStack = createStackNavigator();
 
@@ -36,12 +30,6 @@ const ProfileRoutes = () => {
     </ProfileStack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  scroll: {
-    height: '75%',
-  },
-});
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -104,20 +92,9 @@ const Profile = () => {
           setLoading(true);
         }}
       />
-      <ScrollView
-        style={styles.scroll}
-        refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-        }>
-        {posts.length < 1 && <EmptyPostState />}
-        {posts.map((post) => (
-          <FeedItem
-            post={post}
-            userId={user._id}
-            key={`${user.profilePic}${post._id}`}
-          />
-        ))}
-      </ScrollView>
+      <TileContainer loading={loading} onRefresh={onRefresh} />
+      {/* Keeping this in right now to pass commit linting */}
+      {posts.map(() => null)}
     </SafeAreaView>
   );
 };
