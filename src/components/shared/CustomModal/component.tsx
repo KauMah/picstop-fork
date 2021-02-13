@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
 import {
   Dimensions,
   Modal,
   StyleSheet,
-  View,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
+import React, { PropsWithChildren } from 'react';
 
 import { $white } from '../../../utils/colors';
 
@@ -37,10 +37,7 @@ const CustomModal = (props: Props) => {
     <Modal
       animationType="slide"
       transparent={true}
-      visible={props.modalVisible}
-      onRequestClose={() => {
-        console.log('hello');
-      }}>
+      visible={props.modalVisible}>
       <TouchableWithoutFeedback onPress={props.onPressOverlay}>
         <View style={styles.container}>
           <TouchableWithoutFeedback>

@@ -11,6 +11,7 @@ import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import { exo } from '../utils/api';
 import { faMonument } from '@fortawesome/free-solid-svg-icons';
+import { rollbar } from '../utils/rollbar';
 import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
@@ -41,27 +42,25 @@ const CreateLocation = (props: Props) => {
   const navigation = useNavigation();
   const postCreateLocation = async (values: FormValues) => {
     const coords = _.get(props.route, 'params.coords', [0, 0]);
-
     exo
-      .post('/locations/location', {
+      .post('/locations/locationn', {
         long: coords[0],
         lat: coords[1],
         name: values.name,
       })
-      .then((result) => {
+      .then(() => {
         Toast.show({
           type: 'success',
           text1: 'Successfully added location',
           position: 'top',
         });
-        console.log(result.data);
         navigation.goBack();
       })
       .catch((err) => {
+        rollbar.error(`Create Location failed: ${err.message}`);
         Toast.show({
           type: 'error',
           text1: 'Error: try again',
-          text2: err,
           position: 'top',
         });
       });

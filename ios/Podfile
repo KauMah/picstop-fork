@@ -10,6 +10,7 @@ target 'picstop' do
 
   permissions_path = '../node_modules/react-native-permissions/ios'
 
+  pod 'RollbarReactNative', path: '../node_modules/rollbar-react-native'
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
 

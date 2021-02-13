@@ -17,6 +17,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import StyledButton from '../components/shared/StyledButton';
 import { createStackNavigator } from '@react-navigation/stack';
 import { logout } from '../redux/actions';
+import { rollbar } from '../utils/rollbar';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -86,7 +87,6 @@ const Settings = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          console.log('Route Worked');
         }
         dispatch(logout());
         AsyncStorage.removeItem('token');
@@ -94,7 +94,7 @@ const Settings = () => {
       .catch((err) => {
         dispatch(logout());
         AsyncStorage.removeItem('token');
-        console.log(err);
+        rollbar.error(`Failed to logout: ${err}`);
       });
   };
 

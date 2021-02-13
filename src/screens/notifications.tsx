@@ -1,8 +1,8 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
 
-import React from 'react';
 import CustomHeader from '../components/shared/CustomHeader';
-import Notification from '../components/Notificiation';
+import Notification from '../components/Notification';
+import React from 'react';
 
 const styles = StyleSheet.create({
   container: {

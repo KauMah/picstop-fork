@@ -22,6 +22,7 @@ import { Post } from '../types';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
+import { rollbar } from '../utils/rollbar';
 
 const styles = StyleSheet.create({
   container: {
@@ -95,9 +96,9 @@ const Feed = () => {
                 }),
               );
             })
-            .catch((e) => console.log(e));
+            .catch((e) => rollbar.error(`Failed to load basic user: ${e}`));
         })
-        .catch((e) => console.log(e));
+        .catch((e) => rollbar.error(`Failed to load user: ${e}`));
       setLoading(false);
     }
   }, [loading, posts]);
