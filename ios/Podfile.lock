@@ -360,6 +360,10 @@ PODS:
     - React
   - RNVectorIcons (8.0.0):
     - React-Core
+  - Rollbar (1.12.14)
+  - RollbarReactNative (0.9.1):
+    - React
+    - Rollbar (~> 1.12.8)
   - SDWebImage/Core (5.10.2)
   - SDWebImageWebPCoder (0.8.1):
     - libwebp (~> 1.0)
@@ -430,6 +434,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - RollbarReactNative (from `../node_modules/rollbar-react-native`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -449,6 +454,7 @@ SPEC REPOS:
     - Mapbox-iOS-SDK
     - MapboxMobileEvents
     - OpenSSL-Universal
+    - Rollbar
     - SDWebImage
     - SDWebImageWebPCoder
     - TOCropViewController
@@ -533,6 +539,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  RollbarReactNative:
+    :path: "../node_modules/rollbar-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -591,12 +599,14 @@ SPEC CHECKSUMS:
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: f67a1abce2ec73e62fe4606e8110e95a832bc859
+  Rollbar: 58f315609433558a82af5a54d7888bb020bec561
+  RollbarReactNative: fbc7ed0742dbf94c257dff82340dd26d45c447a0
   SDWebImage: b969dcfc02c40a5da71eac0b03b8f1a0c794a86f
   SDWebImageWebPCoder: fac2821bf5a6642a73979d0962dbed5eac45a605
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 6de65d64cb71edafb16d6809bc819ef644772fb4
+PODFILE CHECKSUM: 9097610a80a0c77900909c31117e5ac080778501
 
 COCOAPODS: 1.9.3

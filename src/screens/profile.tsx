@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native';
 
 import CustomHeader from '../components/shared/CustomHeader/';
 import Likes from './likes';
 import Loading from './loading';
 import { Post } from '../types';
+import { SafeAreaView } from 'react-native';
 import StatsHeader from '../components/Profile/StatsHeader';
+import TileContainer from '../components/Profile/tileContainer';
 import UserList from './followList';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
-import TileContainer from '../components/Profile/tileContainer';
+import { rollbar } from '../utils/rollbar';
 
 const ProfileStack = createStackNavigator();
 
@@ -69,11 +70,13 @@ const Profile = () => {
                 const thePosts = resp.data.message.posts;
                 setPosts(thePosts.reverse());
               })
-              .catch((err) => console.log(err));
+              .catch((err) =>
+                rollbar.error(`Failed to load user posts: ${err}`),
+              );
           });
           setLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
     }
   }, [loading, user]);
 

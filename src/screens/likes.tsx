@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message';
 import UserTile from '../components/shared/LikeTile';
 import _ from 'lodash';
 import { exo } from '../utils/api';
+import { rollbar } from '../utils/rollbar';
 import { useRoute } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
@@ -28,14 +29,15 @@ const Likes = () => {
         .then((response) => {
           setLikes(_.get(response.data, 'message.likes'));
         })
-        .catch((err) =>
+        .catch((err) => {
+          rollbar.error(`Failed to load post by id: ${err}`);
           Toast.show({
             type: 'error',
             position: 'top',
             text1: 'Network error',
-            text2: err,
-          }),
-        );
+            text2: err.message,
+          });
+        });
     }
     return () => {
       setLoading(false);
