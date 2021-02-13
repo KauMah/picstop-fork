@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { User } from '../../../types';
 import { exo } from '../../../utils/api';
+import { rollbar } from '../../../utils/rollbar';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,11 +56,12 @@ const UserTile = (props: Props) => {
           setUser(res.data.message.user);
         })
         .catch((err) => {
+          rollbar.error(`Failed to fetch user by id: ${err}`);
           Toast.show({
             type: 'error',
             position: 'top',
             text1: 'Error loading user',
-            text2: err,
+            text2: err.message,
           });
         });
       setLoading(false);

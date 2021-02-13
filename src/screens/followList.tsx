@@ -6,6 +6,7 @@ import Toast from 'react-native-toast-message';
 import UserTile from '../components/shared/LikeTile';
 import _ from 'lodash';
 import { exo } from '../utils/api';
+import { rollbar } from '../utils/rollbar';
 import { useRoute } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
@@ -41,14 +42,15 @@ const UserList = () => {
         .then((response) => {
           setUsers(_.get(response.data, `message.user.${which}`));
         })
-        .catch((err) =>
+        .catch((err) => {
           Toast.show({
             type: 'error',
             position: 'top',
             text1: 'Network error',
-            text2: err,
-          }),
-        );
+            text2: err.message,
+          });
+          rollbar.error(`Failed to get user by id: ${err}`);
+        });
     }
     return () => {
       setLoading(false);

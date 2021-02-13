@@ -1,8 +1,9 @@
 import { $darkerGray, $errorRed, $mainGray } from '../../../utils/colors';
-import { StyleSheet, Text, View } from 'react-native';
 import { Post, User } from '../../../types';
 import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
+import CustomModal from '../../shared/CustomModal';
 import { Image } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import StyledButton from '../../shared/StyledButton';
@@ -11,8 +12,8 @@ import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import en from 'javascript-time-ago/locale/en';
 import { exo } from '../../../utils/api';
+import { rollbar } from '../../../utils/rollbar';
 import { useNavigation } from '@react-navigation/native';
-import CustomModal from '../../shared/CustomModal';
 
 TimeAgo.addLocale(en);
 
@@ -133,11 +134,12 @@ const FeedItem = (props: Props) => {
           setLocation(_.get(res.data, 'message.location.name', 'Location'));
         })
         .catch((err) => {
+          rollbar.error(`failed to get location by ID: ${err}`);
           Toast.show({
             type: 'error',
             position: 'top',
             text1: 'Error fetching location',
-            text2: JSON.stringify(err),
+            text2: err.message,
           });
           setLocation('Location');
         });
@@ -176,13 +178,14 @@ const FeedItem = (props: Props) => {
                     text2: 'Deleted post',
                   });
                 })
-                .catch(() =>
+                .catch((err) => {
+                  rollbar.error(`Failed to delete post: ${err}`);
                   Toast.show({
                     type: 'error',
                     text1: 'Network Error',
                     text2: 'Could not delete post'!,
-                  }),
-                );
+                  });
+                });
             }}
           />
         )}

@@ -2,12 +2,12 @@ import * as Yup from 'yup';
 
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 
 import { $white } from '../utils/colors';
@@ -18,9 +18,11 @@ import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField/container';
 import React from 'react';
 import StyledButton from '../components/shared/StyledButton';
+import Toast from 'react-native-toast-message';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { login } from '../redux/actions';
+import { rollbar } from '../utils/rollbar';
 import { setToken } from '../utils/api';
 import { useDispatch } from 'react-redux';
 
@@ -95,7 +97,8 @@ const Login = () => {
         dispatch(login(responseBody.message));
       })
       .catch((err) => {
-        console.log('Login Failed', err);
+        rollbar.error(`Failed to login: ${err}`);
+        Toast.show({ type: 'error', position: 'top', text1: 'Login failed!' });
       });
   };
 

@@ -1,12 +1,12 @@
 import { $lightBlack, $mainBlue, $mainGreen } from '../utils/colors';
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { exo, uploadImageToS3 } from '../utils/api';
@@ -16,11 +16,12 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { Location } from '../types';
 import MapThumbnail from '../components/shared/MapThumbnail';
 import MapboxGL from '@react-native-mapbox-gl/maps';
+import { ScrollView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
+import { rollbar } from '../utils/rollbar';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
@@ -124,7 +125,6 @@ const CreatePost = () => {
                     'message.uploadUrls',
                     'nothing I guess',
                   );
-                  console.log(urls[0]);
                   uploadImageToS3(`file://${picUri}`, urls[0]).then(() => {
                     setCaption('');
                     setUsrLoc(undefined);
@@ -134,9 +134,13 @@ const CreatePost = () => {
                     navigation.goBack();
                   });
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => rollbar.error(`Image Upload Failed: ${err}`));
             } else {
-              console.log('missing fields');
+              Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Missing fields for post creation!',
+              });
             }
           }}
           style={styles.post}>
@@ -163,7 +167,7 @@ const CreatePost = () => {
                     setPicRes(_.get(image, 'data', ''));
                   })
                   .catch((err) => {
-                    console.log(err);
+                    rollbar.error(`Image selection failed: ${err}`);
                     setPicked(false);
                   });
               }}>
@@ -195,7 +199,7 @@ const CreatePost = () => {
                     setLocations(_.uniqBy(allLocations, (loc) => loc._id));
                   })
                   .catch((err) => {
-                    console.error(err);
+                    rollbar.error(`Find nearby locations failed: ${err}`);
                     Toast.show({
                       type: 'error',
                       position: 'top',
@@ -219,7 +223,9 @@ const CreatePost = () => {
                   .then((response) => {
                     setLocations(_.get(response.data, 'message', []));
                   })
-                  .catch((err) => console.log(err));
+                  .catch((err) =>
+                    rollbar.error(`Find nearby locations failed: ${err}`),
+                  );
                 _camera.current?.moveTo(coords);
                 setTimeout(() => {
                   _camera.current?.zoomTo(10);

@@ -7,6 +7,7 @@ import { exo, uploadImageToS3 } from '../../utils/api';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import _ from 'lodash';
+import { rollbar } from '../../utils/rollbar';
 import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
@@ -124,13 +125,14 @@ const StatsHeader = (props: Props) => {
                   setPfpUpdated(!pfpUpdated);
                   props.onPfpUpdated();
                 })
-                .catch(() =>
+                .catch((err) => {
+                  rollbar.error(`Failed to update profile picture: ${err}`);
                   Toast.show({
                     type: 'error',
                     position: 'top',
                     text1: 'Upload Failed!',
-                  }),
-                );
+                  });
+                });
             });
           });
         }}>

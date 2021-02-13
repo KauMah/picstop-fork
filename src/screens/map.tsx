@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
+import { rollbar } from '../utils/rollbar';
 import { useNavigation } from '@react-navigation/native';
 
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
@@ -67,6 +68,9 @@ const MapView = () => {
         style={styles.map}
         onRegionDidChange={_.throttle(async (feature) => {
           const coords = feature.geometry.coordinates;
+          if (!coords[0] || !coords[1]) {
+            return;
+          }
           exo
             .post('/locations/near', {
               long: coords[0],
@@ -81,7 +85,7 @@ const MapView = () => {
               setLocations(_.uniqBy(allLocations, (loc) => loc._id));
             })
             .catch((err) => {
-              console.error(err);
+              rollbar.error(`Failed to load nearby locations: ${err}`);
               Toast.show({
                 type: 'error',
                 position: 'top',
@@ -89,7 +93,6 @@ const MapView = () => {
                   'Something went wrong, please close the app and try again',
               });
             });
-          _camera;
         }, 1000)}
         onLongPress={(feature) => {
           navigation.navigate('NewLocation', {
@@ -100,6 +103,9 @@ const MapView = () => {
           const coords = _.get(_loc.current?.state, 'coordinates', [0, 0]);
           const long = coords ? coords[0] : 0;
           const lat = coords ? coords[1] : 0;
+          if (!lat || !long) {
+            return;
+          }
           exo
             .post('/locations/near', {
               long: long,
@@ -110,7 +116,7 @@ const MapView = () => {
               setLocations(_.get(response.data, 'message', []));
             })
             .catch((err) => {
-              console.error(err);
+              rollbar.error(`Failed to load nearby locations: ${err}`);
               Toast.show({
                 type: 'error',
                 position: 'top',
@@ -128,11 +134,7 @@ const MapView = () => {
         animated>
         {locations.map((loc) => {
           return (
-            <MapThumbnail
-              key={loc._id}
-              location={loc}
-              onPress={() => console.log('tile pressed')}
-            />
+            <MapThumbnail key={loc._id} location={loc} onPress={() => {}} />
           );
         })}
 
