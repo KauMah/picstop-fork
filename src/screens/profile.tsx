@@ -17,6 +17,7 @@ import UserList from './followList';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
+import { rollbar } from '../utils/rollbar';
 
 const ProfileStack = createStackNavigator();
 
@@ -81,11 +82,13 @@ const Profile = () => {
                 const thePosts = resp.data.message.posts;
                 setPosts(thePosts.reverse());
               })
-              .catch((err) => console.log(err));
+              .catch((err) =>
+                rollbar.error(`Failed to load user posts: ${err}`),
+              );
           });
           setLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
     }
   }, [loading, user]);
 

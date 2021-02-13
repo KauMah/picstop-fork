@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+
+import IconButton from '../components/shared/IconButton';
+import IconTextField from '../components/shared/IconTextField';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import _ from 'lodash';
-
 import { exo } from '../utils/api';
-import IconButton from '../components/shared/IconButton';
-import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { faMapPin } from '@fortawesome/free-solid-svg-icons';
-import IconTextField from '../components/shared/IconTextField';
+import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+import { rollbar } from '../utils/rollbar';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +50,7 @@ const ProfileSettings = () => {
           });
           setLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
     }
   }, [loading, user]);
 

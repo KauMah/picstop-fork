@@ -42,7 +42,6 @@ interface Props {
 }
 
 const MapThumbnail = (props: Props) => {
-  console.log(props.iconUrl);
   return (
     <View style={styles.container} onTouchEndCapture={props.onTouchEndCapture}>
       <View style={styles.imgContainer}>

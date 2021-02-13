@@ -2,28 +2,30 @@ import * as Yup from 'yup';
 
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
+import { $white } from '../utils/colors';
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField/container';
 import React from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
 import StyledButton from '../components/shared/StyledButton';
+import Toast from 'react-native-toast-message';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { login } from '../redux/actions';
+import { rollbar } from '../utils/rollbar';
 import { setToken } from '../utils/api';
 import { useDispatch } from 'react-redux';
-import { ScrollView } from 'react-native-gesture-handler';
-import { $white } from '../utils/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -105,7 +107,12 @@ const SignUp = () => {
         }
       })
       .catch((err) => {
-        console.log('Signup Failed', err);
+        rollbar.error(`Signup Failed: ${err}`);
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Failed to Sign up successfully',
+        });
       });
   };
   const postSignIn = (vals: FormValues) => {
@@ -131,7 +138,7 @@ const SignUp = () => {
         }
       })
       .catch((err) => {
-        console.log('Login Failed', err);
+        rollbar.error(`Login Failed: ${err}`);
       });
   };
 
