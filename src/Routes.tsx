@@ -1,6 +1,5 @@
 import { $mainBlue, $mainGray, $tabBarGray } from './utils/colors';
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,13 +15,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import Profile from './screens/profile';
 import Settings from './screens/settings';
 import SignUp from './screens/signup';
+import { StatusBar } from 'react-native';
 import Welcome from './screens/welcome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { login } from './redux/actions';
 import { reduxState } from './redux/actionTypes';
 import { setToken } from './utils/api';
-import Notifications from './screens/notifications';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -130,11 +129,6 @@ const AuthenticatedRoutes = () => {
           />
           <Tabs.Screen name="Profile" component={Profile} />
           <Tabs.Screen name="Settings" component={Settings} />
-          <Tabs.Screen
-            name="Notifications"
-            component={Notifications}
-            options={{ tabBarButton: () => null }}
-          />
         </Tabs.Navigator>
       </NavigationContainer>
     </>
