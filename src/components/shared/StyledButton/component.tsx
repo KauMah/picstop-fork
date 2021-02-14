@@ -48,10 +48,22 @@ interface Props {
   onPress: (event: GestureResponderEvent) => void;
   style?: ViewStyle;
   disabled?: boolean;
+  small?: boolean;
 }
 
-const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
+const StyledButton = ({
+  text,
+  type,
+  onPress,
+  style,
+  disabled,
+  small,
+}: Props) => {
   const disabledButton = disabled ? { opacity: 0.5 } : {};
+  const smallText = small
+    ? { fontSize: 16, paddingHorizontal: 25, paddingTop: 8 }
+    : {};
+  const smallButton = small ? { height: 30 } : {};
   switch (type) {
     case 'green':
       return (
@@ -62,13 +74,16 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
           style={[
             {
               ...styles.button,
+              ...smallButton,
               borderColor: $mainGreen,
               backgroundColor: $lighterGreen,
             },
             style,
             disabledButton,
           ]}>
-          <Text style={{ ...styles.text, color: $mainGreen }}>{text}</Text>
+          <Text style={{ ...styles.text, ...smallText, color: $mainGreen }}>
+            {text}
+          </Text>
         </TouchableOpacity>
       );
     case 'blue':
@@ -80,13 +95,16 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
           style={[
             {
               ...styles.button,
+              ...smallButton,
               borderColor: $mainBlue,
               backgroundColor: $lighterBlue,
             },
             style,
             disabledButton,
           ]}>
-          <Text style={{ ...styles.text, color: $mainBlue }}>{text}</Text>
+          <Text style={{ ...styles.text, ...smallText, color: $mainBlue }}>
+            {text}
+          </Text>
         </TouchableOpacity>
       );
     case 'red':
@@ -98,13 +116,16 @@ const StyledButton = ({ text, type, onPress, style, disabled }: Props) => {
           style={[
             {
               ...styles.button,
+              ...smallButton,
               borderColor: $errorRed,
               backgroundColor: $lighterRed,
             },
             style,
             disabledButton,
           ]}>
-          <Text style={{ ...styles.text, color: $errorRed }}>{text}</Text>
+          <Text style={{ ...styles.text, ...smallText, color: $errorRed }}>
+            {text}
+          </Text>
         </TouchableOpacity>
       );
   }
