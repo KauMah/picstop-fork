@@ -139,9 +139,9 @@ const AuthenticatedRoutes = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <NavigationContainer>
-        <MainStack.Navigator initialRouteName={'picstop'}>
+        <MainStack.Navigator initialRouteName={'Home'}>
           <MainStack.Screen
-            name="picstop"
+            name="Home"
             component={MainRoutes}
             options={{ headerShown: false }}
           />
