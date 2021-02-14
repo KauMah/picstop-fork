@@ -16,11 +16,8 @@ import {
 import CustomHeader from '../components/shared/CustomHeader';
 import EmptyPostState from '../components/Profile/emptyState';
 import FeedItem from '../components/Feed/FeedItem';
-import Likes from './likes';
-import Loading from './loading';
 import { Post } from '../types';
 import _ from 'lodash';
-import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
 import { rollbar } from '../utils/rollbar';
 
@@ -30,24 +27,6 @@ const styles = StyleSheet.create({
     flex: 2,
   },
 });
-
-const PostStack = createStackNavigator();
-
-const FeedRoutes = () => {
-  return (
-    <PostStack.Navigator>
-      <PostStack.Screen
-        name="Feed"
-        component={Feed}
-        options={{ headerShown: false }}
-      />
-      <PostStack.Screen name="Post" component={Loading} />
-      <PostStack.Screen name="Likes" component={Likes} />
-      <PostStack.Screen name="Comments" component={Loading} />
-      <PostStack.Screen name="Report" component={Loading} />
-    </PostStack.Navigator>
-  );
-};
 
 const Feed = () => {
   const [posts, setPosts] = useState<Array<Post>>([]);
@@ -119,4 +98,4 @@ const Feed = () => {
   );
 };
 
-export default FeedRoutes;
+export default Feed;

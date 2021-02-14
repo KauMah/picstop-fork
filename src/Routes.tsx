@@ -8,10 +8,12 @@ import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Feed from './screens/feed';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import Likes from './screens/likes';
 import Loading from './screens/loading';
 import Login from './screens/login';
 import MapView from './screens/map';
 import { NavigationContainer } from '@react-navigation/native';
+import Notifications from './screens/notifications';
 import Profile from './screens/profile';
 import Settings from './screens/settings';
 import SignUp from './screens/signup';
@@ -24,6 +26,7 @@ import { reduxState } from './redux/actionTypes';
 import { setToken } from './utils/api';
 
 const Stack = createStackNavigator();
+const MainStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
 interface RouteProps {
@@ -64,72 +67,93 @@ const Routes = (props: RouteProps) => {
   return loaded ? <LoadedRoutes /> : <Loading />;
 };
 
+const MainRoutes = () => {
+  return (
+    <Tabs.Navigator
+      initialRouteName={'Home'}
+      tabBarOptions={{
+        showLabel: false,
+        style: { backgroundColor: $tabBarGray },
+      }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
+          switch (route.name) {
+            case 'Home':
+              return (
+                <Ionicon
+                  name={'home-outline'}
+                  size={30}
+                  color={focused ? $mainBlue : $mainGray}
+                />
+              );
+            case 'Map':
+              return (
+                <Feather
+                  name={'map-pin'}
+                  size={30}
+                  color={focused ? $mainBlue : $mainGray}
+                />
+              );
+            case 'Post':
+              return (
+                <Feather
+                  name={'plus-circle'}
+                  size={30}
+                  color={focused ? $mainBlue : $mainGray}
+                />
+              );
+            case 'Profile':
+              return (
+                <Ionicon
+                  name={'md-person-circle-outline'}
+                  size={35}
+                  color={focused ? $mainBlue : $mainGray}
+                />
+              );
+            case 'Settings':
+              return (
+                <EvilIcon
+                  name={'gear'}
+                  size={40}
+                  color={focused ? $mainBlue : $mainGray}
+                />
+              );
+          }
+        },
+      })}>
+      <Tabs.Screen name="Home" component={Feed} />
+      <Tabs.Screen name="Map" component={MapView} />
+      <Tabs.Screen
+        name="Post"
+        component={CreatePost}
+        options={{ tabBarVisible: false }}
+      />
+      <Tabs.Screen name="Profile" component={Profile} />
+      <Tabs.Screen name="Settings" component={Settings} />
+    </Tabs.Navigator>
+  );
+};
+
 const AuthenticatedRoutes = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <NavigationContainer>
-        <Tabs.Navigator
-          tabBarOptions={{
-            showLabel: false,
-            style: { backgroundColor: $tabBarGray },
-          }}
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused }) => {
-              switch (route.name) {
-                case 'Home':
-                  return (
-                    <Ionicon
-                      name={'home-outline'}
-                      size={30}
-                      color={focused ? $mainBlue : $mainGray}
-                    />
-                  );
-                case 'Map':
-                  return (
-                    <Feather
-                      name={'map-pin'}
-                      size={30}
-                      color={focused ? $mainBlue : $mainGray}
-                    />
-                  );
-                case 'Post':
-                  return (
-                    <Feather
-                      name={'plus-circle'}
-                      size={30}
-                      color={focused ? $mainBlue : $mainGray}
-                    />
-                  );
-                case 'Profile':
-                  return (
-                    <Ionicon
-                      name={'md-person-circle-outline'}
-                      size={35}
-                      color={focused ? $mainBlue : $mainGray}
-                    />
-                  );
-                case 'Settings':
-                  return (
-                    <EvilIcon
-                      name={'gear'}
-                      size={40}
-                      color={focused ? $mainBlue : $mainGray}
-                    />
-                  );
-              }
-            },
-          })}>
-          <Tabs.Screen name="Home" component={Feed} />
-          <Tabs.Screen name="Map" component={MapView} />
-          <Tabs.Screen
-            name="Post"
-            component={CreatePost}
-            options={{ tabBarVisible: false }}
+        <MainStack.Navigator initialRouteName={'picstop'}>
+          <MainStack.Screen
+            name="picstop"
+            component={MainRoutes}
+            options={{ headerShown: false }}
           />
-          <Tabs.Screen name="Profile" component={Profile} />
-          <Tabs.Screen name="Settings" component={Settings} />
-        </Tabs.Navigator>
+          <MainStack.Screen name="Likes" component={Likes} />
+          <MainStack.Screen name="Comments" component={Loading} />
+          <MainStack.Screen name="Report" component={Loading} />
+          <MainStack.Screen
+            name="Notifications"
+            component={Notifications}
+            options={{ headerShown: false }}
+          />
+        </MainStack.Navigator>
       </NavigationContainer>
     </>
   );

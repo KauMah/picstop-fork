@@ -13,13 +13,16 @@ const styles = StyleSheet.create({
   image: {
     width: '70%',
   },
+  notifications: {
+    width: '100%',
+  },
 });
 
 const Notifications = () => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title="Notifications" />
-      <ScrollView>
+      <ScrollView style={styles.notifications}>
         <Notification
           type="comment"
           url="https://www.kurin.com/wp-content/uploads/placeholder-square.jpg"
