@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import CustomHeader from '../components/shared/CustomHeader/';
-import Likes from './likes';
-import Loading from './loading';
 import { Post } from '../types';
 import { SafeAreaView } from 'react-native';
 import StatsHeader from '../components/Profile/StatsHeader';
@@ -23,9 +21,6 @@ const ProfileRoutes = () => {
         component={Profile}
         options={{ headerShown: false }}
       />
-      <ProfileStack.Screen name={'Likes'} component={Likes} />
-      <ProfileStack.Screen name={'Comments'} component={Loading} />
-      <ProfileStack.Screen name={'Report'} component={Loading} />
       <ProfileStack.Screen name={'Followers'} component={UserList} />
       <ProfileStack.Screen name={'Following'} component={UserList} />
     </ProfileStack.Navigator>
