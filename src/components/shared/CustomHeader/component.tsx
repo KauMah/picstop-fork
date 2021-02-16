@@ -93,7 +93,7 @@ const CustomHeader = (props: Props) => {
     onStart: () => {},
     onActive: ({ translationY }) => {
       translateY.value = translationY;
-      opacity.value = (2 * (height - translationY)) / height;
+      opacity.value = (1.2 * (height - translationY)) / height;
     },
     onEnd: ({ velocityY }) => {
       const dest = snapPoint(translateY.value, velocityY, [0, height]);
