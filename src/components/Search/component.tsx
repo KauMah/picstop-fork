@@ -37,7 +37,7 @@ interface Props {
   exit: () => void;
 }
 
-const Search = (props) => {
+const Search = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [users, setUsers] = useState<Array<User>>([]);
