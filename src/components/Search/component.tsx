@@ -1,8 +1,10 @@
 import { FlatList, StyleSheet, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
 
 import { $white } from '../../utils/colors';
-import React from 'react';
+import LoadingState from './SearchItem/loadingState';
 import SearchItem from './SearchItem';
+import _ from 'lodash';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,16 +47,35 @@ const data = [
 ];
 
 const Search = () => {
+  const [loading, setLoading] = useState(false);
+  const [keyword, setKeyword] = useState('');
+
+  const debounced = _.debounce(() => setLoading(false), 750);
+
   return (
     <View style={styles.container}>
-      <TextInput style={styles.search} autoCapitalize={'none'} />
-      <FlatList
-        data={data}
-        renderItem={() => {
-          return <SearchItem type={'user'} text={'Item'} />;
+      <TextInput
+        style={styles.search}
+        value={keyword}
+        onChangeText={(word: string) => {
+          setKeyword(word);
+          setLoading(true);
+          setTimeout(() => debounced(), 750);
         }}
-        keyExtractor={(item) => item.id}
+        autoCapitalize={'none'}
       />
+
+      {loading ? (
+        <LoadingState />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={() => {
+            return <SearchItem type={'user'} text={'Item'} />;
+          }}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </View>
   );
 };
