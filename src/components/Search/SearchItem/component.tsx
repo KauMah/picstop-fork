@@ -1,8 +1,11 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Location, User } from '../../../types';
+import { State, TapGestureHandler } from 'react-native-gesture-handler';
 
 import { $white } from '../../../utils/colors';
 import React from 'react';
+import { runOnJS } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,32 +36,53 @@ interface SearchItemProps {
   picUrl?: string;
   user?: User;
   location?: Location;
+  exit: () => void;
 }
-// navigation.navigate('Location', { locationId: props.location?._id })
-// navigation.navigate('userProfile', { userId: props.user?._id })
 
 const SearchItem: React.FC<SearchItemProps> = (props) => {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
+  const locWrap = () => {
+    navigation.navigate('Location', { locationId: props.location?._id });
+    props.exit();
+  };
+  const usrWrap = () => {
+    navigation.navigate('userProfile', { userId: props.user?._id });
+    props.exit();
+  };
   switch (props.type) {
     case 'location':
       return (
-        <View style={styles.container}>
-          <Text style={styles.text}>{props.text}</Text>
-        </View>
+        <TapGestureHandler
+          onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.END) {
+              runOnJS(locWrap)();
+            }
+          }}>
+          <View style={styles.container}>
+            <Text style={styles.text}>{props.text}</Text>
+          </View>
+        </TapGestureHandler>
       );
     case 'user':
       return (
-        <View style={styles.container}>
-          {props.picUrl !== '' ? (
-            <Image style={styles.pic} source={{ uri: props.picUrl }} />
-          ) : (
-            <Image
-              style={styles.pic}
-              source={require('../../../../assets/img/picstop-no-text.png')}
-            />
-          )}
-          <Text style={styles.text}>{props.text}</Text>
-        </View>
+        <TapGestureHandler
+          onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.END) {
+              runOnJS(usrWrap)();
+            }
+          }}>
+          <View style={styles.container}>
+            {props.picUrl !== '' ? (
+              <Image style={styles.pic} source={{ uri: props.picUrl }} />
+            ) : (
+              <Image
+                style={styles.pic}
+                source={require('../../../../assets/img/picstop-no-text.png')}
+              />
+            )}
+            <Text style={styles.text}>{props.text}</Text>
+          </View>
+        </TapGestureHandler>
       );
   }
 };

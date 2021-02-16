@@ -33,7 +33,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Search = () => {
+interface Props {
+  exit: () => void;
+}
+
+const Search = (props) => {
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [users, setUsers] = useState<Array<User>>([]);
@@ -92,6 +96,7 @@ const Search = () => {
                 picUrl={user.profilePic}
                 user={user}
                 key={user._id}
+                exit={props.exit}
               />
             );
           })}
@@ -102,6 +107,7 @@ const Search = () => {
               text={location.name}
               key={location._id}
               location={location}
+              exit={props.exit}
             />
           ))}
         </ScrollView>

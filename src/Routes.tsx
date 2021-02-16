@@ -153,6 +153,12 @@ const AuthenticatedRoutes = () => {
             component={Notifications}
             options={{ headerShown: false }}
           />
+          <MainStack.Screen
+            name="userProfile"
+            component={Profile}
+            options={{ headerShown: false }}
+          />
+          <MainStack.Screen name="Location" component={Loading} />
         </MainStack.Navigator>
       </NavigationContainer>
     </>

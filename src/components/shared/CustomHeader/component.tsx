@@ -120,7 +120,7 @@ const CustomHeader = (props: Props) => {
         <PanGestureHandler onGestureEvent={onGestureEvent}>
           <Animated.View style={[styles.searchContainer, searchStyle]}>
             <View style={styles.nub} />
-            <Search />
+            <Search exit={() => setSearching(false)} />
           </Animated.View>
         </PanGestureHandler>
       </Modal>
