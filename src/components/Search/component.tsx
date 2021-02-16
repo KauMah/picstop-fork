@@ -1,10 +1,13 @@
-import { FlatList, StyleSheet, TextInput, View } from 'react-native';
-import React, { useState } from 'react';
+import { $mainGray, $white } from '../../utils/colors';
+import { Location, User } from '../../types';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { $white } from '../../utils/colors';
 import LoadingState from './SearchItem/loadingState';
 import SearchItem from './SearchItem';
 import _ from 'lodash';
+import { exo } from '../../utils/api';
+import { rollbar } from '../../utils/rollbar';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,36 +24,44 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  text: {
+    fontFamily: 'Kumbh Sans',
+    fontWeight: 'bold',
+    color: $mainGray,
+    fontSize: 18,
+    marginVertical: 5,
+  },
 });
 
-const data = [
-  {
-    id: '0',
-    title: 'Hi there',
-  },
-  {
-    id: '1',
-    title: 'Hi there',
-  },
-  {
-    id: '2',
-    title: 'Hi there',
-  },
-  {
-    id: '3',
-    title: 'Hi there',
-  },
-  {
-    id: '4',
-    title: 'Hi there',
-  },
-];
+interface Props {
+  exit: () => void;
+}
 
-const Search = () => {
+const Search = (props) => {
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
+  const [users, setUsers] = useState<Array<User>>([]);
+  const [locations, setLocations] = useState<Array<Location>>([]);
 
-  const debounced = _.debounce(() => setLoading(false), 750);
+  useEffect(() => {
+    if (keyword === '') {
+      setLocations([]);
+      setUsers([]);
+    }
+  }, [keyword]);
+
+  const debounced = _.debounce(() => {
+    exo
+      .post('/user/search', { query: keyword })
+      .then((result) => {
+        setUsers(_.get(result.data, 'message.users', []));
+        setLocations(_.get(result.data, 'message.locations', []));
+        setLoading(false);
+      })
+      .catch((err) => {
+        rollbar.error(`Failed to load search results: ${err}`);
+      });
+  }, 1500);
 
   return (
     <View style={styles.container}>
@@ -60,7 +71,7 @@ const Search = () => {
         onChangeText={(word: string) => {
           setKeyword(word);
           setLoading(true);
-          setTimeout(() => debounced(), 750);
+          setTimeout(() => debounced(), 1000);
         }}
         autoCapitalize={'none'}
       />
@@ -68,13 +79,38 @@ const Search = () => {
       {loading ? (
         <LoadingState />
       ) : (
-        <FlatList
-          data={data}
-          renderItem={() => {
-            return <SearchItem type={'user'} text={'Item'} />;
-          }}
-          keyExtractor={(item) => item.id}
-        />
+        // <FlatList
+        //   data={data}
+        //   renderItem={() => {
+        //     return <SearchItem type={'user'} text={'Item'} />;
+        //   }}
+        //   keyExtractor={(item) => item.id}
+        // />
+        <ScrollView>
+          <Text style={styles.text}>Users</Text>
+          {users.map((user) => {
+            return (
+              <SearchItem
+                type={'user'}
+                text={user.username}
+                picUrl={user.profilePic}
+                user={user}
+                key={user._id}
+                exit={props.exit}
+              />
+            );
+          })}
+          <Text style={styles.text}>Locations</Text>
+          {locations.map((location) => (
+            <SearchItem
+              type={'location'}
+              text={location.name}
+              key={location._id}
+              location={location}
+              exit={props.exit}
+            />
+          ))}
+        </ScrollView>
       )}
     </View>
   );
