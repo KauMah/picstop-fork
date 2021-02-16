@@ -1,8 +1,8 @@
 import { Client, Configuration } from 'rollbar-react-native';
 
 const config = new Configuration('8c4f75e847de489894333c15db92e39b', {
-  captureUncaught: true,
-  captureUnhandledRejections: true,
+  captureUncaught: false,
+  captureUnhandledRejections: false,
   payload: {
     client: {
       javascript: {

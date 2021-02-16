@@ -1,9 +1,9 @@
-import React from 'react';
-import { ViewStyle } from 'react-native';
 import CommentNotification from './subcomponents/CommentNotification';
 import FollowNotification from './subcomponents/FollowNotification';
 import FollowRequestNotification from './subcomponents/FollowRequestNotification';
 import LikeNotification from './subcomponents/LikeNotification';
+import React from 'react';
+import { ViewStyle } from 'react-native';
 
 interface Props {
   url: string;
