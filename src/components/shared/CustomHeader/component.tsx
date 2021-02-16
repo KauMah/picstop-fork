@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     height: '100%',
     padding: 10,
     paddingTop: 5,
-    // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: $tabBarGray,
     opacity: 0.6,
