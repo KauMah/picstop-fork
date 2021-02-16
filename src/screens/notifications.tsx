@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 const Notifications = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <CustomHeader title="Notifications" />
+      <CustomHeader title="Notifications" actions={false} />
       <ScrollView style={styles.notifications}>
         <Notification
           type="comment"

@@ -339,7 +339,7 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNGestureHandler (1.9.0):
+  - RNGestureHandler (1.10.1):
     - React-Core
   - RNImageCropPicker (0.35.2):
     - React-Core
@@ -352,8 +352,35 @@ PODS:
     - TOCropViewController
   - RNPermissions (3.0.0):
     - React-Core
-  - RNReanimated (1.13.2):
+  - RNReanimated (2.0.0-rc.3):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - Folly
+    - glog
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-callinvoker
     - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - React-RCTVibration
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNScreens (2.16.1):
     - React-Core
   - RNSVG (12.1.0):
@@ -592,10 +619,10 @@ SPEC CHECKSUMS:
   ReactNativeWebPFormat: 4275844b80c2c385a10ab64f50264d720f2d691c
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
+  RNGestureHandler: 5e58135436aacc1c5d29b75547d3d2b9430d052c
   RNImageCropPicker: 9e0bf18cf4184a846fed55747c8e622208b39947
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
-  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
+  RNReanimated: ca4f28c765329144d68bdad126bf6b0b1afc7a5a
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: f67a1abce2ec73e62fe4606e8110e95a832bc859

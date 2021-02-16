@@ -34,10 +34,7 @@ interface Props extends PropsWithChildren<{}> {
 
 const CustomModal = (props: Props) => {
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={props.modalVisible}>
+    <Modal animationType="slide" transparent visible={props.modalVisible}>
       <TouchableWithoutFeedback onPress={props.onPressOverlay}>
         <View style={styles.container}>
           <TouchableWithoutFeedback>
