@@ -134,6 +134,9 @@ const StatsHeader = (props: Props) => {
       <View
         style={styles.proPicContainer}
         onTouchEnd={() => {
+          if (!props.own) {
+            return;
+          }
           ImagePicker.openPicker({
             width: 200,
             height: 200,
@@ -192,6 +195,7 @@ const StatsHeader = (props: Props) => {
             <TouchableOpacity
               onPressOut={() => {
                 exo.post('/user/unfollow', { id: props._id });
+                setFollower(false);
               }}
               style={styles.button}>
               <Text
