@@ -1,7 +1,7 @@
+import { Post, User } from '../types';
 import React, { useEffect, useState } from 'react';
 
 import CustomHeader from '../components/shared/CustomHeader/';
-import { Post } from '../types';
 import { SafeAreaView } from 'react-native';
 import StatsHeader from '../components/Profile/StatsHeader';
 import TileContainer from '../components/Profile/tileContainer';
@@ -10,6 +10,7 @@ import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
 import { exo } from '../utils/api';
 import { rollbar } from '../utils/rollbar';
+import { useRoute } from '@react-navigation/native';
 
 const ProfileStack = createStackNavigator();
 
@@ -28,12 +29,16 @@ const ProfileRoutes = () => {
 };
 
 const Profile = () => {
+  const route = useRoute();
+  const [meId, setMeId] = useState('');
+  const [own, setOwn] = useState(true);
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<Array<Post>>([]);
   const initial = {
     username: '',
     followers: [],
     following: [],
+    followerRequests: [],
     private: false,
     profilePic: '',
     savedLocations: [],
@@ -41,7 +46,7 @@ const Profile = () => {
     _id: '',
     blocked: [],
   };
-  const [user, setUser] = useState(initial);
+  const [user, setUser] = useState<User>(initial);
 
   const onRefresh = React.useCallback(() => {
     setLoading(true);
@@ -49,31 +54,37 @@ const Profile = () => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
+  const getPosts = async (username: string) => {
+    exo.get(`/user/get/${username}`).then((result) => {
+      setUser(result.data.message.user);
+      exo
+        .post('/posts/getUserPosts', {
+          userId: result.data.message.user._id,
+        })
+        .then((resp) => {
+          const thePosts = resp.data.message.posts;
+          setPosts(thePosts.reverse());
+        })
+        .catch((err) => rollbar.error(`Failed to load user posts: ${err}`));
+    });
+  };
+
   useEffect(() => {
+    const username = _.get(route.params, 'username', false);
+    setOwn(username ? false : true);
     if (loading) {
       exo
         .get('/user/')
         .then((res) => {
           const usr = _.get(res, 'data.message.username', '');
-          exo.get(`/user/get/${usr}`).then((result) => {
-            setUser(result.data.message.user);
-            exo
-              .post('/posts/getUserPosts', {
-                userId: result.data.message.user._id,
-              })
-              .then((resp) => {
-                const thePosts = resp.data.message.posts;
-                setPosts(thePosts.reverse());
-              })
-              .catch((err) =>
-                rollbar.error(`Failed to load user posts: ${err}`),
-              );
-          });
+          const userId = _.get(res, 'data.message._id', '');
+          getPosts(username ? username : usr);
+          setMeId(userId);
           setLoading(false);
         })
         .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
     }
-  }, [loading, user]);
+  }, [loading, route.params, user]);
 
   return (
     <SafeAreaView>
@@ -81,14 +92,19 @@ const Profile = () => {
       <StatsHeader
         _id={user._id}
         username={user.username}
+        me={meId}
         location={'Boston, MA'}
         profileUrl={user.profilePic}
-        followers={user.followers.length}
-        following={user.following.length}
+        followers={user.followers}
+        following={user.following}
+        blocked={user.blocked}
+        private={user.private}
+        requests={user.followerRequests}
         savedLocation={user.savedLocations.length}
         onPfpUpdated={() => {
           setLoading(true);
         }}
+        own={own}
       />
       <TileContainer loading={loading} onRefresh={onRefresh} />
       {/* Keeping this in right now to pass commit linting */}

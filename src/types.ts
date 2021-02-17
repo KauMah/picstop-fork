@@ -47,6 +47,7 @@ export type User = {
   username: string;
   followers: Array<string>;
   following: Array<string>;
+  followerRequests: Array<string>;
   private: boolean;
   profilePic: string;
   savedLocations: Array<string>;
