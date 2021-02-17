@@ -155,8 +155,7 @@ const CreatePost = () => {
             <View
               onTouchStart={() => {
                 ImagePicker.openPicker({
-                  width: 375,
-                  height: 280,
+                  freeStyleCropEnabled: true,
                   cropping: true,
                   forceJpg: true,
                   includeBase64: true,

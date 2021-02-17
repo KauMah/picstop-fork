@@ -3,6 +3,7 @@ import { Post, User } from '../../../types';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import CustomImage from '../../CustomImage';
 import CustomModal from '../../shared/CustomModal';
 import { Image } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     flex: 1,
-    padding: 20,
+    padding: 10,
     marginBottom: 15,
   },
   infoContainer: {
@@ -51,7 +52,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   imgContainer: {
-    height: 250,
     width: '100%',
     marginVertical: 10,
   },
@@ -104,7 +104,7 @@ const FeedItem = (props: Props) => {
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const initialUser = {
+  const initialUser: User = {
     username: '',
     followers: [],
     following: [],
@@ -114,6 +114,7 @@ const FeedItem = (props: Props) => {
     email: '',
     _id: '',
     blocked: [],
+    followerRequests: [],
   };
   const [user, setUser] = useState<User>(initialUser);
 
@@ -215,12 +216,7 @@ const FeedItem = (props: Props) => {
       </View>
       <View style={styles.imgContainer}>
         {props.post.images[0] ? (
-          <Image
-            source={{
-              uri: props.post.images[0],
-            }}
-            style={styles.image}
-          />
+          <CustomImage url={props.post.images[0]} style={styles.image} />
         ) : (
           <View style={styles.image} />
         )}
