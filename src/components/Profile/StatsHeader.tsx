@@ -1,7 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import { $lighterBlue, $lighterGray, $mainBlue } from '../../utils/colors';
+import {
+  $errorRed,
+  $lighterBlue,
+  $lighterGray,
+  $lighterGreen,
+  $lighterRed,
+  $mainBlue,
+  $mainGray,
+  $mainGreen,
+} from '../../utils/colors';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { exo, uploadImageToS3 } from '../../utils/api';
 
 import ImagePicker from 'react-native-image-crop-picker';
@@ -89,16 +98,37 @@ interface Props {
   _id: string;
   username: string;
   location: string;
-  followers: number;
+  followers: Array<String>;
+  requests: Array<String>;
   profileUrl: string;
-  following: number;
+  following: Array<String>;
+  blocked: Array<String>;
+  private: boolean;
   savedLocation: number;
   onPfpUpdated: () => void;
+  own: boolean;
+  me: string;
 }
 
 const StatsHeader = (props: Props) => {
   const navigation = useNavigation();
   const [pfpUpdated, setPfpUpdated] = useState(false);
+  const [follower, setFollower] = useState(false);
+  const [requested, setRequested] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
+
+  useEffect(() => {
+    if (props.followers.includes(props.me)) {
+      setFollower(true);
+    }
+    if (props.requests.includes(props.me)) {
+      setRequested(true);
+    }
+    if (props.blocked.includes(props.me)) {
+      setIsBlocked(true);
+    }
+  }, [props.blocked, props.followers, props.me, props.requests]);
+
   return (
     <View style={styles.container}>
       <View
@@ -153,9 +183,58 @@ const StatsHeader = (props: Props) => {
             <Text style={styles.username}>{props.username}</Text>
             <Text style={styles.location}>{props.location}</Text>
           </View>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Edit Profile</Text>
-          </TouchableOpacity>
+          {props.own && (
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>Edit Profile</Text>
+            </TouchableOpacity>
+          )}
+          {!props.own && follower && (
+            <TouchableOpacity
+              onPressOut={() => {
+                exo.post('/user/unfollow', { id: props._id });
+              }}
+              style={styles.button}>
+              <Text
+                style={[
+                  styles.buttonText,
+                  { borderColor: $errorRed, backgroundColor: $lighterRed },
+                ]}>
+                Unfollow
+              </Text>
+            </TouchableOpacity>
+          )}
+          {!props.own && !follower && !requested && (
+            <TouchableOpacity
+              disabled={isBlocked}
+              onPressOut={() => {
+                exo.post('/user/follow', { id: props._id });
+                if (props.private) {
+                  setRequested(true);
+                } else {
+                  setFollower(true);
+                }
+              }}
+              style={styles.button}>
+              <Text
+                style={[
+                  styles.buttonText,
+                  { borderColor: $mainGreen, backgroundColor: $lighterGreen },
+                ]}>
+                Follow
+              </Text>
+            </TouchableOpacity>
+          )}
+          {!props.own && !follower && requested && (
+            <TouchableOpacity style={styles.button}>
+              <Text
+                style={[
+                  styles.buttonText,
+                  { borderColor: $mainGray, backgroundColor: $lighterGray },
+                ]}>
+                Requested
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.statsRow}>
           <View
@@ -166,7 +245,7 @@ const StatsHeader = (props: Props) => {
                 which: 'followers',
               })
             }>
-            <Text style={styles.bigNumber}>{props.followers}</Text>
+            <Text style={styles.bigNumber}>{props.followers.length}</Text>
             <Text style={styles.numberLabel}>Followers</Text>
           </View>
           <View
@@ -177,7 +256,7 @@ const StatsHeader = (props: Props) => {
                 which: 'following',
               })
             }>
-            <Text style={styles.bigNumber}>{props.following}</Text>
+            <Text style={styles.bigNumber}>{props.following.length}</Text>
             <Text style={styles.numberLabel}>Following</Text>
           </View>
           <View style={{ ...styles.cell, paddingRight: 0 }}>
