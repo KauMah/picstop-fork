@@ -15,10 +15,12 @@ import { useRoute } from '@react-navigation/native';
 const ProfileStack = createStackNavigator();
 
 const ProfileRoutes = () => {
+  const route = useRoute();
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
         name={'Profile'}
+        initialParams={{ username: _.get(route.params, 'username', '') }}
         component={Profile}
         options={{ headerShown: false }}
       />
@@ -70,8 +72,9 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const username = _.get(route.params, 'username', false);
-    setOwn(username ? false : true);
+    const username = _.get(route.params, 'username', '');
+    console.log(username);
+    setOwn(username === '');
     if (loading) {
       exo
         .get('/user/')

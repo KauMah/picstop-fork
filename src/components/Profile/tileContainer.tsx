@@ -1,7 +1,8 @@
-import React from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+
 import { $lighterGray } from '../../utils/colors';
+import React from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,9 +69,9 @@ const TileContainer = ({ loading, onRefresh }: Props) => {
             <View style={styles.content} />
           </View>
         </View>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(() => {
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((index) => {
           return (
-            <View style={styles.tile}>
+            <View style={styles.tile} key={index}>
               <View style={styles.content} />
             </View>
           );
