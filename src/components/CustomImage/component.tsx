@@ -5,7 +5,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { Image, StyleSheet, ViewStyle } from 'react-native';
+import { Image, ImageStyle, StyleSheet } from 'react-native';
 import {
   PinchGestureHandler,
   PinchGestureHandlerGestureEvent,
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   url: string;
-  style: ViewStyle;
+  style: ImageStyle;
 };
 
 const CustomImage: React.FC<Props> = (props) => {
@@ -66,7 +66,7 @@ const CustomImage: React.FC<Props> = (props) => {
     <PinchGestureHandler onHandlerStateChange={handler}>
       <Animated.Image
         source={{ uri: props.url }}
-        style={[styles.image, getRatio(), imgStyle]}
+        style={[styles.image, getRatio(), imgStyle, props.style]}
       />
     </PinchGestureHandler>
   );
