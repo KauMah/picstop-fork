@@ -2,6 +2,7 @@ import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import { Image, StyleSheet, ViewStyle } from 'react-native';
@@ -26,6 +27,8 @@ type Props = {
 const CustomImage: React.FC<Props> = (props) => {
   const [ratio, setRatio] = useState(1);
   const size = useSharedValue(1);
+  const cx = useSharedValue(0);
+  const cy = useSharedValue(0);
 
   const getRatio = () => {
     return { aspectRatio: ratio };
@@ -39,15 +42,23 @@ const CustomImage: React.FC<Props> = (props) => {
   }, [props.url]);
 
   const imgStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: size.value }],
+    transform: [
+      { translateX: cx.value },
+      { translateY: cy.value },
+      { scale: size.value < 1 ? 1 : size.value },
+    ],
   }));
 
   const handler = useAnimatedGestureHandler<PinchGestureHandlerGestureEvent>({
-    onActive: ({ scale }) => {
+    onActive: ({ scale, focalX, focalY }) => {
+      cx.value = Math.abs(focalX);
+      cy.value = Math.abs(focalY);
       size.value = scale;
     },
-    onEnd: () => {
+    onFinish: () => {
       size.value = withTiming(1);
+      cx.value = withSpring(0);
+      cy.value = withSpring(0);
     },
   });
 
