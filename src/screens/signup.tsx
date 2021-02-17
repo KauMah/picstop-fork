@@ -196,6 +196,7 @@ const SignUp = () => {
                   invalid={
                     touched.username ? (errors.username ? true : false) : false
                   }
+                  onSubmitEditing={handleSubmit}
                 />
                 <IconTextField
                   icon={faEnvelope}
@@ -205,9 +206,11 @@ const SignUp = () => {
                   value={values.email}
                   style={styles.textField}
                   autoCapitalize={'none'}
+                  keyboardType="email-address"
                   invalid={
                     touched.email ? (errors.email ? true : false) : false
                   }
+                  onSubmitEditing={handleSubmit}
                 />
                 <IconTextField
                   icon={faLock}
@@ -220,6 +223,7 @@ const SignUp = () => {
                   invalid={
                     touched.password ? (errors.password ? true : false) : false
                   }
+                  onSubmitEditing={handleSubmit}
                 />
                 <IconTextField
                   icon={faLock}
@@ -236,6 +240,7 @@ const SignUp = () => {
                         : false
                       : false
                   }
+                  onSubmitEditing={handleSubmit}
                 />
                 <View style={styles.button}>
                   <StyledButton

@@ -28,7 +28,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [RollbarReactNative initWithAccessToken:@"8c4f75e847de489894333c15db92e39b"];
+  
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif

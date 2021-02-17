@@ -124,7 +124,7 @@ const MapView = () => {
                   'Something went wrong, please close the app and try again',
               });
             });
-          _camera.current?.zoomTo(10, 1);
+          _camera.current?.zoomTo(12, 1);
           setTimeout(() => {
             _camera.current?.moveTo(coords);
           }, 50);
