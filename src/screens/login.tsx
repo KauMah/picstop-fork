@@ -137,6 +137,7 @@ const Login = () => {
                 invalid={
                   touched.username ? (errors.username ? true : false) : false
                 }
+                onSubmitEditing={handleSubmit}
               />
               <IconTextField
                 icon={faLock}
@@ -148,6 +149,7 @@ const Login = () => {
                 invalid={
                   touched.password ? (errors.password ? true : false) : false
                 }
+                onSubmitEditing={handleSubmit}
                 secureTextEntry
               />
               <View style={styles.button}>
