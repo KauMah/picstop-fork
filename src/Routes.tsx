@@ -10,6 +10,7 @@ import Feed from './screens/feed';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import Likes from './screens/likes';
 import Loading from './screens/loading';
+import Location from './screens/location';
 import Login from './screens/login';
 import MapView from './screens/map';
 import { NavigationContainer } from '@react-navigation/native';
@@ -158,7 +159,7 @@ const AuthenticatedRoutes = () => {
             component={Profile}
             options={{ headerShown: false }}
           />
-          <MainStack.Screen name="Location" component={Loading} />
+          <MainStack.Screen name="Location" component={Location} />
         </MainStack.Navigator>
       </NavigationContainer>
     </>

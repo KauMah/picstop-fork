@@ -103,6 +103,7 @@ const FeedItem = (props: Props) => {
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState('');
+  const [loc, setLoc] = useState({ id: '' });
   const [modalVisible, setModalVisible] = useState(false);
   const initialUser: User = {
     username: '',
@@ -133,6 +134,7 @@ const FeedItem = (props: Props) => {
         .get(`/locations/${props.post.location}`)
         .then((res) => {
           setLocation(_.get(res.data, 'message.location.name', 'Location'));
+          setLoc(_.get(res.data, 'message.location._id', ''));
         })
         .catch((err) => {
           rollbar.error(`failed to get location by ID: ${err}`);
@@ -205,8 +207,18 @@ const FeedItem = (props: Props) => {
           <View style={styles.proPic} />
         )}
         <View style={styles.infoText}>
-          <Text style={styles.username}>{user.username}</Text>
-          <Text style={styles.locationName}>{location}</Text>
+          <Text
+            onPress={() =>
+              navigation.navigate('userProfile', { username: user.username })
+            }
+            style={styles.username}>
+            {user.username}
+          </Text>
+          <Text
+            onPress={() => navigation.navigate('Location', { locationId: loc })}
+            style={styles.locationName}>
+            {location}
+          </Text>
         </View>
         <View style={styles.agoContainer}>
           <Text style={styles.timeAgo}>
