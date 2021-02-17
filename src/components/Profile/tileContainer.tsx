@@ -1,6 +1,6 @@
 import { RefreshControl, StyleSheet, View } from 'react-native';
 
-import { $lighterGray } from '../../utils/colors';
+import AlbumTile from './albumTile';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   mapTile: {
     flexBasis: '66.6%',
     height: 300,
-    backgroundColor: $lighterGray,
     padding: 5,
   },
   mapAdjacentContainer: {
@@ -28,14 +27,12 @@ const styles = StyleSheet.create({
   mapAdjacentTile: {
     width: '100%',
     flexBasis: '50%',
-    backgroundColor: $lighterGray,
     flexGrow: 1,
     padding: 5,
   },
   tile: {
     flexBasis: '33.33%',
     height: 150,
-    backgroundColor: $lighterGray,
     padding: 5,
   },
   content: {
@@ -63,19 +60,43 @@ const TileContainer = ({ loading, onRefresh }: Props) => {
         </View>
         <View style={styles.mapAdjacentContainer}>
           <View style={styles.mapAdjacentTile}>
-            <View style={styles.content} />
+            <AlbumTile
+              album={{
+                name: 'testing long title name',
+                imageUrl:
+                  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fallhdwallpapers.com%2Fwp-content%2Fuploads%2F2015%2F05%2FLandscape-9.jpg&f=1&nofb=1',
+              }}
+              index={20}
+            />
           </View>
           <View style={styles.mapAdjacentTile}>
-            <View style={styles.content} />
+            <AlbumTile
+              album={{
+                name: 'Title',
+                imageUrl:
+                  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fallhdwallpapers.com%2Fwp-content%2Fuploads%2F2015%2F05%2FLandscape-9.jpg&f=1&nofb=1',
+              }}
+              index={21}
+            />
           </View>
         </View>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((index) => {
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((num, index) => {
           return (
-            <View style={styles.tile} key={index}>
-              <View style={styles.content} />
+            <View style={styles.tile}>
+              <AlbumTile
+                album={{
+                  name: `Album: ${num}`,
+                  imageUrl:
+                    'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fallhdwallpapers.com%2Fwp-content%2Fuploads%2F2015%2F05%2FLandscape-9.jpg&f=1&nofb=1',
+                }}
+                index={index}
+              />
             </View>
           );
         })}
+        <View style={styles.tile}>
+          <AlbumTile album={null} index={1029383892} />
+        </View>
       </View>
     </ScrollView>
   );
