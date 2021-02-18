@@ -1,3 +1,4 @@
+import { $black, $white } from '../../../utils/colors';
 import {
   Dimensions,
   Modal,
@@ -6,8 +7,6 @@ import {
   View,
 } from 'react-native';
 import React, { PropsWithChildren } from 'react';
-
-import { $white } from '../../../utils/colors';
 
 const { height, width } = Dimensions.get('window');
 
@@ -24,6 +23,14 @@ const styles = StyleSheet.create({
     backgroundColor: $white,
     borderRadius: 12,
     zIndex: 100,
+    elevation: 3,
+    shadowColor: $black,
+    shadowOffset: {
+      width: -2,
+      height: 2,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.4,
   },
 });
 

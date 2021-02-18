@@ -134,7 +134,13 @@ const MapView = () => {
         animated>
         {locations.map((loc) => {
           return (
-            <MapThumbnail key={loc._id} location={loc} onPress={() => {}} />
+            <MapThumbnail
+              key={loc._id}
+              location={loc}
+              onPress={() => {
+                navigation.navigate('Location', { locationId: loc._id });
+              }}
+            />
           );
         })}
 

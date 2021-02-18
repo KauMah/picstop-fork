@@ -1,4 +1,9 @@
-import { $lighterGray, $mainGray, $tabBarGray } from '../../../utils/colors';
+import {
+  $black,
+  $lighterGray,
+  $mainGray,
+  $tabBarGray,
+} from '../../../utils/colors';
 import Animated, {
   runOnJS,
   useAnimatedGestureHandler,
@@ -60,6 +65,14 @@ const styles = StyleSheet.create({
     backgroundColor: $tabBarGray,
     opacity: 0.6,
     borderRadius: 40,
+    elevation: 3,
+    shadowColor: $black,
+    shadowOffset: {
+      width: 0,
+      height: -1,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.4,
   },
   nub: {
     backgroundColor: $lighterGray,

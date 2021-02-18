@@ -68,6 +68,7 @@ const Search = (props: Props) => {
       <TextInput
         style={styles.search}
         value={keyword}
+        autoFocus
         onChangeText={(word: string) => {
           setKeyword(word);
           setLoading(true);

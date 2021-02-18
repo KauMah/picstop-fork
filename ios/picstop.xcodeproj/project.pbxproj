@@ -21,6 +21,8 @@
 		674B52003C9046BDFAE29C57 /* libPods-picstop-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F29952B88A7F5C41C54BCDE0 /* libPods-picstop-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B08BD6D48B31403FB3D7A6C9 /* KumbhSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 34CB68789EF34D35849ED4AD /* KumbhSans-Light.ttf */; };
+		B165CAEE25DD8C3D001EACD0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B165CAED25DD8C3D001EACD0 /* MapKit.framework */; };
+		B165CAF025DD8C5D001EACD0 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B165CAEF25DD8C5D001EACD0 /* NetworkExtension.framework */; };
 		CE9441638DACB0842C8D30A0 /* libPods-picstop-picstopTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CDEF01DED2389EA6FF86C0 /* libPods-picstop-picstopTests.a */; };
 		CFB2B6ED3A7B45139E540A99 /* KumbhSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0540F8465BA64DEBA1A67A38 /* KumbhSans-Regular.ttf */; };
 /* End PBXBuildFile section */
@@ -63,6 +65,9 @@
 		8093EEC230FBD91C671F5DA4 /* Pods-picstop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-picstop.release.xcconfig"; path = "Target Support Files/Pods-picstop/Pods-picstop.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = picstop/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A9CDEF01DED2389EA6FF86C0 /* libPods-picstop-picstopTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-picstop-picstopTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B165CAEC25DD8C10001EACD0 /* picstop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = picstop.entitlements; path = picstop/picstop.entitlements; sourceTree = "<group>"; };
+		B165CAED25DD8C3D001EACD0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		B165CAEF25DD8C5D001EACD0 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		B5B5FB0AE31BEFBC03A6DB27 /* Pods-picstop-picstopTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-picstop-picstopTests.debug.xcconfig"; path = "Target Support Files/Pods-picstop-picstopTests/Pods-picstop-picstopTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CCDF0DBEB208A1497C753291 /* Pods-picstop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-picstop.debug.xcconfig"; path = "Target Support Files/Pods-picstop/Pods-picstop.debug.xcconfig"; sourceTree = "<group>"; };
 		CD009D30B03B4291AE21E0D2 /* Pods-picstop-picstopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-picstop-picstopTests.release.xcconfig"; path = "Target Support Files/Pods-picstop-picstopTests/Pods-picstop-picstopTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +93,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B165CAEE25DD8C3D001EACD0 /* MapKit.framework in Frameworks */,
+				B165CAF025DD8C5D001EACD0 /* NetworkExtension.framework in Frameworks */,
 				5A34102768C7F190D9E24D3C /* libPods-picstop.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +138,7 @@
 		13B07FAE1A68108700A75B9A /* picstop */ = {
 			isa = PBXGroup;
 			children = (
+				B165CAEC25DD8C10001EACD0 /* picstop.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -155,6 +163,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B165CAEF25DD8C5D001EACD0 /* NetworkExtension.framework */,
+				B165CAED25DD8C3D001EACD0 /* MapKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				F42F4E08BFB02EAC58024A7F /* libPods-picstop.a */,
@@ -827,6 +837,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = picstop/picstop.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = L75TNFAFR6;
@@ -852,6 +863,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = picstop/picstop.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = L75TNFAFR6;
