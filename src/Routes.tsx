@@ -136,10 +136,22 @@ const MainRoutes = () => {
 };
 
 const AuthenticatedRoutes = () => {
+  const config = {
+    screens: {
+      User: '/user/:username?',
+      Location: '/locations/:locationId',
+      Likes: '/likes/:postId',
+      Comments: '/comments/:postId',
+    },
+  };
+  const linking = {
+    prefixes: ['https://picstopapp.com', 'picstop://'],
+    config,
+  };
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <MainStack.Navigator initialRouteName={'Home'}>
           <MainStack.Screen
             name="Home"
@@ -155,7 +167,7 @@ const AuthenticatedRoutes = () => {
             options={{ headerShown: false }}
           />
           <MainStack.Screen
-            name="userProfile"
+            name="User"
             component={Profile}
             options={{ headerShown: false }}
           />

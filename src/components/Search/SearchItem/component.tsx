@@ -46,7 +46,7 @@ const SearchItem: React.FC<SearchItemProps> = (props) => {
     props.exit();
   };
   const usrWrap = () => {
-    navigation.navigate('userProfile', { username: props.user?.username });
+    navigation.navigate('User', { username: props.user?.username });
     props.exit();
   };
   switch (props.type) {

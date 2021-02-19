@@ -20,6 +20,19 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.picstopapp.Picstop</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>picstop</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
@@ -47,7 +60,7 @@
 		<string>Used to precisely find the locations nearest to you</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>A user's location is used to quickly find locations near them.</string>
+	<string>A user&apos;s location is used to quickly find locations near them.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo library access is used to upload and share photos with others within the application</string>
 	<key>UIAppFonts</key>
