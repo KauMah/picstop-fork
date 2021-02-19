@@ -1,6 +1,7 @@
 import { $lighterGray, $mainGray } from '../../../utils/colors';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
 
 import Toast from 'react-native-toast-message';
@@ -8,7 +9,6 @@ import { User } from '../../../types';
 import { exo } from '../../../utils/api';
 import { rollbar } from '../../../utils/rollbar';
 import { runOnJS } from 'react-native-reanimated';
-import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +74,8 @@ const UserTile = (props: Props) => {
   }, [loading, props.userId]);
 
   const userWrapper = () => {
-    navigation.navigate('User', { username: user.username });
+    const pushAction = StackActions.push('User', { username: user.username });
+    navigation.dispatch(pushAction);
   };
 
   return (

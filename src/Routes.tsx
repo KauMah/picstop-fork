@@ -71,7 +71,7 @@ const Routes = (props: RouteProps) => {
 const MainRoutes = () => {
   return (
     <Tabs.Navigator
-      initialRouteName={'Home'}
+      initialRouteName={'Feed'}
       tabBarOptions={{
         showLabel: false,
         style: { backgroundColor: $tabBarGray },
@@ -79,7 +79,7 @@ const MainRoutes = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           switch (route.name) {
-            case 'Home':
+            case 'Feed':
               return (
                 <Ionicon
                   name={'home-outline'}
@@ -122,7 +122,7 @@ const MainRoutes = () => {
           }
         },
       })}>
-      <Tabs.Screen name="Home" component={Feed} />
+      <Tabs.Screen name="Feed" component={Feed} />
       <Tabs.Screen name="Map" component={MapView} />
       <Tabs.Screen
         name="Post"
