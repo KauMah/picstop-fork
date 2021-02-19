@@ -43,7 +43,7 @@ const CreateLocation = (props: Props) => {
   const postCreateLocation = async (values: FormValues) => {
     const coords = _.get(props.route, 'params.coords', [0, 0]);
     exo
-      .post('/locations/locationn', {
+      .post('/locations/location', {
         long: coords[0],
         lat: coords[1],
         name: values.name,
