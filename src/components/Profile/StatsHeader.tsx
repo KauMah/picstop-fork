@@ -197,12 +197,11 @@ const StatsHeader = (props: Props) => {
                 exo.post('/user/unfollow', { id: props._id });
                 setFollower(false);
               }}
-              style={styles.button}>
-              <Text
-                style={[
-                  styles.buttonText,
-                  { borderColor: $errorRed, backgroundColor: $lighterRed },
-                ]}>
+              style={[
+                styles.button,
+                { borderColor: $errorRed, backgroundColor: $lighterRed },
+              ]}>
+              <Text style={[styles.buttonText, { color: $errorRed }]}>
                 Unfollow
               </Text>
             </TouchableOpacity>
@@ -218,23 +217,22 @@ const StatsHeader = (props: Props) => {
                   setFollower(true);
                 }
               }}
-              style={styles.button}>
-              <Text
-                style={[
-                  styles.buttonText,
-                  { borderColor: $mainGreen, backgroundColor: $lighterGreen },
-                ]}>
+              style={[
+                styles.button,
+                { borderColor: $mainGreen, backgroundColor: $lighterGreen },
+              ]}>
+              <Text style={[styles.buttonText, { color: $mainGreen }]}>
                 Follow
               </Text>
             </TouchableOpacity>
           )}
           {!props.own && !follower && requested && (
-            <TouchableOpacity style={styles.button}>
-              <Text
-                style={[
-                  styles.buttonText,
-                  { borderColor: $mainGray, backgroundColor: $lighterGray },
-                ]}>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { borderColor: $mainGray, backgroundColor: $lighterGray },
+              ]}>
+              <Text style={[styles.buttonText, { color: $mainGray }]}>
                 Requested
               </Text>
             </TouchableOpacity>

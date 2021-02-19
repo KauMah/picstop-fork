@@ -1,11 +1,14 @@
 import { $lighterGray, $mainGray } from '../../../utils/colors';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { State, TapGestureHandler } from 'react-native-gesture-handler';
 
 import Toast from 'react-native-toast-message';
 import { User } from '../../../types';
 import { exo } from '../../../utils/api';
 import { rollbar } from '../../../utils/rollbar';
+import { runOnJS } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +37,7 @@ interface Props {
 }
 
 const UserTile = (props: Props) => {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const initialUser = {
     username: '',
@@ -45,6 +49,7 @@ const UserTile = (props: Props) => {
     email: '',
     _id: '',
     blocked: [],
+    followerRequests: [],
   };
   const [user, setUser] = useState<User>(initialUser);
 
@@ -67,15 +72,27 @@ const UserTile = (props: Props) => {
       setLoading(false);
     }
   }, [loading, props.userId]);
+
+  const userWrapper = () => {
+    navigation.navigate('User', { username: user.username });
+  };
+
   return (
-    <View style={styles.container}>
-      {user.profilePic !== '' ? (
-        <Image style={styles.proPic} source={{ uri: user.profilePic }} />
-      ) : (
-        <View style={styles.proPic} />
-      )}
-      <Text style={styles.username}>{user.username}</Text>
-    </View>
+    <TapGestureHandler
+      onHandlerStateChange={({ nativeEvent }) => {
+        if (nativeEvent.state === State.END) {
+          runOnJS(userWrapper)();
+        }
+      }}>
+      <View style={styles.container}>
+        {user.profilePic !== '' ? (
+          <Image style={styles.proPic} source={{ uri: user.profilePic }} />
+        ) : (
+          <View style={styles.proPic} />
+        )}
+        <Text style={styles.username}>{user.username}</Text>
+      </View>
+    </TapGestureHandler>
   );
 };
 

@@ -73,7 +73,6 @@ const Profile = () => {
 
   useEffect(() => {
     const username = _.get(route.params, 'username', '');
-    console.log(username);
     setOwn(username === '');
     if (loading) {
       exo
