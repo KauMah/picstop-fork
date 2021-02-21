@@ -10,6 +10,10 @@ export const setToken = (token: string) => {
   exo.defaults.headers.common.Authorization = token;
 };
 
+export const setApiUrl = (url: string) => {
+  exo.defaults.baseURL = url;
+};
+
 const uploadImage = async (
   method: string,
   url: string,

@@ -1,9 +1,19 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
+import React, { useState } from 'react';
 
-import React from 'react';
+import CustomModal from '../components/shared/CustomModal';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import StyledButton from '../components/shared/StyledButton';
+import { setApiUrl } from '../utils/api';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,6 +52,10 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 5,
   },
+  input: {
+    margin: 10,
+    borderWidth: 1,
+  },
 });
 
 type WelcomeScreenNavigationProp = StackNavigationProp<
@@ -54,13 +68,57 @@ type Props = {
 };
 
 const Welcome = ({ navigation }: Props) => {
+  const [selecting, setSelecting] = useState(false);
+  const [url, setUrl] = useState('');
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Image
-          source={require('../../assets/img/picstop-logo.png')}
-          style={styles.logo}
-        />
+        <CustomModal
+          modalVisible={selecting}
+          onPressOverlay={() => {
+            setSelecting(false);
+          }}>
+          <TextInput
+            style={styles.input}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            keyboardType={'url'}
+            value={url}
+            onChangeText={(u) => setUrl(u)}
+          />
+          <View>
+            <StyledButton
+              type="blue"
+              text="choose"
+              small
+              onPress={() => {
+                console.log('I ran and didnt just close');
+                setSelecting(false);
+                setApiUrl(url);
+              }}
+            />
+            <StyledButton
+              type="red"
+              text="close"
+              small
+              onPress={() => {
+                setSelecting(false);
+              }}
+            />
+          </View>
+        </CustomModal>
+        <LongPressGestureHandler
+          onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.END) {
+              setSelecting(true);
+            }
+          }}>
+          <Image
+            source={require('../../assets/img/picstop-logo.png')}
+            style={styles.logo}
+          />
+        </LongPressGestureHandler>
         <Text style={styles.headerText}>Your journey starts here</Text>
         <Text style={styles.subText}>
           Start adding locations today! Lets just add some more text though
