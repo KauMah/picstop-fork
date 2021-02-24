@@ -187,7 +187,11 @@ const StatsHeader = (props: Props) => {
             <Text style={styles.location}>{props.location}</Text>
           </View>
           {props.own && (
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                navigation.navigate('Edit Profile');
+              }}>
               <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
           )}

@@ -56,8 +56,19 @@ const Profile = () => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  const getPosts = async (username: string) => {
-    exo.get(`/user/get/${username}`).then((result) => {
+  const getPosts = async (input: {
+    type: 'username' | 'id';
+    value: string;
+  }) => {
+    let route = '';
+
+    if (input.type == 'id') {
+      route = `/user/getById/${input.value}`;
+    } else {
+      route = `/user/get/${input.value}`;
+    }
+
+    exo.get(route).then((result) => {
       setUser(result.data.message.user);
       exo
         .post('/posts/getUserPosts', {
@@ -78,9 +89,12 @@ const Profile = () => {
       exo
         .get('/user/')
         .then((res) => {
-          const usr = _.get(res, 'data.message.username', '');
           const userId = _.get(res, 'data.message._id', '');
-          getPosts(username ? username : usr);
+          getPosts(
+            username
+              ? { type: 'username', value: username }
+              : { type: 'id', value: userId },
+          );
           setMeId(userId);
           setLoading(false);
         })
