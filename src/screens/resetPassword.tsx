@@ -4,7 +4,6 @@ import { $mainBlue, $white } from '../utils/colors';
 import {
   Image,
   KeyboardAvoidingView,
-  Linking,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -12,21 +11,19 @@ import {
   Text,
   View,
 } from 'react-native';
-import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
+import React, { useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField/container';
-import React from 'react';
 import StyledButton from '../components/shared/StyledButton';
 import Toast from 'react-native-toast-message';
+import _ from 'lodash';
+import { exo } from '../utils/api';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { login } from '../redux/actions';
 import { rollbar } from '../utils/rollbar';
-import { setToken } from '../utils/api';
-import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
@@ -74,83 +71,60 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignUpSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(2, 'Username too Short')
-    .max(50, 'Username too long')
-    .required('Required'),
-  email: Yup.string().email('Invalid email').required('Required'),
+const ResetPasswordSchema = Yup.object().shape({
   password: Yup.string()
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]*$/,
       'Password must contain at least 6 characters, one uppercase, and one number ',
     )
     .required('Password is required'),
-
   password2: Yup.string()
     .oneOf([Yup.ref('password'), null], "Passwords don't match")
     .required('Confirm Password is required'),
 });
 
 interface FormValues {
-  email: string;
-  username: string;
   password: string;
   password2: string;
 }
 
-const SignUp = () => {
-  const dispatch = useDispatch();
-  const postSignUp = (vals: FormValues) => {
-    const { email, username, password, password2 } = vals;
-    fetch(`${API_URL}/user/signup`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, username, password, password2 }),
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          postSignIn(vals);
-        }
+const ResetPassword = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const postResetPassword = (vals: FormValues) => {
+    const { password } = vals;
+    exo
+      .post(`${API_URL}/user/forgot/${_.get(route.params, 'token', '')}`, {
+        password,
+      })
+      .then(() => {
+        navigation.navigate('Login');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Password has been reset',
+        });
       })
       .catch((err) => {
-        rollbar.error(`Signup Failed: ${err}`);
+        rollbar.error(`Reset Password Failed: ${err}`);
         Toast.show({
           type: 'error',
           position: 'top',
-          text1: 'Failed to Sign up successfully',
+          text1: 'Failed to reset password successfully',
         });
       });
   };
-  const postSignIn = (vals: FormValues) => {
-    const { username, password } = vals;
-    fetch(`${API_URL}/user/login`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        }
-      })
-      .then((resBody) => {
-        if (resBody && resBody.message) {
-          AsyncStorage.setItem('token', resBody.message);
-          setToken(resBody.message);
-          dispatch(login(resBody.message));
-        }
-      })
-      .catch((err) => {
-        rollbar.error(`Login Failed: ${err}`);
+
+  useEffect(() => {
+    exo.get(`/user/reset/${_.get(route.params, 'token', '')}`).catch(() => {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Password reset link expired!',
       });
-  };
+      navigation.goBack();
+    });
+  });
 
   return (
     <ScrollView>
@@ -161,16 +135,12 @@ const SignUp = () => {
         />
         <Formik
           initialValues={{
-            username: '',
-            email: '',
             password: '',
             password2: '',
           }}
-          onSubmit={postSignUp}
-          validationSchema={SignUpSchema}
+          onSubmit={postResetPassword}
+          validationSchema={ResetPasswordSchema}
           initialErrors={{
-            username: 'err',
-            email: 'err',
             password: 'err',
             password2: 'err',
           }}
@@ -188,40 +158,7 @@ const SignUp = () => {
               style={styles.container}
               behavior={Platform.OS === 'ios' ? 'position' : undefined}>
               <View style={styles.inputs}>
-                {errors && (
-                  <Text>
-                    {touched.username && errors.username}{' '}
-                    {touched.email && errors.email}{' '}
-                    {touched.password && errors.password}
-                  </Text>
-                )}
-                <IconTextField
-                  icon={faUser}
-                  onChangeText={handleChange('username')}
-                  onBlur={handleBlur('username')}
-                  placeholder={'Username'}
-                  style={styles.textField}
-                  value={values.username}
-                  autoCapitalize={'none'}
-                  invalid={
-                    touched.username ? (errors.username ? true : false) : false
-                  }
-                  onSubmitEditing={handleSubmit}
-                />
-                <IconTextField
-                  icon={faEnvelope}
-                  placeholder={'Email'}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                  style={styles.textField}
-                  autoCapitalize={'none'}
-                  keyboardType="email-address"
-                  invalid={
-                    touched.email ? (errors.email ? true : false) : false
-                  }
-                  onSubmitEditing={handleSubmit}
-                />
+                {errors && <Text>{touched.password && errors.password}</Text>}
                 <IconTextField
                   icon={faLock}
                   onChangeText={handleChange('password')}
@@ -254,7 +191,7 @@ const SignUp = () => {
                 />
                 <View style={styles.button}>
                   <StyledButton
-                    text={'Sign Up'}
+                    text={'Submit'}
                     type="blue"
                     onPress={handleSubmit}
                     disabled={!touched || !isValid}
@@ -265,31 +202,9 @@ const SignUp = () => {
             </KeyboardAvoidingView>
           )}
         </Formik>
-        <Text style={styles.fine}>
-          By registering with PicStop, you confirm that you agree to our{' '}
-          <Text
-            style={styles.blueText}
-            onPress={() => {
-              Linking.openURL('http://google.com').catch((err) =>
-                console.error(err),
-              );
-            }}>
-            Terms of Service
-          </Text>{' '}
-          and{' '}
-          <Text
-            style={styles.blueText}
-            onPress={() => {
-              Linking.openURL('http://google.com').catch((err) =>
-                console.error(err),
-              );
-            }}>
-            Privacy Policy
-          </Text>
-        </Text>
       </SafeAreaView>
     </ScrollView>
   );
 };
 
-export default SignUp;
+export default ResetPassword;

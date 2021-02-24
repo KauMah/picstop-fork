@@ -7,13 +7,13 @@ import {
   View,
 } from 'react-native';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { exo, setApiUrl } from '../utils/api';
 
 import CustomModal from '../components/shared/CustomModal';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import StyledButton from '../components/shared/StyledButton';
-import { setApiUrl } from '../utils/api';
 
 const styles = StyleSheet.create({
   container: {
@@ -70,6 +70,12 @@ type Props = {
 const Welcome = ({ navigation }: Props) => {
   const [selecting, setSelecting] = useState(false);
   const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    if (selecting) {
+      setUrl(exo.defaults.baseURL ? exo.defaults.baseURL : '');
+    }
+  }, [selecting]);
 
   return (
     <SafeAreaView>

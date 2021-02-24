@@ -16,6 +16,7 @@ import MapView from './screens/map';
 import { NavigationContainer } from '@react-navigation/native';
 import Notifications from './screens/notifications';
 import Profile from './screens/profile';
+import ResetPassword from './screens/resetPassword';
 import Settings from './screens/settings';
 import SignUp from './screens/signup';
 import { StatusBar } from 'react-native';
@@ -179,10 +180,19 @@ const AuthenticatedRoutes = () => {
 };
 
 const UnauthenticatedRoutes = () => {
+  const config = {
+    screens: {
+      Reset: '/user/reset/:token',
+    },
+  };
+  const linking = {
+    prefixes: ['https://picstopapp.com', 'picstop://'],
+    config,
+  };
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <Stack.Navigator initialRouteName={'Welcome'} headerMode="float">
           <Stack.Screen
             name="Welcome"
@@ -193,6 +203,7 @@ const UnauthenticatedRoutes = () => {
           />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Sign Up" component={SignUp} />
+          <Stack.Screen name="Reset" component={ResetPassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

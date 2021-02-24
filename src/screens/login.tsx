@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 
+import { $mainBlue, $white } from '../utils/colors';
 import {
   Image,
   KeyboardAvoidingView,
@@ -9,21 +10,21 @@ import {
   Text,
   View,
 } from 'react-native';
+import React, { useState } from 'react';
+import { exo, setToken } from '../utils/api';
+import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
-import { $white } from '../utils/colors';
 // @ts-ignore: Weirdness with react-native-dotenv
 import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomModal from '../components/shared/CustomModal';
 import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField/container';
-import React from 'react';
 import StyledButton from '../components/shared/StyledButton';
 import Toast from 'react-native-toast-message';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { login } from '../redux/actions';
 import { rollbar } from '../utils/rollbar';
-import { setToken } from '../utils/api';
 import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -62,6 +63,20 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 30,
   },
+  blueText: {
+    color: $mainBlue,
+    fontWeight: 'bold',
+  },
+  contained: {
+    width: '60%',
+    padding: 10,
+  },
+  centered: {
+    alignItems: 'center',
+  },
+  fullWidth: {
+    marginVertical: 5,
+  },
 });
 
 const LogInSchema = Yup.object().shape({
@@ -76,6 +91,8 @@ interface FormValues {
 
 const Login = () => {
   const dispatch = useDispatch();
+  const [reset, setReset] = useState(false);
+  const [email, setEmail] = useState('');
   const postSignIn = (vals: FormValues) => {
     const { username, password } = vals;
     fetch(`${API_URL}/user/login`, {
@@ -104,10 +121,48 @@ const Login = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image
-        source={require('../../assets/img/picstop-logo.png')}
-        style={styles.logo}
-      />
+      <CustomModal modalVisible={reset} onPressOverlay={() => setReset(false)}>
+        <View style={styles.contained}>
+          <IconTextField
+            icon={faEnvelope}
+            placeholder="Email"
+            onChangeText={(txt) => setEmail(txt)}
+            value={email}
+            style={styles.textField}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <View>
+            <StyledButton
+              type="blue"
+              text="Submit"
+              style={styles.fullWidth}
+              onPress={async () => {
+                exo
+                  .post('/user/forgot', { email: email })
+                  .then((res) => {
+                    if (res.status === 200) {
+                      Toast.show({
+                        type: 'success',
+                        text1: 'Success',
+                        text2:
+                          'A link has been sent to your email if it exists',
+                      });
+                    }
+                  })
+                  .catch(() => {
+                    Toast.show({
+                      type: 'error',
+                      text1: 'Something failed on our end',
+                      text2: 'Our servers may be down, please try again later',
+                    });
+                  });
+                setReset(false);
+              }}
+            />
+          </View>
+        </View>
+      </CustomModal>
       <Formik
         initialValues={{ username: '', password: '' }}
         onSubmit={postSignIn}
@@ -126,6 +181,12 @@ const Login = () => {
             style={styles.container}
             behavior={Platform.OS === 'ios' ? 'position' : undefined}>
             <View style={styles.inputs}>
+              <View style={styles.centered}>
+                <Image
+                  source={require('../../assets/img/picstop-logo.png')}
+                  style={styles.logo}
+                />
+              </View>
               <IconTextField
                 icon={faUser}
                 placeholder={'Username'}
@@ -164,7 +225,17 @@ const Login = () => {
           </KeyboardAvoidingView>
         )}
       </Formik>
-      <Text style={styles.forgot}>Forgot your password? Reset password</Text>
+      <Text style={styles.forgot}>
+        Forgot your password?
+        <Text
+          onPress={() => {
+            setReset(true);
+          }}
+          style={styles.blueText}>
+          {' '}
+          Reset password
+        </Text>
+      </Text>
     </SafeAreaView>
   );
 };
