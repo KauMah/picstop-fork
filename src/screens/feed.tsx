@@ -61,7 +61,7 @@ const Feed = () => {
       exo
         .get('/user/')
         .then((response) => {
-          const id = _.get(response, 'data.message._id', '');
+          const id = _.get(response, 'data.message.user._id', '');
           setUserId(id);
           exo
             .post('/posts/feed/', { userId: id })
@@ -81,6 +81,7 @@ const Feed = () => {
       setLoading(false);
     }
   }, [loading, posts]);
+
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title={'Home'} />

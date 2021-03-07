@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
 interface Props {
   loading: boolean;
   onRefresh: () => void;
+  albums: string[];
+  userLocations: string[];
 }
 
 const TileContainer = ({ loading, onRefresh }: Props) => {

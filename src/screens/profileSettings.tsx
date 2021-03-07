@@ -47,10 +47,8 @@ const ProfileSettings = () => {
       exo
         .get('/user/')
         .then((res) => {
-          const usrId = _.get(res, 'data.message._id', '');
-          exo.get(`/user/getById/${usrId}`).then((result) => {
-            setUser(result.data.message.user);
-          });
+          const usr = _.get(res, 'data.message.user', '');
+          setUser(usr);
           setLoading(false);
         })
         .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));

@@ -1,4 +1,4 @@
-import { Post, User } from '../types';
+import { User } from '../types';
 import React, { useEffect, useState } from 'react';
 
 import CustomHeader from '../components/shared/CustomHeader/';
@@ -35,7 +35,8 @@ const Profile = () => {
   const [meId, setMeId] = useState('');
   const [own, setOwn] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState<Array<Post>>([]);
+  const [albums, setAlbums] = useState([]);
+  const [userLocations, setUserLocations] = useState([]);
   const initial = {
     username: '',
     followers: [],
@@ -56,51 +57,36 @@ const Profile = () => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  const getPosts = async (input: {
-    type: 'username' | 'id';
-    value: string;
-  }) => {
-    let route = '';
-
-    if (input.type == 'id') {
-      route = `/user/getById/${input.value}`;
-    } else {
-      route = `/user/get/${input.value}`;
-    }
-
-    exo.get(route).then((result) => {
-      setUser(result.data.message.user);
-      exo
-        .post('/posts/getUserPosts', {
-          userId: result.data.message.user._id,
-        })
-        .then((resp) => {
-          const thePosts = resp.data.message.posts;
-          setPosts(thePosts.reverse());
-        })
-        .catch((err) => rollbar.error(`Failed to load user posts: ${err}`));
-    });
-  };
-
   useEffect(() => {
     const username = _.get(route.params, 'username', '');
     setOwn(username === '');
+
     if (loading) {
-      exo
-        .get('/user/')
-        .then((res) => {
-          const userId = _.get(res, 'data.message._id', '');
-          getPosts(
-            username
-              ? { type: 'username', value: username }
-              : { type: 'id', value: userId },
-          );
-          setMeId(userId);
-          setLoading(false);
-        })
-        .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
+      if (own) {
+        exo
+          .get('/user/')
+          .then((res) => {
+            const userRes = _.get(res, 'data.message', initial);
+            setMeId(userRes.user._id);
+            setUser({ ...user, ...userRes.user });
+            setAlbums(userRes.albums);
+            setUserLocations(userRes.userLocations);
+            setLoading(false);
+          })
+          .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
+      } else {
+        exo
+          .get(`/user/get/${username}`)
+          .then((res) => {
+            const user = _.get(res, 'data.message', initial);
+            setMeId(user._id);
+            setUser(user);
+            setLoading(false);
+          })
+          .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
+      }
     }
-  }, [loading, route.params, user]);
+  }, [loading, route.params, user, initial, own]);
 
   return (
     <SafeAreaView>
@@ -122,9 +108,12 @@ const Profile = () => {
         }}
         own={own}
       />
-      <TileContainer loading={loading} onRefresh={onRefresh} />
-      {/* Keeping this in right now to pass commit linting */}
-      {posts.map(() => null)}
+      <TileContainer
+        loading={loading}
+        onRefresh={onRefresh}
+        albums={albums}
+        userLocations={userLocations}
+      />
     </SafeAreaView>
   );
 };
