@@ -15,7 +15,6 @@ import { exo, setToken } from '../utils/api';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 // @ts-ignore: Weirdness with react-native-dotenv
-import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from '../components/shared/CustomModal';
 import { Formik } from 'formik';
@@ -95,23 +94,18 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const postSignIn = (vals: FormValues) => {
     const { username, password } = vals;
-    fetch(`${API_URL}/user/login`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      })
+    exo
+      .post('/user/login', { username, password })
       .then((responseBody) => {
-        AsyncStorage.setItem('token', responseBody.message);
-        setToken(responseBody.message);
-        dispatch(login(responseBody.message));
+        AsyncStorage.setItem('token', responseBody.data.message);
+        setToken(responseBody.data.message);
+        dispatch(login(responseBody.data.message));
+      })
+      .then(async () => {
+        const devId = await AsyncStorage.getItem('deviceId');
+        exo
+          .patch('/user/device/add', { token: devId })
+          .catch((err) => console.error(err));
       })
       .catch((err) => {
         rollbar.error(`Failed to login: ${err}`);

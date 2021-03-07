@@ -55,3 +55,22 @@ export type User = {
   _id: string;
   blocked: Array<string>;
 };
+
+export type NotificationType = {
+  _id: string;
+  userId: string;
+  relatedUserId: string;
+  relatedPostId: string;
+  notificationType:
+    | 'LIKE_POST'
+    | 'LIKE_COMMENT'
+    | 'COMMENT_POST'
+    | 'FOLLOWED'
+    | 'FOLLOW_REQUEST'
+    | 'REQUEST_ACCEPTED'
+    | 'REQUEST_TITLE'
+    | 'NOTIFS_TITLE';
+  comment?: string;
+  createdAt: string;
+  updatedAt: string;
+};

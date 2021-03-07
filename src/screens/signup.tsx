@@ -12,10 +12,10 @@ import {
   Text,
   View,
 } from 'react-native';
+import { exo, setToken } from '../utils/api';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 // @ts-ignore: Weirdness with react-native-dotenv
-import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Formik } from 'formik';
 import IconTextField from '../components/shared/IconTextField/container';
@@ -25,7 +25,6 @@ import Toast from 'react-native-toast-message';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { login } from '../redux/actions';
 import { rollbar } from '../utils/rollbar';
-import { setToken } from '../utils/api';
 import { useDispatch } from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -103,14 +102,8 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const postSignUp = (vals: FormValues) => {
     const { email, username, password, password2 } = vals;
-    fetch(`${API_URL}/user/signup`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, username, password, password2 }),
-    })
+    exo
+      .post('/user/signup', { email, username, password, password2 })
       .then((response) => {
         if (response.status === 201) {
           postSignIn(vals);
@@ -127,28 +120,16 @@ const SignUp = () => {
   };
   const postSignIn = (vals: FormValues) => {
     const { username, password } = vals;
-    fetch(`${API_URL}/user/login`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        }
-      })
-      .then((resBody) => {
-        if (resBody && resBody.message) {
-          AsyncStorage.setItem('token', resBody.message);
-          setToken(resBody.message);
-          dispatch(login(resBody.message));
-        }
+    exo
+      .post('/user/login', { username, password })
+      .then((response) => {
+        AsyncStorage.setItem('token', response.data.message);
+        setToken(response.data.message);
+        dispatch(login(response.data.message));
       })
       .catch((err) => {
-        rollbar.error(`Login Failed: ${err}`);
+        rollbar.error(`Failed to login: ${err}`);
+        Toast.show({ type: 'error', position: 'top', text1: 'Login failed!' });
       });
   };
 

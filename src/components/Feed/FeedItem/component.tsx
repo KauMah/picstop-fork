@@ -7,7 +7,6 @@ import CustomImage from '../../CustomImage';
 import CustomModal from '../../shared/CustomModal';
 import { Image } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import PushNotification from 'react-native-push-notification';
 import StyledButton from '../../shared/StyledButton';
 import TimeAgo from 'javascript-time-ago';
 import Toast from 'react-native-toast-message';
@@ -191,15 +190,6 @@ const FeedItem = (props: Props) => {
             }}
           />
         )}
-        <Text
-          onPress={() => {
-            PushNotification.localNotification({
-              title: 'Test',
-              message: 'This is a notification!',
-            });
-          }}>
-          Notify me of something
-        </Text>
       </CustomModal>
       <View style={styles.infoContainer}>
         {user.profilePic ? (

@@ -2,21 +2,158 @@
  * @format
  */
 
+import { AppRegistry, Linking } from 'react-native';
+
 import App from './App';
-import { AppRegistry } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import _ from 'lodash';
 import { name as appName } from './app.json';
 
 PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
   onRegister: function (token) {
-    console.log('TOKEN:', token);
+    AsyncStorage.setItem('deviceId', token.token);
+    PushNotification.setNotificationCategories([
+      {
+        id: 'LIKE_POST',
+        actions: [
+          {
+            id: 'open',
+            title: 'Open',
+            options: { foreground: true },
+          },
+          {
+            id: 'ignore',
+            title: 'Ignore',
+            options: { foreground: true, destructive: true },
+          },
+        ],
+      },
+      {
+        id: 'LIKE_COMMENT',
+        actions: [
+          {
+            id: 'open',
+            title: 'Open',
+            options: { foreground: true },
+          },
+          {
+            id: 'ignore',
+            title: 'Ignore',
+            options: { foreground: true, destructive: true },
+          },
+        ],
+      },
+      {
+        id: 'COMMENT_POST',
+        actions: [
+          {
+            id: 'open',
+            title: 'Open',
+            options: { foreground: true },
+          },
+          {
+            id: 'ignore',
+            title: 'Ignore',
+            options: { foreground: true, destructive: true },
+          },
+        ],
+      },
+      {
+        id: 'FOLLOWED',
+        actions: [
+          {
+            id: 'open',
+            title: 'Open',
+            options: { foreground: true },
+          },
+          {
+            id: 'ignore',
+            title: 'Ignore',
+            options: { foreground: true, destructive: true },
+          },
+        ],
+      },
+      {
+        id: 'FOLLOW_REQUEST',
+        actions: [
+          {
+            id: 'accept',
+            title: 'Accept',
+            options: { foreground: true },
+          },
+          {
+            id: 'reject',
+            title: 'Reject',
+            options: { foreground: true, destructive: true },
+          },
+        ],
+      },
+      {
+        id: 'REQUEST_ACCEPTED',
+        actions: [
+          {
+            id: 'open',
+            title: 'Open',
+            options: { foreground: true },
+          },
+          {
+            id: 'ignore',
+            title: 'Ignore',
+            options: { foreground: true, destructive: true },
+          },
+        ],
+      },
+    ]);
   },
 
   // (required) Called when a remote is received or opened, or local notification is opened
   onNotification: function (notification) {
     console.log('NOTIFICATION:', notification);
+    PushNotification.setApplicationIconBadgeNumber(0);
+    const notifType = _.get(notification, 'data.aps.category', '');
+    switch (notifType) {
+      case 'LIKE_POST':
+        const pId = _.get(notification, 'data.postId', '');
+        Linking.openURL(`picstop://likes/${pId}`).catch((err) =>
+          console.error(err),
+        );
+        break;
+      case 'LIKE_COMMENT':
+        const poId = _.get(notification, 'data.postId', '');
+        Linking.openURL(`picstop://comments/${poId}`).catch((err) =>
+          console.error(err),
+        );
+        break;
+      case 'COMMENT_POST':
+        const id = _.get(notification, 'data.postId', '');
+        Linking.openURL(`picstop://comments/${id}`).catch((err) =>
+          console.error(err),
+        );
+        break;
+      case 'FOLLOWED':
+        const userId = _.get(notification, 'data.userId', '');
+        Linking.openURL(`picstop://user/${userId}`).catch((err) =>
+          console.error(err),
+        );
+        break;
+      case 'FOLLOW_REQUEST':
+        Linking.openURL('picstop://notifications');
+        break;
+      case 'REQUEST_ACCEPTED':
+        const uId = _.get(notification, 'data.userId', '');
+        Linking.openURL(`picstop://user/${uId}`).catch((err) =>
+          console.error(err),
+        );
+        break;
+      default:
+        break;
+    }
+
+    console.log(_.get(notification, 'data.postId', ''));
+    console.log(_.get(notification, 'data.aps.category', ''));
 
     // process the notification
 

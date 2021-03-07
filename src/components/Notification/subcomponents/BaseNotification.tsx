@@ -1,5 +1,7 @@
-import React, { PropsWithChildren } from 'react';
 import { Image, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { PropsWithChildren } from 'react';
+
+import { TapGestureHandler } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,18 +31,21 @@ const styles = StyleSheet.create({
 interface Props extends PropsWithChildren<{}> {
   style?: ViewStyle;
   url: string;
+  onInteraction: () => void;
 }
 
-const BaseNotification = ({ children, style, url }: Props) => {
+const BaseNotification = ({ children, style, url, onInteraction }: Props) => {
   return (
-    <View style={[styles.container, style]}>
-      <Image
-        source={{ uri: url }}
-        style={styles.image}
-        resizeMode={'contain'}
-      />
-      <View style={styles.textContainer}>{children}</View>
-    </View>
+    <TapGestureHandler shouldCancelWhenOutside onEnded={onInteraction}>
+      <View style={[styles.container, style]}>
+        <Image
+          source={{ uri: url }}
+          style={styles.image}
+          resizeMode={'contain'}
+        />
+        <View style={styles.textContainer}>{children}</View>
+      </View>
+    </TapGestureHandler>
   );
 };
 

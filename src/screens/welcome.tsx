@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { exo, setApiUrl } from '../utils/api';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from '../components/shared/CustomModal';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import StyledButton from '../components/shared/StyledButton';
+import { setApiUrl } from '../utils/api';
 
 const styles = StyleSheet.create({
   container: {
@@ -72,9 +73,11 @@ const Welcome = ({ navigation }: Props) => {
   const [url, setUrl] = useState('');
 
   useEffect(() => {
-    if (selecting) {
-      setUrl(exo.defaults.baseURL ? exo.defaults.baseURL : '');
-    }
+    AsyncStorage.getItem('api', (_, result) => {
+      if (result && result.length > 0) {
+        setUrl(result);
+      }
+    });
   }, [selecting]);
 
   return (
@@ -98,10 +101,10 @@ const Welcome = ({ navigation }: Props) => {
               type="blue"
               text="choose"
               small
-              onPress={() => {
-                console.log('I ran and didnt just close');
+              onPress={async () => {
                 setSelecting(false);
                 setApiUrl(url);
+                AsyncStorage.setItem('api', url);
               }}
             />
             <StyledButton

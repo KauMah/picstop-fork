@@ -10,6 +10,10 @@ export const setToken = (token: string) => {
   exo.defaults.headers.common.Authorization = token;
 };
 
+export const removeToken = () => {
+  delete exo.defaults.headers.common.Authorization;
+};
+
 export const setApiUrl = (url: string) => {
   exo.defaults.baseURL = url;
 };

@@ -1,6 +1,7 @@
 import { $mainBlue, $mainGray, $tabBarGray } from './utils/colors';
 import React, { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
+import { setApiUrl, setToken } from './utils/api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CreatePost from './screens/createPost';
@@ -25,7 +26,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { login } from './redux/actions';
 import { reduxState } from './redux/actionTypes';
-import { setToken } from './utils/api';
 
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -50,9 +50,13 @@ const Routes = (props: RouteProps) => {
     const checkAuth = async () => {
       try {
         const storedToken = await AsyncStorage.getItem('token');
+        const storedApiUrl = await AsyncStorage.getItem('api');
         if (storedToken) {
           setToken(storedToken);
           dispatch(login(storedToken));
+        }
+        if (storedApiUrl) {
+          setApiUrl(storedApiUrl);
         }
       } catch (e) {
         return false;
@@ -143,6 +147,7 @@ const AuthenticatedRoutes = () => {
       Location: '/locations/:locationId',
       Likes: '/likes/:postId',
       Comments: '/comments/:postId',
+      Notifications: '/notifications',
     },
   };
   const linking = {
