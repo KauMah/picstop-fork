@@ -3,6 +3,7 @@ import { RefreshControl, StyleSheet, View } from 'react-native';
 import AlbumTile from './albumTile';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import MapTile from './mapTile';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +50,7 @@ interface Props {
   userLocations: string[];
 }
 
-const TileContainer = ({ loading, onRefresh }: Props) => {
+const TileContainer = ({ loading, onRefresh, userLocations }: Props) => {
   return (
     <ScrollView
       style={styles.scroll}
@@ -58,7 +59,7 @@ const TileContainer = ({ loading, onRefresh }: Props) => {
       }>
       <View style={styles.container}>
         <View style={styles.mapTile}>
-          <View style={styles.content} />
+          <MapTile userLocations={userLocations} />
         </View>
         <View style={styles.mapAdjacentContainer}>
           <View style={styles.mapAdjacentTile}>
@@ -84,7 +85,7 @@ const TileContainer = ({ loading, onRefresh }: Props) => {
         </View>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((num, index) => {
           return (
-            <View style={styles.tile}>
+            <View style={styles.tile} key={index}>
               <AlbumTile
                 album={{
                   name: `Album: ${num}`,

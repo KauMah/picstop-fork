@@ -82,6 +82,7 @@ const MapView = () => {
                 locations,
                 _.get(response.data, 'message', []),
               );
+              console.log(allLocations);
               setLocations(_.uniqBy(allLocations, (loc) => loc._id));
             })
             .catch((err) => {

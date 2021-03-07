@@ -1,10 +1,10 @@
-import { User } from '../types';
 import React, { useEffect, useState } from 'react';
 
 import CustomHeader from '../components/shared/CustomHeader/';
 import { SafeAreaView } from 'react-native';
 import StatsHeader from '../components/Profile/StatsHeader';
 import TileContainer from '../components/Profile/tileContainer';
+import { User } from '../types';
 import UserList from './followList';
 import _ from 'lodash';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -70,7 +70,7 @@ const Profile = () => {
             setMeId(userRes.user._id);
             setUser({ ...user, ...userRes.user });
             setAlbums(userRes.albums);
-            setUserLocations(userRes.userLocations);
+            setUserLocations(userRes.user.savedLocations);
             setLoading(false);
           })
           .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
@@ -78,9 +78,9 @@ const Profile = () => {
         exo
           .get(`/user/get/${username}`)
           .then((res) => {
-            const user = _.get(res, 'data.message', initial);
-            setMeId(user._id);
-            setUser(user);
+            const tempUser = _.get(res, 'data.message', initial);
+            setMeId(tempUser._id);
+            setUser(tempUser);
             setLoading(false);
           })
           .catch((err) => rollbar.error(`Failed to load basic user: ${err}`));
