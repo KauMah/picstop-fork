@@ -12,14 +12,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomHeader from '../components/shared/CustomHeader';
 import IconButton from '../components/shared/IconButton';
 import ProfileSettings from './profileSettings';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import StyledButton from '../components/shared/StyledButton';
 import { createStackNavigator } from '@react-navigation/stack';
 import { logout } from '../redux/actions';
 import { rollbar } from '../utils/rollbar';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import CustomModal from '../components/shared/CustomModal';
+import { exo } from '../utils/api';
+import { User } from '../types';
+import Toast from 'react-native-toast-message';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,6 +48,10 @@ const styles = StyleSheet.create({
   },
   scroll: {
     width: '100%',
+  },
+  modalButton: {
+    alignSelf: 'stretch',
+    marginVertical: 10,
   },
 });
 
@@ -75,6 +84,7 @@ const SettingsRoutes = () => {
 };
 
 const Settings = () => {
+  const route = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const postLogout = () => {
@@ -98,9 +108,106 @@ const Settings = () => {
       });
   };
 
+  const [privacyModalVisible, setPrivacyModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const initial = {
+    username: '',
+    followers: [],
+    following: [],
+    followerRequests: [],
+    private: false,
+    profilePic: '',
+    savedLocations: [],
+    email: '',
+    _id: '',
+    blocked: [],
+  };
+  const [user, setUser] = useState<User>(initial);
+
+  useEffect(() => {
+    if (loading) {
+      exo
+        .get('/user/')
+        .then((res) => {
+          const userRes = _.get(res, 'data.message', initial);
+          setUser({ ...user, ...userRes.user });
+          setLoading(false);
+        })
+        .catch((err) => rollbar.error(`Failed to load user: ${err}`));
+    }
+  }, [loading, route.params, user, initial]);
+
+  const renderPrivacyModal = () => {
+    return (
+      <CustomModal
+        modalVisible={privacyModalVisible}
+        onPressOverlay={() => setPrivacyModalVisible(false)}>
+        <View style={styles.modalButton}>
+          <StyledButton
+            type="blue"
+            text="Public"
+            disabled={!user.private}
+            onPress={() => {
+              setLoading(true);
+              exo
+                .patch('/user/privacy', { privacy: false })
+                .then(() => {
+                  setUser({ ...user, private: false });
+                  Toast.show({
+                    type: 'success',
+                    position: 'top',
+                    text1: 'Successfully updated privacy settings',
+                  });
+                })
+                .catch((err) => {
+                  rollbar.error(`Failed to make user public: ${err}`);
+                  Toast.show({
+                    type: 'error',
+                    position: 'top',
+                    text1: 'Error updating privacy settings',
+                    text2: err.message,
+                  });
+                });
+            }}
+          />
+        </View>
+        <View style={styles.modalButton}>
+          <StyledButton
+            type="blue"
+            text="Private"
+            disabled={user.private}
+            onPress={() => {
+              setLoading(true);
+              exo
+                .patch('/user/privacy', { privacy: true })
+                .then(() => {
+                  setUser({ ...user, private: true });
+                  Toast.show({
+                    type: 'success',
+                    position: 'top',
+                    text1: 'Successfully updated privacy settings',
+                  });
+                })
+                .catch((err) => {
+                  rollbar.error(`Failed to make user private: ${err}`);
+                  Toast.show({
+                    type: 'error',
+                    position: 'top',
+                    text1: 'Error updating privacy settings',
+                    text2: err.message,
+                  });
+                });
+            }}
+          />
+        </View>
+      </CustomModal>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title={'Settings'} />
+      {renderPrivacyModal()}
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
           <View style={styles.imageWrapper}>
@@ -116,16 +223,15 @@ const Settings = () => {
               text="Profile"
               onPress={() => navigation.navigate('Edit Profile')}
               arrow={true}
-              displayValue="Username"
+              displayValue={user.username}
             />
           </View>
           <View style={styles.button}>
             <IconButton
               icon={faEye}
               text="Account Privacy"
-              onPress={() => console.log('Privacy icon button clicked')}
-              arrow={true}
-              displayValue="Public"
+              onPress={() => setPrivacyModalVisible(true)}
+              displayValue={user.private ? 'Private' : 'Public'}
             />
           </View>
           <View style={styles.button}>

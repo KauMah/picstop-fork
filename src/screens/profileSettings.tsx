@@ -58,8 +58,7 @@ const ProfileSettings = () => {
   const updateUser = () => {
     exo
       .patch('/user/username', { username: inputUsername })
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         setUser({ ...user, username: inputUsername });
         setInputUsername('');
         setLoading(true);
@@ -70,7 +69,6 @@ const ProfileSettings = () => {
         });
       })
       .catch((error) => {
-        console.log(error);
         Toast.show({
           type: 'error',
           position: 'top',
